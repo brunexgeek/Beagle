@@ -1,0 +1,18 @@
+package beagle.samples
+
+import test.asd
+
+import dsdasd.lwlelwl.welasld
+
+@SampleClassAnnotation
+public enum SampleClass:
+
+    DUMMY
+
+    private Babuska[] hideVar = 9
+
+    public int test( float ...values ):
+        pass
+        pass
+        for (int a in list):
+            pass
