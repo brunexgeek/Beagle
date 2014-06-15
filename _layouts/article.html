@@ -29,6 +29,7 @@
 							{% if menuItem[0] == category %}
 								{% assign customClass = 'active' %}
 								{% assign currentCategoryName = menuItem[1] %}
+                                {% assign currentCategoryId = menuItem[0] %}
 							{% endif %}
 						{% endfor %}
 						<li><a href="{{ site.baseurl }}/{{ menuItem[0] }}" class="{{ customClass }}">{{ menuItem[1] }}</a></li>
@@ -60,7 +61,7 @@
             <div class="container">
                 <ol class="breadcrumb">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">{{ site.baseurl }}/{{ currentCategoryName }}</a></li>
+                    <li><a href="{{ site.baseurl }}/{{ currentCategoryId }}">{{ currentCategoryName }}</a></li>
                     <li class="active">{{ page.title }}</li>
                 </ol>
 
