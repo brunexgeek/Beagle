@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Beagle Programming Language</title>
+    <link type="text/css" rel="stylesheet" media="all"href="/css/beagle.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="/lib/geopattern.min.js"></script>
+    <script src="/lib/jquery.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+</head>
+<body>
+    <!-- top navigation bar -->
+    <nav class="navbar navbar-static-top navbar-dark" role="navigation">
+        <div class="container">
+            <div class="navbar-content">
+				<span class="logo">Beagle</span>
+                <ul id="navbar-items">
+					{% for menuItem in site.categories-id %}
+						{% assign customClass = '' %}
+						{% for category in page.categories %}
+							{% if menuItem[0] == category %}
+								{% assign customClass = 'active' %}
+								{% assign currentCategoryName = menuItem[1] %}
+							{% endif %}
+						{% endfor %}
+						<li><a href="{{ site.root }}/{{ menuItem[0] }}" class="{{ customClass }}">{{ menuItem[1] }}</a></li>
+					{% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="wrapper" style="">
+
+        <div class="header" id="top-great-banner">
+            <div class="container">
+                <div class="header-content" >
+                    <div class="row" >
+							<h1>{{ page.title }}</h1>
+							<p>{{ page.subtitle }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript"> <!-- Vivid-Orange: #A94D18     Orange: #DA4900     Ocian: #37A3BC -->
+        var pattern = GeoPattern.generate('{{ page.title }}', { color:'#37A3BC' } );
+        $('#top-great-banner').css('background-image', pattern.toDataUrl());
+        </script>
+
+        <div id="content-area">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">{{ currentCategoryName }}</a></li>
+                    <li class="active">{{ page.title }}</li>
+                </ol>
+
+                <div class="row">
+                    <div id="content" class="content article-content">
+								{{ page.content | markdownify }}
+                    </div>
+
+                    <!-- right side menu with TOC and/or additional links -->
+                    <div class="side-menu">
+                        <div class="panel">
+                            <div class="heading">Table of Contents</div>
+                            <div class="entries">
+								{% for currentTitle in page.toc %}
+                                <a href="#{{ currentTitle | downcase | replace: ' ', '-' }}">{{ currentTitle }}</a>
+								{% endfor %}
+                            </div>
+                            <!-- <div class="heading">Quicklinks</div>
+                            <div class="entries">
+                                <a href="#">Something here!</a>
+                            </div> -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="container">
+                <div class="footer">
+                    <div class="footer-info">
+                        Copyright (C) 2014 Bruno Ribeiro
+                    </div>
+					<div class="footer-links">
+						Visit the <a href="https://github.com/brunexgeek/Beagle">Beagle Project</a> on GitHub.
+					</div>
+				</div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
