@@ -1,3 +1,4 @@
 permalink: /:categories/:title.html
 # categories-id: [ [ started, 'Getting Started' ], [ downloads, 'Downloads' ], [ docs, 'Documentation' ], [ community, 'Community' ], [ dev, 'Development' ] ]
 categories-id: [ [ intro, 'Introduction' ] ]
+baseurl: 'http://brunexgeek.github.io/Beagle'

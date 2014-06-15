@@ -2,13 +2,13 @@
 <html>
 <head>
     <title>Beagle Programming Language</title>
-    <link type="text/css" rel="stylesheet" media="all"href="/css/beagle.css">
+    <link type="text/css" rel="stylesheet" media="all"href="{{ site.baseurl }}/css/beagle.css">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="/lib/geopattern.min.js"></script>
-    <script src="/lib/jquery.min.js"></script>
+    <script src="{{ site.baseurl }}/lib/geopattern.min.js"></script>
+    <script src="{{ site.baseurl }}/lib/jquery.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
 								{% assign currentCategoryName = menuItem[1] %}
 							{% endif %}
 						{% endfor %}
-						<li><a href="{{ site.root }}/{{ menuItem[0] }}" class="{{ customClass }}">{{ menuItem[1] }}</a></li>
+						<li><a href="{{ site.baseurl }}/{{ menuItem[0] }}" class="{{ customClass }}">{{ menuItem[1] }}</a></li>
 					{% endfor %}
                 </ul>
             </div>
@@ -60,7 +60,7 @@
             <div class="container">
                 <ol class="breadcrumb">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">{{ currentCategoryName }}</a></li>
+                    <li><a href="#">{{ site.baseurl }}/{{ currentCategoryName }}</a></li>
                     <li class="active">{{ page.title }}</li>
                 </ol>
 
