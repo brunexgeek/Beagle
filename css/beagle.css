@@ -77,8 +77,19 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 	display: block;
 }
 
-*, 
-*:before, 
+blockquote {
+	background-color: #E6F2F5;
+	border: 1px solid #2D8599;
+	padding: 1em;
+	margin: 1em 0;
+}
+
+blockquote p {
+	margin: 0 0;
+}
+
+*,
+*:before,
 *:after {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -149,9 +160,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 	list-style: none;
 	padding: 0;
 	margin: 0;
-	margin: 0.6em 0 1.5em 0; 
+	margin: 0.6em 0 1.5em 0;
 }
- 
+
 .breadcrumb > li {
 	display: inline-block;
 }
@@ -199,7 +210,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 .side-menu .panel .entries a:focus {
 	text-decoration: underline;
 }
- 
+
 /*
  * Page head
  */
@@ -294,7 +305,7 @@ nav.navbar .navbar-content li>a {
 	color: #ccc;
 }
 
-nav.navbar .navbar-content li>a:hover, 
+nav.navbar .navbar-content li>a:hover,
 nav.navbar .navbar-content li>a:focus,
 nav.navbar .navbar-content li>a.active,
 nav.navbar .navbar-content li>a.active:hover,
@@ -309,12 +320,12 @@ nav.navbar .navbar-content li>a.active:focus {
 nav.navbar-dark {
 	background-color: #000;
 }
- 
+
 nav.navbar-dark .navbar-content li>a {
 	color: #ccc;
 }
 
-nav.navbar-dark .navbar-content li>a:hover, 
+nav.navbar-dark .navbar-content li>a:hover,
 nav.navbar-dark .navbar-content li>a:focus {
 	color: #3FBCD9;
 }
@@ -328,7 +339,7 @@ nav.navbar .navbar-content li>a.active:focus {
 /*
  * Footer
  */
- 
+
 .footer {
 	border: none;
 	border-top: 1px solid #ccc;
@@ -345,7 +356,7 @@ nav.navbar .navbar-content li>a.active:focus {
 
 .footer .footer-info {
 	width: 25%;
-}	
+}
 
 .footer .footer-links {
 	width: 75%;
@@ -353,20 +364,20 @@ nav.navbar .navbar-content li>a.active:focus {
 }
 
 @font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 300;
-  src: local('Roboto Light'), local('Roboto-Light'), url(http://themes.googleusercontent.com/static/fonts/roboto/v11/Hgo13k-tfSpn0qi1SFdUfT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 300;
+	src: local('Roboto Light'), local('Roboto-Light'), url(http://themes.googleusercontent.com/static/fonts/roboto/v11/Hgo13k-tfSpn0qi1SFdUfT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
 }
 @font-face {
-  font-family: 'Roboto';
-  font-style: bold;
-  font-weight: 500;
-  src: local('Roboto Medium'), local('Roboto-Medium'), url(http://themes.googleusercontent.com/static/fonts/roboto/v11/RxZJdnzeo3R5zSexge8UUT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+	font-family: 'Roboto';
+	font-style: bold;
+	font-weight: 500;
+	src: local('Roboto Medium'), local('Roboto-Medium'), url(http://themes.googleusercontent.com/static/fonts/roboto/v11/RxZJdnzeo3R5zSexge8UUT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
 }
 @font-face {
-  font-family: 'Roboto';
-  font-style: italic;
-  font-weight: 300;
-  src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(http://themes.googleusercontent.com/static/fonts/roboto/v11/7m8l7TlFO-S3VkhHuR0at4bN6UDyHWBl620a-IRfuBk.woff) format('woff');
+	font-family: 'Roboto';
+	font-style: italic;
+	font-weight: 300;
+	src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(http://themes.googleusercontent.com/static/fonts/roboto/v11/7m8l7TlFO-S3VkhHuR0at4bN6UDyHWBl620a-IRfuBk.woff) format('woff');
 }
