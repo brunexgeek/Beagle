@@ -82,173 +82,173 @@ import beagle.compiler.ast.type.VoidType;
  * 
  * @author Bruno Ribeiro
  *
- * @param <A> Type of context object.
+ * @param <C> Type of context object.
  */
-public interface TreeVisitor<A>
+public interface TreeVisitor<C>
 {
 
 	/*
 	 * Nodes that compound the compilation unit.
 	 */
 
-	public void visit( CompilationUnit n, A context ) throws CompilerException;
+	public void visit( CompilationUnit n, C context ) throws CompilerException;
 
-	public void visit( PackageDeclaration n, A context ) throws CompilerException;
+	public void visit( PackageDeclaration n, C context ) throws CompilerException;
 
-	public void visit( ImportDeclaration n, A context ) throws CompilerException;
+	public void visit( ImportDeclaration n, C context ) throws CompilerException;
 
-	public void visit( LineComment n, A context ) throws CompilerException;
+	public void visit( LineComment n, C context ) throws CompilerException;
 
-	public void visit( BlockComment n, A context ) throws CompilerException;
+	public void visit( BlockComment n, C context ) throws CompilerException;
 
 	/*
 	 * Node for type definition.
 	 */
 
-	public void visit( ClassOrInterfaceDeclaration n, A context ) throws CompilerException;
+	public void visit( ClassOrInterfaceDeclaration n, C context ) throws CompilerException;
 
-	public void visit( EnumDeclaration n, A context ) throws CompilerException;
+	public void visit( EnumDeclaration n, C context ) throws CompilerException;
 
-	public void visit( EmptyTypeDeclaration n, A context ) throws CompilerException;
+	public void visit( EmptyTypeDeclaration n, C context ) throws CompilerException;
 
-	public void visit( EnumConstantDeclaration n, A context ) throws CompilerException;
+	public void visit( EnumConstantDeclaration n, C context ) throws CompilerException;
 
-	public void visit( AnnotationDeclaration n, A context ) throws CompilerException;
+	public void visit( AnnotationDeclaration n, C context ) throws CompilerException;
 
-	public void visit( AnnotationMemberDeclaration n, A context ) throws CompilerException;
+	public void visit( AnnotationMemberDeclaration n, C context ) throws CompilerException;
 
-	public void visit( FieldDeclaration n, A context ) throws CompilerException;
+	public void visit( FieldDeclaration n, C context ) throws CompilerException;
 
-	public void visit( VariableDeclarator n, A context ) throws CompilerException;
+	public void visit( VariableDeclarator n, C context ) throws CompilerException;
 
-	public void visit( ConstructorDeclaration n, A context ) throws CompilerException;
+	public void visit( ConstructorDeclaration n, C context ) throws CompilerException;
 
-	public void visit( MethodDeclaration n, A context ) throws CompilerException;
+	public void visit( MethodDeclaration n, C context ) throws CompilerException;
 
-	public void visit( Parameter n, A context ) throws CompilerException;
+	public void visit( Parameter n, C context ) throws CompilerException;
 
-	public void visit( ModifierDeclaration n, A context ) throws CompilerException;
+	public void visit( ModifierDeclaration n, C context ) throws CompilerException;
 
-	public void visit( DocComment n, A context ) throws CompilerException;
+	public void visit( DocComment n, C context ) throws CompilerException;
 
 	/*
 	 * Nodes for type reference.
 	 */
 
-	public void visit( ClassOrInterfaceType n, A context ) throws CompilerException;
+	public void visit( ClassOrInterfaceType n, C context ) throws CompilerException;
 
-	public void visit( PrimitiveType n, A context ) throws CompilerException;
+	public void visit( PrimitiveType n, C context ) throws CompilerException;
 
-	public void visit( ReferenceType n, A context ) throws CompilerException;
+	public void visit( ReferenceType n, C context ) throws CompilerException;
 
-	public void visit( VoidType n, A context ) throws CompilerException;
+	public void visit( VoidType n, C context ) throws CompilerException;
 
 	/*
 	 * Nodes for expressions.
 	 */
 
-	public void visit( ArrayAccessExpr n, A context ) throws CompilerException;
+	public void visit( ArrayAccessExpr n, C context ) throws CompilerException;
 
-	public void visit( ArrayCreationExpr n, A context ) throws CompilerException;
+	public void visit( ArrayCreationExpr n, C context ) throws CompilerException;
 
-	public void visit( ArrayInitializerExpr n, A context ) throws CompilerException;
+	public void visit( ArrayInitializerExpr n, C context ) throws CompilerException;
 
-	public void visit( AssignExpr n, A context ) throws CompilerException;
+	public void visit( AssignExpr n, C context ) throws CompilerException;
 
-	public void visit( BinaryExpr n, A context ) throws CompilerException;
+	public void visit( BinaryExpr n, C context ) throws CompilerException;
 
-	public void visit( CastExpr n, A context ) throws CompilerException;
+	public void visit( CastExpr n, C context ) throws CompilerException;
 
-	public void visit( ClassExpr n, A context ) throws CompilerException;
+	public void visit( ClassExpr n, C context ) throws CompilerException;
 
-	public void visit( ConditionalExpr n, A context ) throws CompilerException;
+	public void visit( ConditionalExpr n, C context ) throws CompilerException;
 
-	public void visit( EnclosedExpr n, A context ) throws CompilerException;
+	public void visit( EnclosedExpr n, C context ) throws CompilerException;
 
-	public void visit( FieldAccessExpr n, A context ) throws CompilerException;
+	public void visit( FieldAccessExpr n, C context ) throws CompilerException;
 
-	public void visit( InstanceOfExpr n, A context ) throws CompilerException;
+	public void visit( InstanceOfExpr n, C context ) throws CompilerException;
 
-	public void visit( StringLiteralExpr n, A context ) throws CompilerException;
+	public void visit( StringLiteralExpr n, C context ) throws CompilerException;
 
-	public void visit( LongLiteralExpr n, A context ) throws CompilerException;
+	public void visit( LongLiteralExpr n, C context ) throws CompilerException;
 
-	public void visit( IntegerLiteralExpr n, A context ) throws CompilerException;
+	public void visit( IntegerLiteralExpr n, C context ) throws CompilerException;
 
-	public void visit( CharLiteralExpr n, A context ) throws CompilerException;
+	public void visit( CharLiteralExpr n, C context ) throws CompilerException;
 
-	public void visit( DoubleLiteralExpr n, A context ) throws CompilerException;
+	public void visit( DoubleLiteralExpr n, C context ) throws CompilerException;
 
-	public void visit( BooleanLiteralExpr n, A context ) throws CompilerException;
+	public void visit( BooleanLiteralExpr n, C context ) throws CompilerException;
 
-	public void visit( NullLiteralExpr n, A context ) throws CompilerException;
+	public void visit( NullLiteralExpr n, C context ) throws CompilerException;
 
-	public void visit( MethodCallExpr n, A context ) throws CompilerException;
+	public void visit( MethodCallExpr n, C context ) throws CompilerException;
 
-	public void visit( NameExpr n, A context ) throws CompilerException;
+	public void visit( NameExpr n, C context ) throws CompilerException;
 
-	public void visit( ObjectCreationExpr n, A context ) throws CompilerException;
+	public void visit( ObjectCreationExpr n, C context ) throws CompilerException;
 
-	public void visit( QualifiedNameExpr n, A context ) throws CompilerException;
+	public void visit( QualifiedNameExpr n, C context ) throws CompilerException;
 
-	public void visit( ThisExpr n, A context ) throws CompilerException;
+	public void visit( ThisExpr n, C context ) throws CompilerException;
 
-	public void visit( SuperExpr n, A context ) throws CompilerException;
+	public void visit( SuperExpr n, C context ) throws CompilerException;
 
-	public void visit( UnaryExpr n, A context ) throws CompilerException;
+	public void visit( UnaryExpr n, C context ) throws CompilerException;
 
-	public void visit( VariableDeclarationExpr n, A context ) throws CompilerException;
+	public void visit( VariableDeclarationExpr n, C context ) throws CompilerException;
 
-	public void visit( MarkerAnnotationExpr n, A context ) throws CompilerException;
+	public void visit( MarkerAnnotationExpr n, C context ) throws CompilerException;
 
-	public void visit( SingleMemberAnnotationExpr n, A context ) throws CompilerException;
+	public void visit( SingleMemberAnnotationExpr n, C context ) throws CompilerException;
 
-	public void visit( NormalAnnotationExpr n, A context ) throws CompilerException;
+	public void visit( NormalAnnotationExpr n, C context ) throws CompilerException;
 
-	public void visit( MemberValuePair n, A context ) throws CompilerException;
+	public void visit( MemberValuePair n, C context ) throws CompilerException;
 
 	/*
 	 * Node for language statements.
 	 */
 
-	public void visit( ExplicitConstructorInvocationStmt n, A context ) throws CompilerException;
+	public void visit( ExplicitConstructorInvocationStmt n, C context ) throws CompilerException;
 
-	public void visit( TypeDeclarationStmt n, A context ) throws CompilerException;
+	public void visit( TypeDeclarationStmt n, C context ) throws CompilerException;
 
-	public void visit( AssertStmt n, A context ) throws CompilerException;
+	public void visit( AssertStmt n, C context ) throws CompilerException;
 
-	public void visit( BlockStmt n, A context ) throws CompilerException;
+	public void visit( BlockStmt n, C context ) throws CompilerException;
 
-	public void visit( EmptyStmt n, A context ) throws CompilerException;
+	public void visit( EmptyStmt n, C context ) throws CompilerException;
 
-	public void visit( ExpressionStmt n, A context ) throws CompilerException;
+	public void visit( ExpressionStmt n, C context ) throws CompilerException;
 
-	public void visit( SwitchStmt n, A context ) throws CompilerException;
+	public void visit( SwitchStmt n, C context ) throws CompilerException;
 
-	public void visit( SwitchEntryStmt n, A context ) throws CompilerException;
+	public void visit( SwitchEntryStmt n, C context ) throws CompilerException;
 
-	public void visit( BreakStmt n, A context ) throws CompilerException;
+	public void visit( BreakStmt n, C context ) throws CompilerException;
 
-	public void visit( ReturnStmt n, A context ) throws CompilerException;
+	public void visit( ReturnStmt n, C context ) throws CompilerException;
 
-	public void visit( IfStmt n, A context ) throws CompilerException;
+	public void visit( IfStmt n, C context ) throws CompilerException;
 
-	public void visit( WhileStmt n, A context ) throws CompilerException;
+	public void visit( WhileStmt n, C context ) throws CompilerException;
 
-	public void visit( ContinueStmt n, A context ) throws CompilerException;
+	public void visit( ContinueStmt n, C context ) throws CompilerException;
 
-	public void visit( DoWhileStmt n, A context ) throws CompilerException;
+	public void visit( DoWhileStmt n, C context ) throws CompilerException;
 
-	public void visit( ForeachStmt n, A context ) throws CompilerException;
+	public void visit( ForeachStmt n, C context ) throws CompilerException;
 
-	public void visit( ForStmt n, A context ) throws CompilerException;
+	public void visit( ForStmt n, C context ) throws CompilerException;
 
-	public void visit( ThrowStmt n, A context ) throws CompilerException;
+	public void visit( ThrowStmt n, C context ) throws CompilerException;
 
-	public void visit( SynchronizedStmt n, A context ) throws CompilerException;
+	public void visit( SynchronizedStmt n, C context ) throws CompilerException;
 
-	public void visit( TryStmt n, A context ) throws CompilerException;
+	public void visit( TryStmt n, C context ) throws CompilerException;
 
-	public void visit( CatchClause n, A context ) throws CompilerException;
+	public void visit( CatchClause n, C context ) throws CompilerException;
 
 }

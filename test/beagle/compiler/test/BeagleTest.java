@@ -2,13 +2,16 @@ package beagle.compiler.test;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import beagle.compiler.CompilerException;
+import beagle.compiler.ast.visitor.ProceduralVisitor;
 import beagle.compiler.ast.visitor.XmlDumpVisitor;
 import beagle.compiler.parser.BeagleParser;
 import beagle.compiler.parser.BeagleParserConstants;
 import beagle.compiler.parser.ParseException;
 import beagle.compiler.parser.Token;
+import beagle.compiler.pst.CompilationGroup;
 
 
 public class BeagleTest
@@ -34,8 +37,16 @@ public class BeagleTest
 		parser.CompilationUnit().accept(vis, null);
 		System.out.println(vis.getSource());
 	}
+
+	private static void procedurizeTree( BeagleParser parser ) throws CompilerException, ParseException
+	{
+		ProceduralVisitor proc = new ProceduralVisitor();
+		parser.CompilationUnit().accept(proc, null);
+		CompilationGroup generated = proc.getCompilationGroup();
+		System.out.println( "Generated " + generated.definitions.size() + " type definitions");
+	}
 	
-	public static void main( String[] args ) throws FileNotFoundException, ParseException, CompilerException
+	public static void main( String[] args ) throws ParseException, CompilerException, IOException
 	{
 		String fileName;
 		if (args.length == 0)
@@ -45,6 +56,12 @@ public class BeagleTest
 		FileInputStream in = new FileInputStream(fileName);
 		BeagleParser parser = new BeagleParser(in);
 		printXmlTree(parser);
+		in.close();
+		
+		in = new FileInputStream(fileName);
+		parser = new BeagleParser(in);
+		procedurizeTree(parser);
+		in.close();
 	}
 
 }
