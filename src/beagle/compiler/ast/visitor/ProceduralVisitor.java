@@ -68,7 +68,7 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 	{
 		// create the procedural compilation unit and it type definition
 		generated = new beagle.compiler.pst.CompilationGroup();
-		beagle.compiler.pst.type.TypeDefinition typeDef = new beagle.compiler.pst.type.TypeDefinition();
+		beagle.compiler.pst.type.TypeDeclaration typeDef = new beagle.compiler.pst.type.TypeDeclaration();
 		generated.definitions.add(typeDef);
 		
 		typeDef.fileName = n.fileName;
@@ -83,7 +83,7 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 	@Override
 	public void visit( PackageDeclaration n, Object context ) throws CompilerException
 	{
-		((beagle.compiler.pst.type.TypeDefinition)context).packageName = getName(n.name);
+		((beagle.compiler.pst.type.TypeDeclaration)context).packageName = getName(n.name);
 	}
 
 	@Override
@@ -108,8 +108,8 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 	@Override
 	public void visit( ClassOrInterfaceDeclaration n, Object context ) throws CompilerException
 	{
-		beagle.compiler.pst.type.TypeDefinition typeDef;
-		typeDef = (beagle.compiler.pst.type.TypeDefinition)context;
+		beagle.compiler.pst.type.TypeDeclaration typeDef;
+		typeDef = (beagle.compiler.pst.type.TypeDeclaration)context;
 		
 		typeDef.name = n.name;
 		typeDef.modifiers = n.modifiers.modifiers;
@@ -158,7 +158,7 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 		beagle.compiler.pst.type.Type result = new beagle.compiler.pst.type.Type();
 		
 		if (type instanceof PrimitiveType)
-			result.type = ((PrimitiveType)type).type.name();
+			result.type = ((PrimitiveType)type).type.toString();
 		else
 			if (type instanceof VoidType)
 				result.type = "void";
@@ -174,8 +174,8 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 	@Override
 	public void visit( FieldDeclaration n, Object context ) throws CompilerException
 	{
-		beagle.compiler.pst.type.TypeDefinition typeDef;
-		typeDef = (beagle.compiler.pst.type.TypeDefinition)context;
+		beagle.compiler.pst.type.TypeDeclaration typeDef;
+		typeDef = (beagle.compiler.pst.type.TypeDeclaration)context;
 		
 		beagle.compiler.pst.type.Type type = getType(n.type);
 		
@@ -211,13 +211,14 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 	@Override
 	public void visit( MethodDeclaration n, Object context ) throws CompilerException
 	{
-		beagle.compiler.pst.type.TypeDefinition typeDef;
-		typeDef = (beagle.compiler.pst.type.TypeDefinition)context;
+		beagle.compiler.pst.type.TypeDeclaration typeDef;
+		typeDef = (beagle.compiler.pst.type.TypeDeclaration)context;
 		
 		beagle.compiler.pst.body.ProcedureDeclaration proc = new beagle.compiler.pst.body.ProcedureDeclaration();
 		proc.modifiers = n.modifiers.modifiers;
 		// TODO: must be full qualified (package name + method name)
 		proc.name = n.name;
+		proc.result = getType(n.type);
 		
 		// dynamic methods must be the "self" parameter
 		if (!n.modifiers.hasModifier(ModifierSet.STATIC))

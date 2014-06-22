@@ -3,6 +3,7 @@ package beagle.compiler.test;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.CodeSource;
 
 import beagle.compiler.CompilerException;
 import beagle.compiler.ast.visitor.ProceduralVisitor;
@@ -12,6 +13,7 @@ import beagle.compiler.parser.BeagleParserConstants;
 import beagle.compiler.parser.ParseException;
 import beagle.compiler.parser.Token;
 import beagle.compiler.pst.CompilationGroup;
+import beagle.compiler.pst.visitor.CCodeGenerator;
 
 
 public class BeagleTest
@@ -44,6 +46,9 @@ public class BeagleTest
 		parser.CompilationUnit().accept(proc, null);
 		CompilationGroup generated = proc.getCompilationGroup();
 		System.out.println( "Generated " + generated.definitions.size() + " type definitions");
+		CCodeGenerator vis = new CCodeGenerator();
+		vis.visit(generated, null);
+		System.out.println( vis );
 	}
 	
 	public static void main( String[] args ) throws ParseException, CompilerException, IOException

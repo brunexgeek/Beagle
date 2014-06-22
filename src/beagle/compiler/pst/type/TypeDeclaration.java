@@ -14,7 +14,7 @@ import beagle.compiler.pst.visitor.TreeVisitor;
  *  
  * @author Bruno Ribeiro
  */
-public class TypeDefinition extends Node
+public class TypeDeclaration extends Node
 {
 
 	/**
@@ -43,7 +43,7 @@ public class TypeDefinition extends Node
 	
 	public List<FieldDeclaration> dynamicFields = new ArrayList<FieldDeclaration>();
 	
-	public TypeDefinition()
+	public TypeDeclaration()
 	{
 		super();
 	}

@@ -27,5 +27,15 @@ public final class Type extends Node
 	{
 		v.visit(this, context);
 	}
+	
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(type);
+		for (int i = 0; i < arrayLevels; i++)
+			sb.append("[");
+		return sb.toString();
+	}
 
 }

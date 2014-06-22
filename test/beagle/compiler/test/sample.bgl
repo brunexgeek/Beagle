@@ -5,13 +5,12 @@ import test.asd
 import dsdasd.lwlelwl.welasld
 
 @SampleClassAnnotation
-public enum SampleClass:
+public class SampleClass:
 
-    DUMMY
+    private Babuska[] hideVar = 9, test
+    public int ola
 
-    private Babuska[] hideVar = 9
-
-    public int test( float ...values ):
+    public static int test( float ...values ):
         pass
         pass
         for (int a in list):

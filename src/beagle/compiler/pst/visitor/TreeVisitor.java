@@ -5,7 +5,7 @@ import beagle.compiler.pst.CompilationGroup;
 import beagle.compiler.pst.body.FieldDeclaration;
 import beagle.compiler.pst.body.Parameter;
 import beagle.compiler.pst.body.ProcedureDeclaration;
-import beagle.compiler.pst.type.TypeDefinition;
+import beagle.compiler.pst.type.TypeDeclaration;
 import beagle.compiler.pst.type.Type;
 
 public interface TreeVisitor<C>
@@ -17,7 +17,7 @@ public interface TreeVisitor<C>
 	
 	public void visit( CompilationGroup n, C context ) throws CompilerException;
 	
-	public void visit( TypeDefinition n, C context ) throws CompilerException;
+	public void visit( TypeDeclaration n, C context ) throws CompilerException;
 	
 	public void visit( Type n, C context ) throws CompilerException;
 	

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beagle.compiler.CompilerException;
-import beagle.compiler.pst.type.TypeDefinition;
+import beagle.compiler.pst.type.TypeDeclaration;
 import beagle.compiler.pst.visitor.TreeVisitor;
 
 
 public class CompilationGroup extends Node
 {
 	
-	public List<TypeDefinition> definitions = new ArrayList<TypeDefinition>();
+	public List<TypeDeclaration> definitions = new ArrayList<TypeDeclaration>();
 		
 	public CompilationGroup()
 	{
