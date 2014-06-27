@@ -5,8 +5,12 @@ import beagle.compiler.pst.CompilationGroup;
 import beagle.compiler.pst.body.FieldDeclaration;
 import beagle.compiler.pst.body.Parameter;
 import beagle.compiler.pst.body.ProcedureDeclaration;
+import beagle.compiler.pst.type.ArrayType;
+import beagle.compiler.pst.type.ClassOrInterfaceType;
+import beagle.compiler.pst.type.PrimitiveType;
 import beagle.compiler.pst.type.TypeDeclaration;
 import beagle.compiler.pst.type.Type;
+import beagle.compiler.pst.type.VoidType;
 
 public interface TreeVisitor<C>
 {
@@ -19,7 +23,13 @@ public interface TreeVisitor<C>
 	
 	public void visit( TypeDeclaration n, C context ) throws CompilerException;
 	
-	public void visit( Type n, C context ) throws CompilerException;
+	public void visit( PrimitiveType n, C context ) throws CompilerException;
+	
+	public void visit( ClassOrInterfaceType n, C context ) throws CompilerException;
+	
+	public void visit( ArrayType n, C context ) throws CompilerException;
+	
+	public void visit( VoidType n, C context ) throws CompilerException;
 	
 	public void visit( FieldDeclaration n, C context ) throws CompilerException;
 	

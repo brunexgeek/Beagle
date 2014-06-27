@@ -1,9 +1,8 @@
 package beagle.compiler.test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.security.CodeSource;
 
 import beagle.compiler.CompilerException;
 import beagle.compiler.ast.visitor.ProceduralVisitor;
@@ -40,7 +39,7 @@ public class BeagleTest
 		System.out.println(vis.getSource());
 	}
 
-	private static void procedurizeTree( BeagleParser parser ) throws CompilerException, ParseException
+	private static void procedurizeTree( BeagleParser parser ) throws CompilerException, ParseException, IOException
 	{
 		ProceduralVisitor proc = new ProceduralVisitor();
 		parser.CompilationUnit().accept(proc, null);
@@ -49,6 +48,10 @@ public class BeagleTest
 		CCodeGenerator vis = new CCodeGenerator();
 		vis.visit(generated, null);
 		System.out.println( vis );
+		
+		FileWriter wt = new FileWriter("output.c");
+		wt.append(vis.toString());
+		wt.close();
 	}
 	
 	public static void main( String[] args ) throws ParseException, CompilerException, IOException

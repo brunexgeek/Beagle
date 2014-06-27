@@ -10,6 +10,7 @@ import beagle.compiler.ast.body.*;
 import beagle.compiler.ast.expression.*;
 import beagle.compiler.ast.statement.*;
 import beagle.compiler.ast.type.*;
+import beagle.compiler.pst.type.ArrayType;
 
 
 /**
@@ -153,22 +154,47 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 
 	}
 
+	private String getScope( ClassOrInterfaceType type )
+	{
+		if (type.scope != null)
+			return getScope(type.scope) + "." + type.name;
+		else
+			return type.name;
+		
+	}
+	
 	private beagle.compiler.pst.type.Type getType( Type type )
 	{
-		beagle.compiler.pst.type.Type result = new beagle.compiler.pst.type.Type();
 		
-		if (type instanceof PrimitiveType)
-			result.type = ((PrimitiveType)type).type.toString();
+		if (type instanceof ClassOrInterfaceType)
+		{
+			beagle.compiler.pst.type.ClassOrInterfaceType result = new beagle.compiler.pst.type.ClassOrInterfaceType();
+			result.scope = getScope( ((ClassOrInterfaceType)type).scope );
+			result.type = ((ClassOrInterfaceType)type).name;
+			return result;
+		}
 		else
-			if (type instanceof VoidType)
-				result.type = "void";
+			if (type instanceof PrimitiveType)
+			{
+				beagle.compiler.pst.type.PrimitiveType result = new beagle.compiler.pst.type.PrimitiveType();
+				result.type = ((PrimitiveType) type).type;
+				return result;
+			}
 			else
-				if (type instanceof ReferenceType)
+				if (type instanceof VoidType)
 				{
-					result.type = ((ClassOrInterfaceType)((ReferenceType)type).type).name;
-					result.arrayLevels = ((ReferenceType) type).arrayLevels;
+					return new beagle.compiler.pst.type.VoidType();					
 				}
-		return result;
+				else
+					if (type instanceof ReferenceType)
+					{
+						beagle.compiler.pst.type.ArrayType result = new ArrayType();
+						result.type = getType( ((ReferenceType)type).type );
+						result.arrayLevels = ((ReferenceType) type).arrayLevels;
+						return result;
+					}
+		
+		return null;
 	}
 	
 	@Override
@@ -220,25 +246,36 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 		proc.name = n.name;
 		proc.result = getType(n.type);
 		
-		// dynamic methods must be the "self" parameter
+		// dynamic methods must have the "self" parameter
 		if (!n.modifiers.hasModifier(ModifierSet.STATIC))
 		{
 			beagle.compiler.pst.body.Parameter param = new beagle.compiler.pst.body.Parameter();
 			param.name = "__self_";
-			param.type = new beagle.compiler.pst.type.Type();
-			param.type.arrayLevels = 0;
-			param.type.type = typeDef.name;
-			param.isVarArgs = false;
+			param.type = new beagle.compiler.pst.type.VoidType();
+			/*param.type.arrayLevels = 0;
+			param.type.type = typeDef.name;*/
+			param.isPointer = true;
 			proc.parameters.add(param);
 		}
+		// add each method parameter
 		for (Parameter entry : n.parameters)
 		{
 			beagle.compiler.pst.body.Parameter param = new beagle.compiler.pst.body.Parameter();
 			param.name = entry.name;
 			param.type = getType(entry.type);
-			param.isVarArgs = entry.isVarArgs;
+			param.isPointer = entry.isVarArgs;
 			param.modifiers = entry.modifiers.modifiers;
 			proc.parameters.add(param);
+			// if the parameter is a 'vararg', we need an additional parameter for the
+			// 'vararg' array length
+			if (entry.isVarArgs)
+			{
+				param = new beagle.compiler.pst.body.Parameter();
+				param.name = entry.name + "Count";
+				param.type = new beagle.compiler.pst.type.VoidType();//("int", 0);
+				param.isPointer = false;
+				proc.parameters.add(param);
+			}
 		}
 		
 		

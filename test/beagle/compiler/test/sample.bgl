@@ -1,16 +1,17 @@
-package beagle.samples
+package beagle.tts
 
 import test.asd
 
 import dsdasd.lwlelwl.welasld
 
 @SampleClassAnnotation
-public class SampleClass:
+public class Engine:
 
-    private Babuska[] hideVar = 9, test
+    private temp.base.Babuska[] hideVar = 9, test
+
     public int ola
 
-    public static int test( float ...values ):
+    public int test( int paparapa, float ...values ):
         pass
         pass
         for (int a in list):

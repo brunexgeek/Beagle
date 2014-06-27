@@ -13,9 +13,9 @@ public class Parameter extends Node
 
 	public Type type;
 
-	public boolean isVarArgs;
-
 	public String name;
+	
+	public boolean isPointer;
 
 	public Parameter()
 	{
