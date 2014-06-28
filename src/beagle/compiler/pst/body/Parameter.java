@@ -15,7 +15,7 @@ public class Parameter extends Node
 
 	public String name;
 	
-	public boolean isPointer;
+	//public boolean isPointer;
 
 	public Parameter()
 	{
@@ -27,7 +27,7 @@ public class Parameter extends Node
 	{
 		this.modifiers = modifiers;
 		this.type = type;
-		this.isVarArgs = isVarArgs;
+		this.isVarArgs = isVarArgs; 
 		this.name = name;
 	}*/
 

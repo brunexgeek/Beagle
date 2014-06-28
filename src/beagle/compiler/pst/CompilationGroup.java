@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beagle.compiler.CompilerException;
-import beagle.compiler.pst.type.TypeDeclaration;
+import beagle.compiler.pst.body.TypeDeclaration;
 import beagle.compiler.pst.visitor.TreeVisitor;
 
 

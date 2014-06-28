@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import beagle.compiler.CompilerException;
-import beagle.compiler.ast.visitor.ProceduralVisitor;
+import beagle.compiler.ast.ProceduralConverter;
 import beagle.compiler.ast.visitor.XmlDumpVisitor;
 import beagle.compiler.parser.BeagleParser;
 import beagle.compiler.parser.BeagleParserConstants;
@@ -36,7 +36,7 @@ public class BeagleTest
 	{
 		XmlDumpVisitor vis = new XmlDumpVisitor();
 		parser.CompilationUnit().accept(vis, null);
-		System.out.println(vis.toString());
+		//System.out.println(vis.toString());
 		
 		FileWriter wt = new FileWriter("output.xml");
 		wt.append(vis.toString());
@@ -45,8 +45,8 @@ public class BeagleTest
 
 	private static void procedurizeTree( BeagleParser parser ) throws CompilerException, ParseException, IOException
 	{
-		ProceduralVisitor proc = new ProceduralVisitor();
-		parser.CompilationUnit().accept(proc, null);
+		ProceduralConverter proc = new ProceduralConverter();
+		proc.processCompilationUnit(parser.CompilationUnit());
 		CompilationGroup generated = proc.getCompilationGroup();
 		System.out.println( "Generated " + generated.definitions.size() + " type definitions");
 		CCodeGenerator vis = new CCodeGenerator();

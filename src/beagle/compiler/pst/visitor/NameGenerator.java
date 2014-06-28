@@ -1,8 +1,7 @@
 package beagle.compiler.pst.visitor;
 
+import beagle.compiler.pst.body.TypeDeclaration;
 import beagle.compiler.pst.type.ClassOrInterfaceType;
-import beagle.compiler.pst.type.Type;
-import beagle.compiler.pst.type.TypeDeclaration;
 
 
 public class NameGenerator
@@ -61,30 +60,19 @@ public class NameGenerator
 		return sb.toString();
 	}*/
 	
-	public static String structName( String prefix, String ...names )
+	public static String structName( String ...names )
 	{
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("__");
-		//sb.append("Beagle_");
-		if (prefix != null)
-		{
-			appendName(sb, prefix);
-			sb.append("_");
-		}
 		appendName(sb, names);
 		return sb.toString();
 	}
 		
-	public static String variableName( String prefix, String ...names )
+	public static String variableName( String ...names )
 	{
 		StringBuilder sb = new StringBuilder();
 
-		if (prefix != null)
-		{
-			appendName(sb, prefix);
-			sb.append("_");
-		}
 		appendName(sb, names);
 		return sb.toString();
 	}

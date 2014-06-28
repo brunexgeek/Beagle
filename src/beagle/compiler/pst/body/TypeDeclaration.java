@@ -1,4 +1,4 @@
-package beagle.compiler.pst.type;
+package beagle.compiler.pst.body;
 
 import java.util.ArrayList;
 import java.util.HashMap;
