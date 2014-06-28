@@ -32,11 +32,15 @@ public class BeagleTest
 		}
 	}
 
-	private static void printXmlTree( BeagleParser parser ) throws CompilerException, ParseException
+	private static void printXmlTree( BeagleParser parser ) throws CompilerException, ParseException, IOException
 	{
 		XmlDumpVisitor vis = new XmlDumpVisitor();
 		parser.CompilationUnit().accept(vis, null);
-		System.out.println(vis.getSource());
+		System.out.println(vis.toString());
+		
+		FileWriter wt = new FileWriter("output.xml");
+		wt.append(vis.toString());
+		wt.close();
 	}
 
 	private static void procedurizeTree( BeagleParser parser ) throws CompilerException, ParseException, IOException

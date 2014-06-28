@@ -9,7 +9,7 @@ public class ClassOrInterfaceType extends Type
 
 	public String scope;
 	
-	public String type;
+	public String name;
 	
 	@Override
 	public <A> void accept( TreeVisitor<A> v, A context ) throws CompilerException
@@ -20,7 +20,7 @@ public class ClassOrInterfaceType extends Type
 	@Override
 	public String toString()
 	{
-		return type;
+		return name;
 	}
 	
 }

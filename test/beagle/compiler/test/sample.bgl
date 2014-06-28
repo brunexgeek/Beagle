@@ -1,6 +1,6 @@
 package beagle.tts
 
-import test.asd
+import test.asd.ScriptManagers
 
 import dsdasd.lwlelwl.welasld
 
@@ -9,7 +9,9 @@ public class Engine:
 
     private temp.base.Babuska[] hideVar = 9, test
 
-    public int ola
+    public Engine ola
+
+    private static int instances
 
     public int test( int paparapa, float ...values ):
         pass

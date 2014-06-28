@@ -26,7 +26,13 @@ public class CCodeGenerator implements TreeVisitor<Object>
 	
 	private static final String fieldStructName = NameGenerator.structName("field", "metainfo");
 	
+	private static final String classStructName = NameGenerator.structName("class", "metainfo");
+	
 	private static final String methodStructName = NameGenerator.structName("method", "metainfo");
+
+	private static final int TAB_SIZE = 3;
+
+	private static final String libraryStructName = NameGenerator.structName("library", "metainfo");;
 	
 	private String typeStructName = NameGenerator.structName("type", "metainfo");
 	
@@ -48,6 +54,8 @@ public class CCodeGenerator implements TreeVisitor<Object>
 		
 		private void open( String name )
 		{
+			name = name.toUpperCase();
+			
 			buffer.append("#ifndef ");
 			buffer.append(name);
 			buffer.append("\n#define ");
@@ -57,6 +65,8 @@ public class CCodeGenerator implements TreeVisitor<Object>
 		
 		private void close( String name )
 		{
+			name = name.toUpperCase();
+			
 			buffer.append("#endif /* ");
 			buffer.append(name);
 			buffer.append(" */\n\n");
@@ -82,8 +92,6 @@ public class CCodeGenerator implements TreeVisitor<Object>
 				buffer.append("[]");
 			buffer.append(" = {\n");
 			indent++;
-			column = 0;
-			//makeIndent();
 		}
 		
 		private void close( )
@@ -97,19 +105,35 @@ public class CCodeGenerator implements TreeVisitor<Object>
 			buffer.append("};\n");
 		}
 				
+		private void addSizeOf( String name )
+		{
+			makeIndent();
+			buffer.append("sizeof(");
+			buffer.append(name);
+			buffer.append("),\n");
+		}
+		
+		private void addAddress( String name )
+		{
+			makeIndent();
+			buffer.append("&");
+			buffer.append(name);
+			buffer.append(",\n");
+		}
+		
+		private void addPlain( String name )
+		{
+			makeIndent();
+			buffer.append(name);
+			buffer.append(",\n");
+		}
+		
 		private <A> void addValue( A value )
 		{
-			if (column > 80)
-			{
-				buffer.append("\n");
-				makeIndent();
-				column = 0;
-			}
-				else
-					if (column == 0)
-						makeIndent();
-			if (value != null)
-				column += value.toString().length();
+			makeIndent();
+			
+			/*if (value != null)
+				column += value.toString().length();*/
 			
 			if (value == null)
 				buffer.append("NULL");
@@ -122,25 +146,21 @@ public class CCodeGenerator implements TreeVisitor<Object>
 				}	
 				else
 					buffer.append(value);
-			buffer.append(", ");
+			buffer.append(", \n");
 		}
 		
 		private void openBlock()
 		{
-			if (column == 0)
-				makeIndent();
-			buffer.append("{ ");
-			column += 2;
+			makeIndent();
+			buffer.append("{ \n");
 			indent++;
 		}
 		
 		private void closeBlock()
 		{
-			if (column == 0)
-				makeIndent();
 			indent--;
-			column += 3;
-			buffer.append("}, ");			
+			makeIndent();
+			buffer.append("}, \n");			
 		}
 		
 	}
@@ -277,15 +297,38 @@ public class CCodeGenerator implements TreeVisitor<Object>
 	
 	private void makeIndent()
 	{
-		for (int i = 0; i < indent; i++)
-			buffer.append("    ");
+		for (int i = 0; i < indent * TAB_SIZE; i++)
+			buffer.append(' ');
 	}
 	
 	@Override
 	public void visit( CompilationGroup n, Object context ) throws CompilerException
 	{
+		buffer.append("#include <stdint.h>\n");
+		buffer.append("#include <stdio.h>\n\n");
+		
+		printCommomTypeStructures();
+		
+		// generate code for each type declaration
 		for (TypeDeclaration entry : n.definitions)
 			entry.accept(this, context);
+		
+		// create the variable containing the list of classes in the library
+		structVar.open(CONST | ARRAY, classStructName, true, "class_metainfo");
+		for (TypeDeclaration entry : n.definitions)
+		{
+			structVar.openBlock();
+			structVar.addValue(entry.packageName + '.' + entry.name);
+			structVar.addValue( NameGenerator.variableName(entry.packageName, entry.name, "_type") );
+			structVar.closeBlock();
+		}
+		structVar.close();
+		
+		// create the library meta-information variable
+		structVar.open(CONST | ARRAY, libraryStructName, true, "library_metainfo");
+		structVar.addValue(n.definitions.size());
+		structVar.addPlain("class_metainfo");
+		structVar.close();
 	}
 	
 	private void printTypeStructures( TypeDeclaration n )
@@ -297,19 +340,19 @@ public class CCodeGenerator implements TreeVisitor<Object>
 			comment.comment("dynamic fields");
 			for (FieldDeclaration entry : n.dynamicFields)
 			{
-				struct.addPrimitive(0, getTypeName(entry.type), entry.name);
+				struct.addPrimitive(0, getNativeTypeName(entry.type), entry.name);
 			}
 		}
 		struct.close();
 		
 		// create the structure to hold the static fields
-		struct.open( NameGenerator.structName("type_static_", n.packageName, n.name));
+		struct.open( NameGenerator.structName("type_static_", n.packageName, n.name) );
 		if (n.dynamicFields.size() > 0)
 		{
 			comment.comment("static fields");
 			for (FieldDeclaration entry : n.staticFields)
 			{
-				struct.addPrimitive(0, getTypeName(entry.type), entry.name);
+				struct.addPrimitive(0, getNativeTypeName(entry.type), entry.name);
 			}
 		}
 		struct.close();
@@ -317,7 +360,23 @@ public class CCodeGenerator implements TreeVisitor<Object>
 	
 	private void printCommomTypeStructures()
 	{
-		// generate the field meta-information C structs
+		// generate the C struct for an entry of the class list
+		sentinel.open("CLASS_METAINFO_STRUCT");
+		struct.open( classStructName );
+		struct.addPrimitive(POINTER | CONST, "char" , "name");
+		struct.addPrimitive(POINTER | CONST, "char" , "symbol");
+		struct.close();
+		sentinel.close("CLASS_METAINFO_STRUCT");
+		
+		// generate the library meta-information C struct
+		sentinel.open("LIBRARY_METAINFO_STRUCT");
+		struct.open(libraryStructName);
+		struct.addPrimitive(CONST, "uint32_t" , "classCount");
+		struct.addStruct(POINTER | CONST, classStructName , "classTable");
+		struct.close();
+		sentinel.close("LIBRARY_METAINFO_STRUCT");
+		
+		// generate the field meta-information C struct
 		sentinel.open("FIELD_METAINFO_STRUCT");
 		struct.open( fieldStructName );
 		struct.addPrimitive(POINTER | CONST, "char" , "type");
@@ -325,7 +384,7 @@ public class CCodeGenerator implements TreeVisitor<Object>
 		struct.close();
 		sentinel.close("FIELD_METAINFO_STRUCT");
 				
-		// generate the method meta-information C structs
+		// generate the method meta-information C struct
 		sentinel.open("METHOD_METAINFO_STRUCT");
 		struct.open( methodStructName );
 		struct.addPrimitive(POINTER | CONST, "char" , "prototype");
@@ -344,84 +403,161 @@ public class CCodeGenerator implements TreeVisitor<Object>
 		
 		comment.comment("fields meta-information");
 		struct.addPrimitive(0, "uint32_t", "fieldCount");
-		struct.addStruct(CONST | POINTER | CONST, fieldStructName, "fields");
+		struct.addStruct(CONST | POINTER, fieldStructName, "fields");
 		
 		comment.comment("methods meta-information");
 		struct.addPrimitive(0, "uint32_t", "methodCount");
-		struct.addStruct(CONST | POINTER | CONST, methodStructName, "methods");
+		struct.addStruct(CONST | POINTER, methodStructName, "methods");
 		
 		comment.comment("amount of memory necessary for static fields");
-		struct.addPrimitive(0, "uint32_t", "staticSize");
+		struct.addPrimitive(0, "size_t", "staticSize");
 		
 		comment.comment("amount of memory necessary for dynamic fields (objects)");
-		struct.addPrimitive(0, "uint32_t", "dynamicSize");
+		struct.addPrimitive(0, "size_t", "dynamicSize");
 		struct.close();
 		sentinel.close("TYPE_METAINFO_STRUCT");
+	}
+	
+	private void printMetaInformation( TypeDeclaration typeDecl )
+	{
+		String fieldVariableName = NameGenerator.variableName(typeDecl.packageName, typeDecl.name, "_fields");
+		String typeVariableName = NameGenerator.variableName(typeDecl.packageName, typeDecl.name, "_type");
+		
+		// create a variable for the fields meta-information
+		structVar.open(CONST | ARRAY, fieldStructName, true, fieldVariableName);
+		if (typeDecl.staticFields.size() > 0)
+		{
+			comment.comment("static fields");
+			for (FieldDeclaration entry : typeDecl.staticFields)
+			{
+				structVar.openBlock();
+				structVar.addValue( getBeagleTypeName(entry.type) );
+				structVar.addValue(entry.name);
+				structVar.closeBlock();
+			}
+		}
+		if (typeDecl.dynamicFields.size() > 0)
+		{
+			comment.comment("dynamic fields");
+			for (FieldDeclaration entry : typeDecl.dynamicFields)
+			{
+				structVar.openBlock();
+				structVar.addValue( getBeagleTypeName(entry.type) );
+				structVar.addValue(entry.name);
+				structVar.closeBlock();
+			}
+		}
+		structVar.close();
+		
+		// create a variable for the type declaration
+		structVar.open(CONST, typeStructName, true, typeVariableName);
+		structVar.addValue(0xDEADBEEF);
+		structVar.addValue(1);
+		structVar.addValue(typeDecl.name);
+		structVar.addValue(typeDecl.packageName + "." + typeDecl.name);
+		structVar.addValue(typeDecl.packageName);
+		structVar.addValue(typeDecl.dynamicFields.size() + typeDecl.staticFields.size());
+		structVar.addPlain(fieldVariableName);
+		structVar.addValue(typeDecl.procedures.size());
+		structVar.addValue(null);
+		structVar.addSizeOf("struct " + NameGenerator.structName("type_static_", typeDecl.packageName, typeDecl.name));
+		structVar.addSizeOf("struct " + NameGenerator.structName("type_dynamic_", typeDecl.packageName, typeDecl.name));
+		structVar.close();
 	}
 	
 	@Override
 	public void visit( TypeDeclaration n, Object context ) throws CompilerException
 	{
-		buffer.append("#include <stdint.h>\n");
-				
-		printCommomTypeStructures();
+		sentinel.open( NameGenerator.variableName(n.packageName, n.name) );
 		printTypeStructures(n);
-		
-		// create a variable for the type declaration
-		structVar.open(CONST, typeStructName, true, NameGenerator.variableName("type", n.packageName, n.name));
-		structVar.addValue(0xDEADBEEF);
-		structVar.addValue(1);
-		structVar.close();
-		
-		// create a variable for the class field meta-information
-		structVar.open(CONST | ARRAY, fieldStructName, true, NameGenerator.variableName("fields", n.name));
-		if (n.staticFields.size() > 0)
-		{
-			comment.comment("static fields");
-			for (FieldDeclaration entry : n.staticFields)
-				entry.accept(this, context);
-		}
-		if (n.dynamicFields.size() > 0)
-		{
-			comment.comment("dynamic fields");
-			for (FieldDeclaration entry : n.dynamicFields)
-				entry.accept(this, context);
-		}
-		structVar.close();
-		
+		printMetaInformation(n);
+				
 		for (ProcedureDeclaration proc : n.procedures)
 			proc.accept(this, n);
+		
+		sentinel.close( NameGenerator.variableName(n.packageName, n.name) );
 	}
-
-	private String getTypeName( Type n )
+	
+	/**
+	 * Returns the Beagle version of the name for the given type. 
+	 * 
+	 * This method includes the array symbol ([) when necessary.
+	 *  
+	 * @param n
+	 * @return
+	 */
+	private String getBeagleTypeName( Type n )
 	{
+		StringBuilder sb = new StringBuilder();
+		
 		if (n instanceof ClassOrInterfaceType)
-			return NameGenerator.dynamicName( (ClassOrInterfaceType)n );
+		{
+			sb.append( ((ClassOrInterfaceType)n).scope );
+			sb.append(".");
+			sb.append( ((ClassOrInterfaceType)n).name );
+		}
 		else
 			if (n instanceof PrimitiveType)
-				return ((PrimitiveType)n).type.toString();
+				sb.append( ((PrimitiveType)n).type.toString() );
 			else
 				if (n instanceof VoidType)
-					return "void";
+					sb.append("void");
 				else
 					if (n instanceof ArrayType)
-						return getTypeName( ((ArrayType)n).type );
-		return null;
+					{
+						sb.append( getBeagleTypeName( ((ArrayType)n).type ) );
+						for (int i = 0; i < ((ArrayType)n).arrayLevels; ++i)
+							sb.append('[');
+					}
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * Returns the native version of the name for the given type. 
+	 * 
+	 * This method includes the pointer symbol (*) when necessary.
+	 *  
+	 * @param n
+	 * @return
+	 */
+	private String getNativeTypeName( Type n )
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		if (n instanceof ClassOrInterfaceType)
+		{
+			sb.append("struct ");
+			sb.append( NameGenerator.dynamicName( (ClassOrInterfaceType)n ) );
+			sb.append('*');
+		}
+		else
+			if (n instanceof PrimitiveType)
+				sb.append( ((PrimitiveType)n).type.toString() );
+			else
+				if (n instanceof VoidType)
+					sb.append("void");
+				else
+					if (n instanceof ArrayType)
+					{
+						sb.append( getNativeTypeName( ((ArrayType)n).type ) );
+						for (int i = 0; i < ((ArrayType)n).arrayLevels; ++i)
+							sb.append('*');
+					}
+		
+		return sb.toString();
 	}
 	
 	@Override
 	public void visit( FieldDeclaration n, Object context ) throws CompilerException
 	{
-		structVar.openBlock();
-		structVar.addValue( getTypeName(n.type) );
-		structVar.addValue(n.name);
-		structVar.closeBlock();
+		// nothing to do
 	}
 
 	@Override
 	public void visit( Parameter n, Object context ) throws CompilerException
 	{
-		buffer.append( getTypeName(n.type) );
+		buffer.append( getNativeTypeName(n.type) );
 		buffer.append(" ");
 		if (n.isPointer)
 			buffer.append("*");

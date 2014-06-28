@@ -70,9 +70,9 @@ import beagle.compiler.ast.statement.ThrowStmt;
 import beagle.compiler.ast.statement.TryStmt;
 import beagle.compiler.ast.statement.TypeDeclarationStmt;
 import beagle.compiler.ast.statement.WhileStmt;
+import beagle.compiler.ast.type.ArrayType;
 import beagle.compiler.ast.type.ClassOrInterfaceType;
 import beagle.compiler.ast.type.PrimitiveType;
-import beagle.compiler.ast.type.ReferenceType;
 import beagle.compiler.ast.type.VoidType;
 
 /**
@@ -139,7 +139,7 @@ public interface TreeVisitor<C>
 
 	public void visit( PrimitiveType n, C context ) throws CompilerException;
 
-	public void visit( ReferenceType n, C context ) throws CompilerException;
+	public void visit( ArrayType n, C context ) throws CompilerException;
 
 	public void visit( VoidType n, C context ) throws CompilerException;
 

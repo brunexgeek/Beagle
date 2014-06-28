@@ -5,12 +5,84 @@ package beagle.compiler.ast.visitor;
  * Note: do not import any class from PST package (use qualified name instead)
  */
 import beagle.compiler.CompilerException;
-import beagle.compiler.ast.*;
-import beagle.compiler.ast.body.*;
-import beagle.compiler.ast.expression.*;
-import beagle.compiler.ast.statement.*;
-import beagle.compiler.ast.type.*;
-import beagle.compiler.pst.type.ArrayType;
+import beagle.compiler.ast.BlockComment;
+import beagle.compiler.ast.CompilationUnit;
+import beagle.compiler.ast.DocComment;
+import beagle.compiler.ast.ImportDeclaration;
+import beagle.compiler.ast.LineComment;
+import beagle.compiler.ast.PackageDeclaration;
+import beagle.compiler.ast.body.AnnotationDeclaration;
+import beagle.compiler.ast.body.AnnotationMemberDeclaration;
+import beagle.compiler.ast.body.BodyDeclaration;
+import beagle.compiler.ast.body.ClassOrInterfaceDeclaration;
+import beagle.compiler.ast.body.ConstructorDeclaration;
+import beagle.compiler.ast.body.EmptyTypeDeclaration;
+import beagle.compiler.ast.body.EnumConstantDeclaration;
+import beagle.compiler.ast.body.EnumDeclaration;
+import beagle.compiler.ast.body.FieldDeclaration;
+import beagle.compiler.ast.body.MethodDeclaration;
+import beagle.compiler.ast.body.ModifierDeclaration;
+import beagle.compiler.ast.body.ModifierSet;
+import beagle.compiler.ast.body.Parameter;
+import beagle.compiler.ast.body.TypeDeclaration;
+import beagle.compiler.ast.body.VariableDeclarator;
+import beagle.compiler.ast.expression.ArrayAccessExpr;
+import beagle.compiler.ast.expression.ArrayCreationExpr;
+import beagle.compiler.ast.expression.ArrayInitializerExpr;
+import beagle.compiler.ast.expression.AssignExpr;
+import beagle.compiler.ast.expression.BinaryExpr;
+import beagle.compiler.ast.expression.BooleanLiteralExpr;
+import beagle.compiler.ast.expression.CastExpr;
+import beagle.compiler.ast.expression.CharLiteralExpr;
+import beagle.compiler.ast.expression.ClassExpr;
+import beagle.compiler.ast.expression.ConditionalExpr;
+import beagle.compiler.ast.expression.DoubleLiteralExpr;
+import beagle.compiler.ast.expression.EnclosedExpr;
+import beagle.compiler.ast.expression.FieldAccessExpr;
+import beagle.compiler.ast.expression.InstanceOfExpr;
+import beagle.compiler.ast.expression.IntegerLiteralExpr;
+import beagle.compiler.ast.expression.LongLiteralExpr;
+import beagle.compiler.ast.expression.MarkerAnnotationExpr;
+import beagle.compiler.ast.expression.MemberValuePair;
+import beagle.compiler.ast.expression.MethodCallExpr;
+import beagle.compiler.ast.expression.NameExpr;
+import beagle.compiler.ast.expression.NormalAnnotationExpr;
+import beagle.compiler.ast.expression.NullLiteralExpr;
+import beagle.compiler.ast.expression.ObjectCreationExpr;
+import beagle.compiler.ast.expression.QualifiedNameExpr;
+import beagle.compiler.ast.expression.SingleMemberAnnotationExpr;
+import beagle.compiler.ast.expression.StringLiteralExpr;
+import beagle.compiler.ast.expression.SuperExpr;
+import beagle.compiler.ast.expression.ThisExpr;
+import beagle.compiler.ast.expression.UnaryExpr;
+import beagle.compiler.ast.expression.VariableDeclarationExpr;
+import beagle.compiler.ast.statement.AssertStmt;
+import beagle.compiler.ast.statement.BlockStmt;
+import beagle.compiler.ast.statement.BreakStmt;
+import beagle.compiler.ast.statement.CatchClause;
+import beagle.compiler.ast.statement.ContinueStmt;
+import beagle.compiler.ast.statement.DoWhileStmt;
+import beagle.compiler.ast.statement.EmptyStmt;
+import beagle.compiler.ast.statement.ExplicitConstructorInvocationStmt;
+import beagle.compiler.ast.statement.ExpressionStmt;
+import beagle.compiler.ast.statement.ForStmt;
+import beagle.compiler.ast.statement.ForeachStmt;
+import beagle.compiler.ast.statement.IfStmt;
+import beagle.compiler.ast.statement.ReturnStmt;
+import beagle.compiler.ast.statement.SwitchEntryStmt;
+import beagle.compiler.ast.statement.SwitchStmt;
+import beagle.compiler.ast.statement.SynchronizedStmt;
+import beagle.compiler.ast.statement.ThrowStmt;
+import beagle.compiler.ast.statement.TryStmt;
+import beagle.compiler.ast.statement.TypeDeclarationStmt;
+import beagle.compiler.ast.statement.WhileStmt;
+import beagle.compiler.ast.type.ClassOrInterfaceType;
+import beagle.compiler.ast.type.Primitive;
+import beagle.compiler.ast.type.PrimitiveType;
+import beagle.compiler.ast.type.Type;
+import beagle.compiler.ast.type.VoidType;
+import beagle.compiler.ast.type.ArrayType;
+import beagle.compiler.parser.ParseException;
 
 
 /**
@@ -74,6 +146,8 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 		
 		typeDef.fileName = n.fileName;
 		n.pkg.accept(this, typeDef);
+		for (ImportDeclaration entry : n.imports)
+			entry.accept(this, typeDef);
 		
 		// we don't need worry about imports because the AST pre-processing already
 		// expanded class names to their full qualified form
@@ -84,13 +158,84 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 	@Override
 	public void visit( PackageDeclaration n, Object context ) throws CompilerException
 	{
-		((beagle.compiler.pst.type.TypeDeclaration)context).packageName = getName(n.name);
+		beagle.compiler.pst.type.TypeDeclaration typeDecl;
+		typeDecl = (beagle.compiler.pst.type.TypeDeclaration)context;
+		
+		typeDecl.packageName = getName(n.name);
 	}
 
+	private void getImportScope( StringBuilder sb, NameExpr name )
+	{
+		if (name == null) return;
+		
+		if (name instanceof QualifiedNameExpr && ((QualifiedNameExpr)name).scope != null)
+		{
+			getImportScope(sb, ((QualifiedNameExpr)name).scope);
+			sb.append('.');
+			sb.append(name.name);
+		}
+		else
+			sb.append(name.name);
+	}
+	
+	public beagle.compiler.pst.type.Type resolveType( beagle.compiler.pst.type.TypeDeclaration typeDecl, Type type ) throws CompilerException
+	{
+		if (type instanceof ClassOrInterfaceType)
+		{
+			beagle.compiler.pst.type.ClassOrInterfaceType result = new beagle.compiler.pst.type.ClassOrInterfaceType();
+			
+			// retrieve the scope from the qualified name or the import table 
+			if (((ClassOrInterfaceType)type).scope != null)
+				result.scope = getScope( ((ClassOrInterfaceType)type).scope );
+			else
+				result.scope = typeDecl.importTable.get( ((ClassOrInterfaceType)type).name );
+			// ensure we have a scope
+			if (result.scope == null)
+				throw new CompilerException("Unknown type '" + ((ClassOrInterfaceType)type).name + "'", type);
+			
+			result.name = ((ClassOrInterfaceType)type).name;
+			return result;
+		}
+		else
+			if (type instanceof PrimitiveType)
+			{
+				beagle.compiler.pst.type.PrimitiveType result = new beagle.compiler.pst.type.PrimitiveType();
+				result.type = ((PrimitiveType) type).type;
+				return result;
+			}
+			else
+				if (type instanceof VoidType)
+				{
+					return new beagle.compiler.pst.type.VoidType();					
+				}
+				else
+					if (type instanceof ArrayType)
+					{
+						beagle.compiler.pst.type.ArrayType result = new beagle.compiler.pst.type.ArrayType();
+						result.type = resolveType( typeDecl, ((ArrayType)type).type );
+						result.arrayLevels = ((ArrayType) type).arrayLevels;
+						return result;
+					}
+		
+		return null;
+	}
+	
 	@Override
 	public void visit( ImportDeclaration n, Object context ) throws CompilerException
 	{
-		// nothing to do
+		beagle.compiler.pst.type.TypeDeclaration typeDecl;
+		typeDecl = (beagle.compiler.pst.type.TypeDeclaration)context;
+		StringBuilder sb = new StringBuilder();
+		
+		// retrieve the class or interface scope
+		if (n.name instanceof QualifiedNameExpr && ((QualifiedNameExpr)n.name).scope != null)
+			getImportScope(sb, ((QualifiedNameExpr)n.name).scope);
+		else
+			sb.append(n.name);
+		// add to the import list
+		if (typeDecl.importTable.containsKey(n.name.name))
+			throw new CompilerException("Duplicated import for type '" + n.name.name + "'", n);
+		typeDecl.importTable.put(n.name.name, sb.toString());
 	}
 
 	@Override
@@ -109,11 +254,14 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 	@Override
 	public void visit( ClassOrInterfaceDeclaration n, Object context ) throws CompilerException
 	{
-		beagle.compiler.pst.type.TypeDeclaration typeDef;
-		typeDef = (beagle.compiler.pst.type.TypeDeclaration)context;
+		beagle.compiler.pst.type.TypeDeclaration typeDecl;
+		typeDecl = (beagle.compiler.pst.type.TypeDeclaration)context;
 		
-		typeDef.name = n.name;
-		typeDef.modifiers = n.modifiers.modifiers;
+		typeDecl.name = n.name;
+		typeDecl.modifiers = n.modifiers.modifiers;
+		
+		// include the current type in the import table
+		typeDecl.importTable.put(typeDecl.name, typeDecl.packageName);
 		
 		for (BodyDeclaration entry : n.members)
 			entry.accept(this, context);
@@ -156,54 +304,20 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 
 	private String getScope( ClassOrInterfaceType type )
 	{
+		if (type == null) return null; 
 		if (type.scope != null)
 			return getScope(type.scope) + "." + type.name;
 		else
 			return type.name;
-		
-	}
-	
-	private beagle.compiler.pst.type.Type getType( Type type )
-	{
-		
-		if (type instanceof ClassOrInterfaceType)
-		{
-			beagle.compiler.pst.type.ClassOrInterfaceType result = new beagle.compiler.pst.type.ClassOrInterfaceType();
-			result.scope = getScope( ((ClassOrInterfaceType)type).scope );
-			result.type = ((ClassOrInterfaceType)type).name;
-			return result;
-		}
-		else
-			if (type instanceof PrimitiveType)
-			{
-				beagle.compiler.pst.type.PrimitiveType result = new beagle.compiler.pst.type.PrimitiveType();
-				result.type = ((PrimitiveType) type).type;
-				return result;
-			}
-			else
-				if (type instanceof VoidType)
-				{
-					return new beagle.compiler.pst.type.VoidType();					
-				}
-				else
-					if (type instanceof ReferenceType)
-					{
-						beagle.compiler.pst.type.ArrayType result = new ArrayType();
-						result.type = getType( ((ReferenceType)type).type );
-						result.arrayLevels = ((ReferenceType) type).arrayLevels;
-						return result;
-					}
-		
-		return null;
 	}
 	
 	@Override
 	public void visit( FieldDeclaration n, Object context ) throws CompilerException
 	{
-		beagle.compiler.pst.type.TypeDeclaration typeDef;
-		typeDef = (beagle.compiler.pst.type.TypeDeclaration)context;
+		beagle.compiler.pst.type.TypeDeclaration typeDecl;
+		typeDecl = (beagle.compiler.pst.type.TypeDeclaration)context;
 		
-		beagle.compiler.pst.type.Type type = getType(n.type);
+		beagle.compiler.pst.type.Type type = resolveType(typeDecl, n.type);
 		
 		for (VariableDeclarator decl : n.variables)
 		{
@@ -214,9 +328,9 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 			field.type = type;
 			// add to the respective list
 			if (n.modifiers.hasModifier(ModifierSet.STATIC))
-				typeDef.staticFields.add(field);
+				typeDecl.staticFields.add(field);
 			else
-				typeDef.dynamicFields.add(field);
+				typeDecl.dynamicFields.add(field);
 		}
 	}
 
@@ -237,14 +351,14 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 	@Override
 	public void visit( MethodDeclaration n, Object context ) throws CompilerException
 	{
-		beagle.compiler.pst.type.TypeDeclaration typeDef;
-		typeDef = (beagle.compiler.pst.type.TypeDeclaration)context;
+		beagle.compiler.pst.type.TypeDeclaration typeDecl;
+		typeDecl = (beagle.compiler.pst.type.TypeDeclaration)context;
 		
 		beagle.compiler.pst.body.ProcedureDeclaration proc = new beagle.compiler.pst.body.ProcedureDeclaration();
 		proc.modifiers = n.modifiers.modifiers;
 		// TODO: must be full qualified (package name + method name)
 		proc.name = n.name;
-		proc.result = getType(n.type);
+		proc.result = resolveType(typeDecl, n.type);
 		
 		// dynamic methods must have the "self" parameter
 		if (!n.modifiers.hasModifier(ModifierSet.STATIC))
@@ -262,7 +376,7 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 		{
 			beagle.compiler.pst.body.Parameter param = new beagle.compiler.pst.body.Parameter();
 			param.name = entry.name;
-			param.type = getType(entry.type);
+			param.type = resolveType(typeDecl, entry.type);
 			param.isPointer = entry.isVarArgs;
 			param.modifiers = entry.modifiers.modifiers;
 			proc.parameters.add(param);
@@ -272,14 +386,14 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 			{
 				param = new beagle.compiler.pst.body.Parameter();
 				param.name = entry.name + "Count";
-				param.type = new beagle.compiler.pst.type.VoidType();//("int", 0);
+				param.type = new beagle.compiler.pst.type.PrimitiveType(Primitive.Int);
 				param.isPointer = false;
 				proc.parameters.add(param);
 			}
 		}
 		
 		
-		typeDef.procedures.add(proc);
+		typeDecl.procedures.add(proc);
 	}
 
 	@Override
@@ -318,7 +432,7 @@ public class ProceduralVisitor implements TreeVisitor<Object>
 	}
 
 	@Override
-	public void visit( ReferenceType n, Object context ) throws CompilerException
+	public void visit( ArrayType n, Object context ) throws CompilerException
 	{
 		// TODO Auto-generated method stub
 

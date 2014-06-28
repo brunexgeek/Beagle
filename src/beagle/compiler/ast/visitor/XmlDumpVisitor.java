@@ -78,9 +78,9 @@ import beagle.compiler.ast.statement.ThrowStmt;
 import beagle.compiler.ast.statement.TryStmt;
 import beagle.compiler.ast.statement.TypeDeclarationStmt;
 import beagle.compiler.ast.statement.WhileStmt;
+import beagle.compiler.ast.type.ArrayType;
 import beagle.compiler.ast.type.ClassOrInterfaceType;
 import beagle.compiler.ast.type.PrimitiveType;
-import beagle.compiler.ast.type.ReferenceType;
 import beagle.compiler.ast.type.VoidType;
 
 
@@ -138,7 +138,8 @@ public final class XmlDumpVisitor implements TreeVisitor<Object>
 
 	private final SourcePrinter printer = new SourcePrinter();
 
-	public String getSource()
+	@Override
+	public String toString()
 	{
 		return printer.getSource();
 	}
@@ -296,9 +297,16 @@ public final class XmlDumpVisitor implements TreeVisitor<Object>
 
 	public void visit( QualifiedNameExpr n, Object arg ) throws CompilerException
 	{
+		openTag(n);
+		
+		openTag("scope");
 		n.scope.accept(this, arg);
-		writeContent(".");
+		closeTag("scope");
+		openTag("name");
 		writeContent(n.name);
+		closeTag("name");
+		
+		closeTag(n);
 	}
 
 	public void visit( ImportDeclaration n, Object arg ) throws CompilerException
@@ -471,7 +479,7 @@ public final class XmlDumpVisitor implements TreeVisitor<Object>
 		closeTag(n);
 	}
 
-	public void visit( ReferenceType n, Object arg ) throws CompilerException
+	public void visit( ArrayType n, Object arg ) throws CompilerException
 	{
 		openTag(n);
 		n.type.accept(this, arg);

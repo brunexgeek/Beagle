@@ -15,7 +15,8 @@ import beagle.compiler.ast.statement.*;
     int indent = 0;
     int level = 0;
     int parens = 0;
-    int indentation[] = new int[64];
+    int indentation[] = new int[20];
+
 
     public final void indenting(int ind) {
         indent = ind;

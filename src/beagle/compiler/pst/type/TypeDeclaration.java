@@ -1,7 +1,9 @@
 package beagle.compiler.pst.type;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import beagle.compiler.CompilerException;
 import beagle.compiler.pst.Node;
@@ -14,6 +16,7 @@ import beagle.compiler.pst.visitor.TreeVisitor;
  *  
  * @author Bruno Ribeiro
  */
+// TODO: move to "beagle.compiler.pst.body"
 public class TypeDeclaration extends Node
 {
 
@@ -42,6 +45,8 @@ public class TypeDeclaration extends Node
 	public List<FieldDeclaration> staticFields = new ArrayList<FieldDeclaration>();
 	
 	public List<FieldDeclaration> dynamicFields = new ArrayList<FieldDeclaration>();
+	
+	public Map<String, String> importTable = new HashMap<String, String>();
 	
 	public TypeDeclaration()
 	{

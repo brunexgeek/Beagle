@@ -1696,9 +1696,11 @@ Type Type():
 }
 {
     (
-        LOOKAHEAD(2) ret = ReferenceType()
+        LOOKAHEAD(2) ret = ArrayType()
     |
         ret = PrimitiveType()
+    |
+        ret = ClassOrInterfaceType()
     )
         {
             return ret;
@@ -1706,7 +1708,7 @@ Type Type():
 }
 
 
-ReferenceType ReferenceType():
+ArrayType ArrayType():
 {
     Type type;
     int arrayCount = 0;
@@ -1726,11 +1728,11 @@ ReferenceType ReferenceType():
             {
                 arrayCount++;
             }
-        )*
+        )+
     )
         {
             linfo.update(type);
-            return new ReferenceType(linfo, type, arrayCount);
+            return new ArrayType(linfo, type, arrayCount);
         }
 }
 
@@ -3410,14 +3412,21 @@ Expression CastExpression():
             linfo.updateBegin(token);
         }
     (
-        LOOKAHEAD(2)
-        type = PrimitiveType() <RPAREN> ret = UnaryExpression()
+        LOOKAHEAD(3)
+        type = ArrayType() <RPAREN> ret = UnaryExpressionNotPlusMinus()
             {
                 linfo.updateEnd(token);
                 ret = new CastExpr(linfo, type, ret);
             }
     |
-        type = ReferenceType() <RPAREN> ret = UnaryExpressionNotPlusMinus()
+        LOOKAHEAD(2)
+        type = ClassOrInterfaceType() <RPAREN> ret = UnaryExpressionNotPlusMinus()
+            {
+                linfo.updateEnd(token);
+                ret = new CastExpr(linfo, type, ret);
+            }
+    |
+        type = PrimitiveType() <RPAREN> ret = UnaryExpression()
             {
                 linfo.updateEnd(token);
                 ret = new CastExpr(linfo, type, ret);

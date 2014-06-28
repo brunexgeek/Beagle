@@ -14,7 +14,7 @@ public class NameGenerator
 	 */
 	public static void appendName( StringBuilder sb, String ...names )
 	{
-		char current;
+		char current = '_';
 		for (int c = 0; c < names.length; ++c)
 		{
 			for (int i = 0; i < names[c].length(); ++i)
@@ -23,7 +23,7 @@ public class NameGenerator
 				if (current == '.') current = '_';
 				sb.append(current);
 			}
-			if (c < names.length - 1) sb.append('_');
+			if (c < names.length - 1 && current != '_') sb.append('_');
 		}
 	}
 	
@@ -100,9 +100,12 @@ public class NameGenerator
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append( structName("type_dynamic_") );
-		appendName(sb, scope);
-		sb.append("_");
-		appendName(sb, n.type);
+		if (scope != null) 
+		{
+			appendName(sb, scope);
+			sb.append("_");
+		}	
+		appendName(sb, n.name);
 		return sb.toString();
 	}
 	

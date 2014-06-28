@@ -6,18 +6,18 @@ import beagle.compiler.ast.LineInfo;
 import beagle.compiler.ast.visitor.TreeVisitor;
 
 
-public final class ReferenceType extends Type
+public final class ArrayType extends Type
 {
 
 	public Type type;
 
 	public int arrayLevels = 0;
 
-	public ReferenceType()
+	public ArrayType()
 	{
 	}
 
-	public ReferenceType( LineInfo linfo, Type type, int arrayLevels )
+	public ArrayType( LineInfo linfo, Type type, int arrayLevels )
 	{
 		super(linfo);
 		this.type = type;

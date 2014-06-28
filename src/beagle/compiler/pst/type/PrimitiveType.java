@@ -10,6 +10,16 @@ public class PrimitiveType extends Type
 
 	public Primitive type;
 
+	public PrimitiveType()
+	{
+		// nothing to do
+	}
+	
+	public PrimitiveType( Primitive type )
+	{
+		this.type = type;
+	}
+	
 	@Override
 	public <A> void accept( TreeVisitor<A> v, A context ) throws CompilerException
 	{
