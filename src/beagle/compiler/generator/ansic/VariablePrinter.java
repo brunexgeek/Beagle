@@ -18,6 +18,8 @@ public class VariablePrinter extends CodePrinter
 	{
 	
 		indent();
+		if ((modifiers & Constants.PUBLIC) == 0)
+			buffer.append("static ");
 		if ((modifiers & Constants.CONST) > 0)
 			buffer.append("const ");
 		if (isStruct)

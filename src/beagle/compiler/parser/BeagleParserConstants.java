@@ -246,29 +246,9 @@ public interface BeagleParserConstants {
   int LETTER = 120;
   /** RegularExpression Id. */
   int PART_LETTER = 121;
-  /** RegularExpression Id. */
-  int NEWLINE = 122;
-  /** RegularExpression Id. */
-  int NEWLINE2 = 123;
-  /** RegularExpression Id. */
-  int CRLF1 = 127;
-  /** RegularExpression Id. */
-  int DEDENT = 129;
-  /** RegularExpression Id. */
-  int INDENT = 130;
 
   /** Lexical state. */
   int DEFAULT = 0;
-  /** Lexical state. */
-  int FORCE_NEWLINE1 = 1;
-  /** Lexical state. */
-  int FORCE_NEWLINE2 = 2;
-  /** Lexical state. */
-  int INDENTING = 3;
-  /** Lexical state. */
-  int INDENTATION_UNCHANGED = 4;
-  /** Lexical state. */
-  int UNREACHABLE = 5;
 
   /** Literal token values. */
   String[] tokenImage = {
@@ -394,15 +374,6 @@ public interface BeagleParserConstants {
     "<IDENTIFIER>",
     "<LETTER>",
     "<PART_LETTER>",
-    "<NEWLINE>",
-    "<NEWLINE2>",
-    "\"\\t\"",
-    "\" \"",
-    "\"\\f\"",
-    "<CRLF1>",
-    "\"\"",
-    "\"\"",
-    "\"<INDENT>\"",
     "\"\\u001a\"",
   };
 

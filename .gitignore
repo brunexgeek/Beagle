@@ -1,0 +1,6 @@
+_site
+bin
+.classpath
+.project
+Gemfile*
+*.class

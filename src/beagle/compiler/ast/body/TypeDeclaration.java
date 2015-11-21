@@ -12,6 +12,8 @@ public abstract class TypeDeclaration extends BodyDeclaration
 {
 
 	public String name;
+	
+	public String packageName;
 
 	public ModifierDeclaration modifiers;
 

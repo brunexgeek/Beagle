@@ -1,7 +1,7 @@
-package beagle.compiler.pst.visitor;
+package beagle.compiler.ast.visitor;
 
-import beagle.compiler.pst.body.TypeDeclaration;
-import beagle.compiler.pst.type.ClassOrInterfaceType;
+import beagle.compiler.ast.body.TypeDeclaration;
+import beagle.compiler.ast.type.ClassOrInterfaceType;
 
 
 public class NameGenerator
@@ -77,24 +77,44 @@ public class NameGenerator
 		return sb.toString();
 	}
 	
-	public static String dynamicName( TypeDeclaration n )
+	/**
+	 * Returns the name of C structure containing the dynamic fields.
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public static String getClassFieldsStructureName( ClassStructureType type, String scope, String name )
 	{
-		return structName("type_dynamic_", n.packageName, n.name);
-	}
-	
-	public static String dynamicName( ClassOrInterfaceType n )
-	{
-		String scope = n.scope;
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append( structName("type_dynamic_") );
+		sb.append( structName(type.toString(), "fields__") );
 		if (scope != null) 
 		{
 			appendName(sb, scope);
 			sb.append("_");
 		}	
-		appendName(sb, n.name);
+		appendName(sb, name);
 		return sb.toString();
+	}
+	
+	public enum ClassStructureType
+	{
+		STATIC("static"),
+		
+		DYNAMIC("dynamic");
+		
+		private String value;
+		
+		private ClassStructureType( String value )
+		{
+			this.value= value;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return value;
+		}
 	}
 	
 }

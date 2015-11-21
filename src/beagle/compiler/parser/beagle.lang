@@ -46,19 +46,6 @@ PARSER_END(BeagleParser)
 
 TOKEN_MGR_DECLS :
 {
-    int indent = 0;
-    int level = 0;
-    int parens = 0;
-    int indentation[] = new int[20];
-
-
-    public final void indenting(int ind) {
-        indent = ind;
-        if (indent == indentation[level])
-            SwitchTo(INDENTATION_UNCHANGED);
-        else
-            SwitchTo(INDENTING);
-    }
 
 }
 
@@ -68,16 +55,6 @@ SKIP :
 |   "\r"
 |   "\t"
 | <NEWLINE1 : ("\r\n" | "\r" | "\n" ) >
-    {
-        if (parens == 0) {
-            indent = 0;
-            input_stream.backup(1);
-            if (level == 0)
-                SwitchTo(FORCE_NEWLINE1);
-            else
-                SwitchTo(FORCE_NEWLINE2);
-        }
-    }
 }
 
 
@@ -1024,112 +1001,6 @@ TOKEN :
 
 
 /*
- * Indentation handling.
- */
-
-
-<FORCE_NEWLINE1> TOKEN :
-{
-    <NEWLINE: ("\n" | "\r")>
-        {
-            matchedToken.kind = NEWLINE;
-            matchedToken.image = "<NEWLINE>";
-        } : INDENTATION_UNCHANGED
-}
-
-
-<FORCE_NEWLINE2> TOKEN :
-{
-    <NEWLINE2: ("\n" | "\r")>
-        {
-            matchedToken.kind = NEWLINE;
-            matchedToken.image = "<NEWLINE>";
-        } : INDENTING }
-
-
-<INDENTING, INDENTATION_UNCHANGED> SKIP :
-{
-    "\t"
-        {
-            indenting((indent/4+1)*4);
-        }
-|   " "
-        {
-            indenting(indent+1);
-        }
-|   "\014"
-        {
-            indenting(0);
-        }
-|   <CRLF1: ("\r\n" | "\n" | "\r")>
-        {
-            indenting(0);
-        }
-}
-
-
-<INDENTATION_UNCHANGED> SKIP :
-{
-    <"">
-        {
-            //System.out.println("Keep level [" + level + "]");
-        } : DEFAULT
-}
-
-
-<INDENTING> TOKEN :
-{
-    <DEDENT: "">
-        {
-            if (indent > indentation[level])
-            {
-                if (level + 1 >= indentation.length)
-                    throw new NullPointerException("too many indentation levels");
-                level++;
-                indentation[level] = indent;
-                matchedToken.kind=INDENT;
-                matchedToken.image = "<INDENT>";
-                //System.out.println("New level [" + level + "]");
-            }
-            else
-            {
-                if (level > 0)
-                {
-                    Token t = matchedToken;
-                    t.image= "<DEDENT>";
-                    level -= 1;
-                    //System.out.println("Dedent level [" + level + "]");
-                    while (level > 0 && indent < indentation[level])
-                    {
-                        level--;
-                        //System.out.println("Dedent level [" + level + "]");
-                        // TODO: should clone the original token?
-                        t.next = new Token(DEDENT, "<DEDENT>");
-                        t = t.next;
-                    }
-                    if (indent != indentation[level])
-                    {
-                        throw new NullPointerException("inconsistent dedent at line " +
-                            t.endLine + ", column " + t.endColumn);
-                    }
-                    t.next = null;
-                 }
-            }
-
-        } : DEFAULT
-}
-
-/*
- * Tokens used via code (not in grammar).
- */
-
-<UNREACHABLE> TOKEN :
-{
-    < INDENT:"<INDENT>">
-}
-
-
-/*
  * Grammar for Beagle programming language
  */
 
@@ -1188,7 +1059,7 @@ PackageDeclaration PackageDeclaration():
         {
             linfo.updateBegin(token);
         }
-    name = Name() <NEWLINE>
+    name = Name() <SEMICOLON>
         {
             linfo.updateEnd(token);
             return new PackageDeclaration(linfo, annotations, name);
@@ -1213,7 +1084,7 @@ ImportDeclaration ImportDeclaration():
             isAsterisk = true;
         }
     ]
-    <NEWLINE>
+    <SEMICOLON>
         {
             linfo.updateEnd(token);
             return new ImportDeclaration(linfo, name, isAsterisk);
@@ -1303,15 +1174,13 @@ EnumDeclaration EnumDeclaration(List<AnnotationExpr> annotations, ModifierDeclar
             name = token.image;
         }
     [ impList = ImplementsList(false) ]
-    <COLON>
-    <NEWLINE>
     BeginBlock()
     [
         entry = EnumConstantDeclaration()
             {
                 entries.add(entry);
             }
-        ( LOOKAHEAD(3) <COMMA> [ <NEWLINE> ] entry = EnumConstantDeclaration()
+        ( LOOKAHEAD(2) <COMMA> entry = EnumConstantDeclaration()
             {
                 entries.add(entry);
             }
@@ -1323,7 +1192,7 @@ EnumDeclaration EnumDeclaration(List<AnnotationExpr> annotations, ModifierDeclar
      */
     //[ <COMMA> ]
     [
-        ( <NEWLINE>
+        ( <SEMICOLON>
             ( member = ClassOrInterfaceBodyDeclaration(false)
                 {
                     members.add(member);
@@ -1422,8 +1291,6 @@ ClassOrInterfaceDeclaration ClassOrInterfaceDeclaration(List<AnnotationExpr> ann
         }
     [ extList = ExtendsList(isInterface) ]
     [ impList = ImplementsList(isInterface) ]
-    <COLON>
-    <NEWLINE>
     members = ClassOrInterfaceBody(isInterface)
         {
             linfo.updateEnd(token);
@@ -1505,7 +1372,7 @@ void BeginBlock():
 {
 }
 {
-    <INDENT>
+    <LBRACE>
 }
 
 
@@ -1513,7 +1380,7 @@ void EndBlock():
 {
 }
 {
-    ( <DEDENT> | <EOF> | "\u001A" )
+    ( <RBRACE> | <EOF> | "\u001A" )
 }
 
 
@@ -1536,7 +1403,7 @@ BodyDeclaration ClassOrInterfaceBodyDeclaration(boolean isInterface):
                 | ret = AnnotationTypeDeclaration(annotations, modifier)
                 | LOOKAHEAD( <IDENTIFIER> <LPAREN> )
                   ret = ConstructorDeclaration(annotations, modifier)
-                | LOOKAHEAD( Type() <IDENTIFIER> ( <COMMA> | <ASSIGN> | <NEWLINE> ) )
+                | LOOKAHEAD( Type() <IDENTIFIER> ( <COMMA> | <ASSIGN> | <SEMICOLON> ) )
                   ret = FieldDeclaration(annotations, modifier)
                 | ret = MethodDeclaration(annotations, modifier)
             )
@@ -1565,7 +1432,7 @@ ConstructorDeclaration ConstructorDeclaration(List<AnnotationExpr> annotations, 
             name = token.image;
             lctor.updateBegin(token);
         }
-    parameters = FormalParameters() <COLON> <NEWLINE>
+    parameters = FormalParameters() 
     BeginBlock()
         {
             linfo.updateBegin(token);
@@ -1610,7 +1477,7 @@ ExplicitConstructorInvocationStmt ExplicitConstructorInvocation():
                 linfo.updateBegin(token);
                 isThis = true;
             }
-        args = Arguments() <NEWLINE>
+        args = Arguments() <SEMICOLON>
     |
         [
             LOOKAHEAD( PrimaryExpressionWithoutSuperSuffix() <DOT> )
@@ -1623,7 +1490,7 @@ ExplicitConstructorInvocationStmt ExplicitConstructorInvocation():
             {
                 linfo.updateBegin(token);
             }
-        args = Arguments() <NEWLINE>
+        args = Arguments() <SEMICOLON>
     )
     {
         linfo.updateEnd(token);
@@ -1651,7 +1518,7 @@ FieldDeclaration FieldDeclaration(List<AnnotationExpr> annotations, ModifierDecl
             variables.add(val);
         }
     )*
-    <NEWLINE>
+    <SEMICOLON>
         {
             linfo.updateBegin(type);
             linfo.updateEnd(token);
@@ -1920,8 +1787,6 @@ MethodDeclaration MethodDeclaration(List<AnnotationExpr> annotations, ModifierDe
      * Unlike Java, Beagle don't support indicate an array return type using brackets
      * after argument list (e.g. "int values()[]" instead "int[] values()"
      */
-    <COLON>
-    <NEWLINE>
     block = Block()
         {
             linfo.updateEnd(token);
@@ -2029,7 +1894,7 @@ Statement GenericStatement():
 {
     (
         LOOKAHEAD(VariableDeclarationExpression() )
-        expr = VariableDeclarationExpression() <NEWLINE>
+        expr = VariableDeclarationExpression() <SEMICOLON>
             {
                 linfo.updateBegin(expr);
                 linfo.updateEnd(token);
@@ -2100,7 +1965,7 @@ AssertStmt AssertStatement():
         {
             linfo.updateBegin(token);
         }
-    check = Expression() [ <COLON> msg = Expression() ] <NEWLINE>
+    check = Expression() [ <COLON> msg = Expression() ] <SEMICOLON>
         {
             linfo.updateEnd(token);
             return new AssertStmt(linfo, check, msg);
@@ -2144,7 +2009,7 @@ EmptyStmt EmptyStatement():
 {
 }
 {
-    <PASS> <NEWLINE>
+    <PASS> <SEMICOLON>
         {
             return new EmptyStmt(new LineInfo(token));
         }
@@ -2186,7 +2051,7 @@ ExpressionStmt StatementExpression():
                 }
         ]
     )
-    <NEWLINE>
+    <SEMICOLON>
         {
             return new ExpressionStmt(new LineInfo(expr, token), expr);
         }
@@ -2205,7 +2070,7 @@ SwitchStmt SwitchStatement():
         {
             linfo.updateBegin(token);
         }
-    <LPAREN> selector = Expression() <RPAREN> <COLON> <NEWLINE>
+    <LPAREN> selector = Expression() <RPAREN> 
     BeginBlock()
     ( entry = SwitchEntry()
         {
@@ -2239,7 +2104,6 @@ SwitchEntryStmt SwitchEntry():
                 linfo.updateBegin(token);
             }
     )
-    <COLON> <NEWLINE>
     BeginBlock()
     stmts = StatementList()
     EndBlock()
@@ -2267,16 +2131,16 @@ IfStmt IfStatement():
         {
             linfo.updateBegin(token);
         }
-    <LPAREN> condition = Expression() <RPAREN> <COLON> <NEWLINE>
+    <LPAREN> condition = Expression() <RPAREN> 
     thenStmt = Block()
     (
-        <ELIF> <LPAREN> Expression() <RPAREN> <COLON> <NEWLINE>
+        <ELIF> <LPAREN> Expression() <RPAREN> 
         Block()
             {
                 // include the elif statements
             }
     )*
-    [ <ELSE> <COLON> <NEWLINE> elseStmt = Block() ]
+    [ <ELSE> elseStmt = Block() ]
         {
             linfo.updateEnd(token);
             return new IfStmt(linfo, condition, thenStmt, elseStmt);
@@ -2295,7 +2159,7 @@ WhileStmt WhileStatement():
         {
             linfo.updateBegin(token);
         }
-    <LPAREN> condition = Expression() <RPAREN> <COLON> <NEWLINE>
+    <LPAREN> condition = Expression() <RPAREN> 
     body = Block()
         {
             linfo.updateEnd(token);
@@ -2315,7 +2179,7 @@ DoWhileStmt DoWhileStatement():
         {
             linfo.updateBegin(token);
         }
-    <LPAREN> condition = Expression() <RPAREN> <COLON> <NEWLINE>
+    <LPAREN> condition = Expression() <RPAREN> 
     body = Block()
         {
             linfo.updateEnd(token);
@@ -2346,7 +2210,7 @@ Statement ForStatement():
     |
         [ init = ForInit() ] <SEMICOLON> [ expr = Expression() ] <SEMICOLON> [ update = ForUpdate() ]
     )
-    <RPAREN> <COLON> <NEWLINE> body = Block()
+    <RPAREN>  body = Block()
         {
             linfo.updateEnd(token);
             if (varExpr != null)
@@ -2421,7 +2285,7 @@ BreakStmt BreakStatement():
         {
             linfo.updateBegin(token);
         }
-    <NEWLINE>
+    <SEMICOLON>
         {
             linfo.updateEnd(token);
             return new BreakStmt(linfo);
@@ -2439,7 +2303,7 @@ ContinueStmt ContinueStatement():
         {
             linfo.updateBegin(token);
         }
-    <NEWLINE>
+    <SEMICOLON>
         {
             linfo.updateEnd(token);
             return new ContinueStmt(linfo);
@@ -2457,7 +2321,7 @@ ReturnStmt ReturnStatement():
         {
             linfo.updateBegin(token);
         }
-    [ expr = Expression() ] <NEWLINE>
+    [ expr = Expression() ] <SEMICOLON>
         {
             linfo.updateEnd(token);
             return new ReturnStmt(linfo, expr);
@@ -2475,7 +2339,7 @@ ThrowStmt ThrowStatement():
         {
             linfo.updateBegin(token);
         }
-    expr = Expression() <NEWLINE>
+    expr = Expression() <SEMICOLON>
         {
             linfo.updateEnd(token);
             return new ThrowStmt(linfo, expr);
@@ -2494,7 +2358,7 @@ SynchronizedStmt SynchronizedStatement():
         {
             linfo.updateBegin(token);
         }
-    <LPAREN> expr = Expression() <RPAREN> <COLON> <NEWLINE>
+    <LPAREN> expr = Expression() <RPAREN> 
     block = Block()
         {
             linfo.updateEnd(token);
@@ -2518,7 +2382,7 @@ TryStmt TryStatement():
     LineInfo cinfo = null;
 }
 {
-    <TRY> <COLON> <NEWLINE>
+    <TRY> 
         {
             linfo.updateBegin(token);
         }
@@ -2529,16 +2393,16 @@ TryStmt TryStatement():
                 {
                     cinfo = new LineInfo(token, null);
                 }
-            <LPAREN> except = FormalParameter() <RPAREN> <COLON> <NEWLINE>
+            <LPAREN> except = FormalParameter() <RPAREN> 
             catchBlock = Block()
                 {
                     cinfo.updateEnd(token);
                     catchs.add( new CatchClause(cinfo, except, catchBlock) );
                 }
         )+
-        [ <FINALLY> <COLON> <NEWLINE> finallyBlock = Block() ]
+        [ <FINALLY>  finallyBlock = Block() ]
     |
-        <FINALLY> <COLON> <NEWLINE> finallyBlock = Block()
+        <FINALLY>  finallyBlock = Block()
     )
     {
         linfo.updateEnd(token);
@@ -2601,7 +2465,7 @@ NormalAnnotationExpr NormalAnnotation():
         }
     name = Name() <LPAREN>
     [ pairs = MemberValuePairs() ]
-    <RPAREN> <NEWLINE>
+    <RPAREN> 
         {
             linfo.updateEnd(token);
             return new NormalAnnotationExpr(linfo, name, pairs);
@@ -2619,7 +2483,7 @@ MarkerAnnotationExpr MarkerAnnotation():
         {
             linfo.updateBegin(token);
         }
-    name = Name() <NEWLINE>
+    name = Name() 
         {
             linfo.updateEnd(token);
             return new MarkerAnnotationExpr(linfo, name);
@@ -2638,7 +2502,7 @@ SingleMemberAnnotationExpr SingleMemberAnnotation():
         {
             linfo.updateBegin(token);
         }
-    name = Name() <LPAREN> memberVal = MemberValue() <RPAREN> <NEWLINE>
+    name = Name() <LPAREN> memberVal = MemberValue() <RPAREN> 
         {
             linfo.updateEnd(token);
             return new SingleMemberAnnotationExpr(linfo, name, memberVal);
@@ -2790,7 +2654,7 @@ BodyDeclaration AnnotationBodyDeclaration():
 {
     { /*pushJavadoc();*/ }
     (
-       <NEWLINE>
+       <SEMICOLON>
             {
                 linfo.update(token);
                 ret = new EmptyTypeDeclaration(linfo, /*popJavadoc()*/null);
@@ -2829,7 +2693,7 @@ AnnotationMemberDeclaration AnnotationTypeMemberDeclaration(List<AnnotationExpr>
         {
             name = token.image;
         }
-    <LPAREN> <RPAREN> [ defaultVal = DefaultValue() ] <NEWLINE>
+    <LPAREN> <RPAREN> [ defaultVal = DefaultValue() ] <SEMICOLON>
         {
             linfo.update(token);
             return new AnnotationMemberDeclaration(linfo, /*popJavadoc()*/null, annotations, modifier, type, name, defaultVal);

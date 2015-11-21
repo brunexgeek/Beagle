@@ -14,9 +14,11 @@ public class StructPrinter extends CodePrinter
 		super(buffer, tabSize);
 	}
 
-	public void open( String name )
+	public void open( int modifiers, String name )
 	{
 		indent();
+		if ((modifiers & Constants.PRIVATE) > 0)
+			buffer.append("static ");
 		if (name == null)
 			buffer.append("struct {\n");
 		else
@@ -28,6 +30,11 @@ public class StructPrinter extends CodePrinter
 		incIndent();
 	}
 
+	public void open(  String name )
+	{
+		open(Constants.PRIVATE, name);
+	}
+	
 	public void close()
 	{
 		decIndent();

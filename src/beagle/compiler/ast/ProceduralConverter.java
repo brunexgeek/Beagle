@@ -37,6 +37,7 @@ import beagle.compiler.ast.expression.ClassExpr;
 import beagle.compiler.ast.expression.ConditionalExpr;
 import beagle.compiler.ast.expression.DoubleLiteralExpr;
 import beagle.compiler.ast.expression.EnclosedExpr;
+import beagle.compiler.ast.expression.Expression;
 import beagle.compiler.ast.expression.FieldAccessExpr;
 import beagle.compiler.ast.expression.InstanceOfExpr;
 import beagle.compiler.ast.expression.IntegerLiteralExpr;
@@ -68,6 +69,7 @@ import beagle.compiler.ast.statement.ForStmt;
 import beagle.compiler.ast.statement.ForeachStmt;
 import beagle.compiler.ast.statement.IfStmt;
 import beagle.compiler.ast.statement.ReturnStmt;
+import beagle.compiler.ast.statement.Statement;
 import beagle.compiler.ast.statement.SwitchEntryStmt;
 import beagle.compiler.ast.statement.SwitchStmt;
 import beagle.compiler.ast.statement.SynchronizedStmt;
@@ -152,13 +154,13 @@ public class ProceduralConverter
 		throws CompilerException
 	{
 		if (n instanceof FieldDeclaration)
-			processBodyDeclaration((FieldDeclaration) n);
+			processFieldDeclaration((FieldDeclaration) n);
 		else
 			if (n instanceof MethodDeclaration)
-				processBodyDeclaration((MethodDeclaration) n);
+				processMethodDeclaration((MethodDeclaration) n);
 	}
 
-	private void processBodyDeclaration( FieldDeclaration n )
+	private void processFieldDeclaration( FieldDeclaration n )
 		throws CompilerException
 	{
 		beagle.compiler.pst.type.Type type = resolveType(n.type);
@@ -178,11 +180,8 @@ public class ProceduralConverter
 		}
 	}
 
-	/**
-	 * Peek: beagle.compiler.pst.body.TypeDeclaration
-	 */
 
-	private void processBodyDeclaration( MethodDeclaration n )
+	private void processMethodDeclaration( MethodDeclaration n )
 		throws CompilerException
 	{
 		beagle.compiler.pst.body.ProcedureDeclaration proc = new beagle.compiler.pst.body.ProcedureDeclaration();
@@ -224,9 +223,41 @@ public class ProceduralConverter
 		}
 
 		// process the method body
-		// n.body.accept(this, proc);
+		
+		processBlockStmt(n.body, proc);
 
 		typeDecl.procedures.add(proc);
+	}
+
+	private void processBlockStmt( BlockStmt body, beagle.compiler.pst.body.ProcedureDeclaration proc )
+	{
+		beagle.compiler.pst.statement.BlockStmt block = new beagle.compiler.pst.statement.BlockStmt();
+		
+		for (Statement stmt : body.statements)
+		{
+			if (stmt instanceof AssertStmt)
+				processAssertStmt((AssertStmt)stmt, block);
+		}
+	}
+
+	private void processAssertStmt( AssertStmt stmt, beagle.compiler.pst.statement.BlockStmt block )
+	{
+		beagle.compiler.pst.statement.AssertStmt assertion = new beagle.compiler.pst.statement.AssertStmt();
+		
+		assertion.condition = processExpression(stmt.condition);
+		assertion.message = processExpression(stmt.message);
+	}
+
+	private beagle.compiler.pst.expression.Expression processExpression( Expression expr )
+	{
+		if (expr instanceof StringLiteralExpr)
+			return processStringLiteralExpr( (StringLiteralExpr)expr);
+		return null;
+	}
+
+	private beagle.compiler.pst.expression.StringLiteralExpr processStringLiteralExpr( StringLiteralExpr expr )
+	{
+		return new beagle.compiler.pst.expression.StringLiteralExpr(expr.value);
 	}
 
 	public void processCompilationUnit( CompilationUnit n ) throws CompilerException

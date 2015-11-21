@@ -5,7 +5,7 @@ import test.asd.ScriptManagers
 import dsdasd.lwlelwl.welasld
 
 @SampleClassAnnotation
-public class Engine:
+public class Engine extends SS
 
     private temp.base.Babuska[] hideVar = 9, test
 
@@ -13,8 +13,5 @@ public class Engine:
 
     private static int instances
 
-    public int test( int paparapa, float ...values ):
-        pass
-        pass
-        for (int a in list):
-            pass
+    public int test( int paparapa, float ...values )
+        assert("ola")

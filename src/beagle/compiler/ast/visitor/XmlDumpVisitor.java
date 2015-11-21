@@ -841,9 +841,9 @@ public final class XmlDumpVisitor implements TreeVisitor<Object>
 
 	public void visit( StringLiteralExpr n, Object arg ) throws CompilerException
 	{
-		writeContent("\"");
+		openTag(n);
 		writeContent(n.value);
-		writeContent("\"");
+		closeTag(n);
 	}
 
 	public void visit( BooleanLiteralExpr n, Object arg ) throws CompilerException

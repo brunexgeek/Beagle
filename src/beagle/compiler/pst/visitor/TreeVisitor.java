@@ -6,6 +6,7 @@ import beagle.compiler.pst.body.FieldDeclaration;
 import beagle.compiler.pst.body.Parameter;
 import beagle.compiler.pst.body.ProcedureDeclaration;
 import beagle.compiler.pst.body.TypeDeclaration;
+import beagle.compiler.pst.statement.AssertStmt;
 import beagle.compiler.pst.statement.BlockStmt;
 import beagle.compiler.pst.statement.BreakStmt;
 import beagle.compiler.pst.type.ArrayType;
@@ -39,6 +40,6 @@ public interface TreeVisitor<C>
 	public void visit( ProcedureDeclaration n, C context ) throws CompilerException;
 	
 	public void visit( BreakStmt n, C context ) throws CompilerException;
-	
 	public void visit( BlockStmt n, C context ) throws CompilerException;
+	public void visit( AssertStmt n, C context ) throws CompilerException;
 }
