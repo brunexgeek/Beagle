@@ -1,26 +1,29 @@
-#include "Node.hh"
+#include <beagle-parser/Node.hh>
 #include <cstdarg>
 #include <cstdio>
+#include <iomanip>
 
 namespace beagle {
 
-
 Node::Node(
     int type,
-    const std::string &value,
-    Node *parent ) : type(type), value(value), parent(parent)
+    const char *text ) : type(type), counter(0)
 {
-
+    if (text != NULL)
+        this->text = text;
 }
 
-
+/*
 Node::Node(
     int type,
-    const std::string &value,
+    const char *value,
     Node *parent,
     int childNo,
-    ... ) : type(type), value(value), parent(parent)
+    ... ) : type(type), parent(parent)
 {
+    if (value != NULL)
+        this->value = value;
+
     va_list args;
 
     if (childNo <= 0) return;
@@ -30,14 +33,14 @@ Node::Node(
     for (int i = 0; i < childNo; ++i)
         children[i] = va_arg(args, Node*);
     va_end(args);
-}
+}*/
 
 Node::~Node()
 {
 
 }
 
-Node *Node::getChild( int index )
+Node *Node::getChild( int index ) const
 {
     return children[index];
 }
@@ -49,9 +52,49 @@ Node *Node::setChild( int index, Node *value )
     return children[index] = value;
 }
 
-Node *Node::getParent()
+Node *Node::addChild( Node *value )
 {
-    return parent;
+    children.push_back(value);
+    return value;
+}
+
+
+const char *Node::getText() const
+{
+    return text.c_str();
+}
+
+
+int Node::getCounter() const
+{
+    return counter;
+}
+
+void Node::setCounter( int value )
+{
+    counter = value;
+}
+
+
+void Node::print( std::ostream &out, Parser *parser, int level )
+{
+    for (int i = 0; i < level; ++i)
+        out << "   ";
+
+    if (parser == NULL)
+        out << "["<< std::setw(3) << type << "] ";
+    else
+        out << "["<< parser->name(type) << "] ";
+
+    if (!text.empty())
+        std::cout << "'" << text << "' ";
+
+    if (counter != 0)
+        std::cout << "(" << counter << ")";
+    std::cout << std::endl;
+
+    for (int i = 0; i < children.size(); ++i)
+        children[i]->print(out, parser, level + 1);
 }
 
 }

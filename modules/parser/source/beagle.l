@@ -245,9 +245,12 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 "uint32"                        { EMIT(TOK_UINT32); }
 "uint64"                        { EMIT(TOK_UINT64); }
 
+"int"                           { EMIT(TOK_INT); }
+"long"                          { EMIT(TOK_LONG); }
+"char"                          { EMIT(TOK_CHAR); }
+
 "case"                          { EMIT(TOK_CASE); }
 "catch"                         { EMIT(TOK_CATCH); }
-"char"                          { EMIT(TOK_CHAR); }
 "class"                         { EMIT(TOK_CLASS); }
 "const"                         { EMIT(TOK_CONST); }
 "defualt"                       { EMIT(TOK_DEFAULT); }

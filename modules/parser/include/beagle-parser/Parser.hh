@@ -8,18 +8,23 @@
 namespace beagle
 {
 
+
+    class Node;
+
+
 	class Parser
 	{
 		public:
 			Parser(
 				std::istream* in = NULL,
-				std::ostream* out = NULL);
+				std::ostream* out = NULL,
+                const char *fileName = NULL );
 
 			virtual ~Parser();
 
 			static const char *name( int tok );
 
-			int parse( );
+			Node *parse();
 
             void tokens();
 
@@ -28,6 +33,7 @@ namespace beagle
 			std::ostream *out;
 			void* scanner;
 			void* buffer;
+            const char *fileName;
 
 			bool readFile( );
 	};

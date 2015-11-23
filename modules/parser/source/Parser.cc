@@ -22,11 +22,13 @@ namespace beagle {
 
 beagle::Parser::Parser(
 	std::istream *in,
-	std::ostream *out )
+	std::ostream *out,
+	const char *fileName )
 {
 	this->in = in;
 	this->out = out;
 	buffer = NULL;
+	this->fileName = fileName;
 
 	// initialize the lexer
 	beagle_lex_init(&scanner);
@@ -58,11 +60,16 @@ void Parser::tokens()
 	}
 }
 
-int Parser::parse( )
+Node *Parser::parse()
 {
 	parser_context_t context;
 	context.scanner = scanner;
-	return beagle_parse(&context);
+	context.fileName = fileName;
+	context.rule = NULL;
+	if (beagle_parse(&context) == 0)
+		return context.stack[ context.stack.size() - 1 ];
+	else
+		return NULL;
 }
 
 bool Parser::readFile( )

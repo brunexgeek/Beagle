@@ -47,8 +47,8 @@ extern int beagle_debug;
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <stack>
-#include "Node.hh"
+#include <vector>
+#include <beagle-parser/Node.hh>
 
 
 /*
@@ -60,9 +60,13 @@ typedef void *yyscan_t;
 
 typedef struct
 {
-	yyscan_t scanner;
+    yyscan_t scanner;
 
-	std::stack<beagle::Node*> stack;
+    std::vector<beagle::Node*> stack;
+
+    const char *fileName;
+
+    const char *rule;
 
 } parser_context_t;
 
@@ -76,7 +80,7 @@ typedef struct
 int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 80 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 84 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -194,7 +198,24 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_AT = 366,
     TOK_VARARG = 367,
     TOK_INDENT = 368,
-    TOK_DEDENT = 369
+    TOK_DEDENT = 369,
+    TOK_TYPE_CLASS = 370,
+    TOK_TYPE_ARRAY = 371,
+    TOK_INTERFACES = 372,
+    TOK_NONE = 373,
+    TOK_BODY = 374,
+    TOK_FIELD = 375,
+    TOK_METHOD = 376,
+    TOK_CONSTRUCTOR = 377,
+    TOK_LIST = 378,
+    TOK_VARIABLE = 379,
+    TOK_MODIFIERS = 380,
+    TOK_UNIT = 381,
+    TOK_TYPE = 382,
+    TOK_MEMBER = 383,
+    TOK_IMPORT_ALL = 384,
+    TOK_STATIC_INIT = 385,
+    TOK_PARAMETER = 386
   };
 #endif
 
@@ -203,11 +224,11 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 89 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
+#line 136 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
 
-	char* node;
+    char* node;
 
-#line 211 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 232 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
