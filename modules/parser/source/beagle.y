@@ -9,7 +9,7 @@
 %require "2.3"
 %define api.pure full
 %lex-param   { yyscan_t scanner }
-%parse-param { yyscan_t scanner }
+%parse-param { parser_context_t *parserContext }
 
 
 %code requires {
@@ -18,6 +18,8 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stack>
+#include "Node.hh"
 
 
 /*
@@ -25,6 +27,16 @@
  * but the generated header by Flex don't provide this information.
  */
 typedef void *yyscan_t;
+
+
+typedef struct
+{
+	yyscan_t scanner;
+
+	std::stack<beagle::Node*> stack;
+
+} parser_context_t;
+
 
 /**
  * Get the current column in the lexer scanner.
@@ -40,12 +52,18 @@ int beagle_get_column  (yyscan_t yyscanner);
 
 #include <iostream>
 #include "beagle.l.hh"
+#include "Node.hh"
+
 
 void beagle_error(yyscan_t scanner, const char *msg)
 {
 	printf ("%s:%d:%d: error: %s\n", "String.bgl", beagle_get_lineno(scanner), beagle_get_column(scanner), msg);
     return;
 }
+
+#define scanner      parserContext->scanner
+#define PUSH(x)      parserContext->stack.push((x))
+#define POP()        parserContext->stack.pop()
 
 }
 
@@ -68,9 +86,9 @@ void beagle_error(yyscan_t scanner, const char *msg)
 /*
  * %union declares of what kinds of values appear on the value stack
  */
- %union {
-   char* node;
-   }
+%union {
+	char* node;
+}
 
 /*
  * each token is declared.  tokens store leaf values on the value stack
@@ -261,8 +279,13 @@ void beagle_error(yyscan_t scanner, const char *msg)
 
 %%
 
-Goal: CompilationUnit
-        ;
+
+Goal:
+	CompilationUnit
+	{
+		std::cout << parserContext << std::endl;
+	}
+    ;
 
 Literal:
 	TOK_INTLITERAL
@@ -931,6 +954,11 @@ EndPart:
 
 
 %%
+
+
+#ifdef scanner
+#undef scanner
+#endif
 
 // Note: we need to create this function because the variable 'yytname'
 //       and the macro 'YYTRANSLATE' are only visible in this file.

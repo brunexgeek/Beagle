@@ -47,6 +47,8 @@ extern int beagle_debug;
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stack>
+#include "Node.hh"
 
 
 /*
@@ -54,6 +56,16 @@ extern int beagle_debug;
  * but the generated header by Flex don't provide this information.
  */
 typedef void *yyscan_t;
+
+
+typedef struct
+{
+	yyscan_t scanner;
+
+	std::stack<beagle::Node*> stack;
+
+} parser_context_t;
+
 
 /**
  * Get the current column in the lexer scanner.
@@ -64,7 +76,7 @@ typedef void *yyscan_t;
 int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 68 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 80 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -191,12 +203,11 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 71 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
+#line 89 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
 
-   char* node;
-   
+	char* node;
 
-#line 200 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 211 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -204,6 +215,6 @@ union YYSTYPE
 
 
 
-int beagle_parse (yyscan_t scanner);
+int beagle_parse (parser_context_t *parserContext);
 
 #endif /* !YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_BEAGLE_Y_HH_INCLUDED  */

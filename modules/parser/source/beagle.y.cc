@@ -106,6 +106,8 @@ extern int beagle_debug;
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stack>
+#include "Node.hh"
 
 
 /*
@@ -113,6 +115,16 @@ extern int beagle_debug;
  * but the generated header by Flex don't provide this information.
  */
 typedef void *yyscan_t;
+
+
+typedef struct
+{
+	yyscan_t scanner;
+
+	std::stack<beagle::Node*> stack;
+
+} parser_context_t;
+
 
 /**
  * Get the current column in the lexer scanner.
@@ -123,7 +135,7 @@ typedef void *yyscan_t;
 int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 127 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:355  */
+#line 139 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -250,12 +262,11 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 71 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:355  */
+#line 89 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:355  */
 
-   char* node;
-   
+	char* node;
 
-#line 259 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:355  */
+#line 270 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -263,19 +274,21 @@ union YYSTYPE
 
 
 
-int beagle_parse (yyscan_t scanner);
+int beagle_parse (parser_context_t *parserContext);
 
 #endif /* !YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_BEAGLE_Y_HH_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 273 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:358  */
+#line 284 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:358  */
 /* Unqualified %code blocks.  */
-#line 39 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:359  */
+#line 51 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:359  */
 
 
 #include <iostream>
 #include "beagle.l.hh"
+#include "Node.hh"
+
 
 void beagle_error(yyscan_t scanner, const char *msg)
 {
@@ -283,8 +296,12 @@ void beagle_error(yyscan_t scanner, const char *msg)
     return;
 }
 
+#define scanner      parserContext->scanner
+#define PUSH(x)      parserContext->stack.push((x))
+#define POP()        parserContext->stack.pop()
 
-#line 288 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:359  */
+
+#line 305 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:359  */
 
 #ifdef short
 # undef short
@@ -592,41 +609,41 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   264,   264,   268,   269,   270,   271,   272,   273,   276,
-     277,   280,   281,   284,   285,   289,   290,   291,   292,   293,
-     294,   295,   296,   297,   298,   299,   303,   304,   307,   308,
-     312,   313,   316,   319,   322,   323,   324,   327,   328,   331,
-     335,   339,   342,   342,   344,   344,   346,   346,   348,   349,
-     352,   353,   356,   359,   360,   363,   366,   370,   371,   375,
-     376,   380,   381,   385,   386,   389,   390,   393,   394,   395,
-     396,   397,   398,   399,   400,   401,   402,   406,   409,   409,
-     411,   411,   413,   413,   415,   418,   421,   422,   425,   428,
-     428,   430,   431,   435,   436,   437,   440,   441,   444,   448,
-     449,   452,   453,   456,   457,   461,   462,   465,   468,   469,
-     473,   473,   476,   476,   478,   479,   482,   483,   487,   488,
-     492,   496,   497,   500,   503,   507,   512,   515,   515,   518,
-     520,   523,   523,   526,   530,   532,   535,   535,   537,   541,
-     542,   545,   545,   547,   550,   551,   554,   555,   558,   561,
-     564,   564,   566,   566,   568,   571,   572,   576,   580,   581,
-     584,   585,   588,   591,   594,   595,   596,   597,   598,   601,
-     602,   603,   604,   607,   608,   609,   610,   611,   612,   613,
-     614,   615,   616,   617,   621,   625,   628,   629,   630,   631,
-     632,   633,   634,   638,   642,   646,   650,   653,   653,   655,
-     655,   657,   660,   661,   664,   667,   668,   671,   672,   675,
-     678,   681,   684,   684,   686,   686,   688,   688,   690,   694,
-     699,   700,   703,   706,   707,   710,   710,   712,   715,   718,
-     719,   723,   726,   729,   729,   731,   732,   734,   735,   738,
-     742,   745,   746,   749,   750,   751,   752,   753,   754,   755,
-     758,   761,   762,   765,   765,   767,   768,   771,   772,   775,
-     778,   779,   782,   783,   786,   787,   788,   789,   790,   791,
-     794,   795,   798,   799,   800,   801,   804,   807,   810,   811,
-     812,   813,   814,   817,   820,   823,   824,   825,   826,   829,
-     830,   831,   834,   835,   836,   837,   840,   841,   842,   845,
-     846,   847,   850,   851,   852,   853,   854,   855,   858,   859,
-     860,   863,   864,   867,   868,   871,   872,   875,   876,   879,
-     880,   883,   884,   888,   889,   892,   895,   896,   897,   900,
-     901,   902,   903,   904,   905,   906,   907,   908,   909,   910,
-     911,   914,   917,   921,   925,   929
+       0,   284,   284,   291,   292,   293,   294,   295,   296,   299,
+     300,   303,   304,   307,   308,   312,   313,   314,   315,   316,
+     317,   318,   319,   320,   321,   322,   326,   327,   330,   331,
+     335,   336,   339,   342,   345,   346,   347,   350,   351,   354,
+     358,   362,   365,   365,   367,   367,   369,   369,   371,   372,
+     375,   376,   379,   382,   383,   386,   389,   393,   394,   398,
+     399,   403,   404,   408,   409,   412,   413,   416,   417,   418,
+     419,   420,   421,   422,   423,   424,   425,   429,   432,   432,
+     434,   434,   436,   436,   438,   441,   444,   445,   448,   451,
+     451,   453,   454,   458,   459,   460,   463,   464,   467,   471,
+     472,   475,   476,   479,   480,   484,   485,   488,   491,   492,
+     496,   496,   499,   499,   501,   502,   505,   506,   510,   511,
+     515,   519,   520,   523,   526,   530,   535,   538,   538,   541,
+     543,   546,   546,   549,   553,   555,   558,   558,   560,   564,
+     565,   568,   568,   570,   573,   574,   577,   578,   581,   584,
+     587,   587,   589,   589,   591,   594,   595,   599,   603,   604,
+     607,   608,   611,   614,   617,   618,   619,   620,   621,   624,
+     625,   626,   627,   630,   631,   632,   633,   634,   635,   636,
+     637,   638,   639,   640,   644,   648,   651,   652,   653,   654,
+     655,   656,   657,   661,   665,   669,   673,   676,   676,   678,
+     678,   680,   683,   684,   687,   690,   691,   694,   695,   698,
+     701,   704,   707,   707,   709,   709,   711,   711,   713,   717,
+     722,   723,   726,   729,   730,   733,   733,   735,   738,   741,
+     742,   746,   749,   752,   752,   754,   755,   757,   758,   761,
+     765,   768,   769,   772,   773,   774,   775,   776,   777,   778,
+     781,   784,   785,   788,   788,   790,   791,   794,   795,   798,
+     801,   802,   805,   806,   809,   810,   811,   812,   813,   814,
+     817,   818,   821,   822,   823,   824,   827,   830,   833,   834,
+     835,   836,   837,   840,   843,   846,   847,   848,   849,   852,
+     853,   854,   857,   858,   859,   860,   863,   864,   865,   868,
+     869,   870,   873,   874,   875,   876,   877,   878,   881,   882,
+     883,   886,   887,   890,   891,   894,   895,   898,   899,   902,
+     903,   906,   907,   911,   912,   915,   918,   919,   920,   923,
+     924,   925,   926,   927,   928,   929,   930,   931,   932,   933,
+     934,   937,   940,   944,   948,   952
 };
 #endif
 
@@ -1419,7 +1436,7 @@ do                                                              \
     }                                                           \
   else                                                          \
     {                                                           \
-      yyerror (scanner, YY_("syntax error: cannot back up")); \
+      yyerror (parserContext, YY_("syntax error: cannot back up")); \
       YYERROR;                                                  \
     }                                                           \
 while (0)
@@ -1456,7 +1473,7 @@ do {                                                                      \
     {                                                                     \
       YYFPRINTF (stderr, "%s ", Title);                                   \
       yy_symbol_print (stderr,                                            \
-                  Type, Value, scanner); \
+                  Type, Value, parserContext); \
       YYFPRINTF (stderr, "\n");                                           \
     }                                                                     \
 } while (0)
@@ -1467,11 +1484,11 @@ do {                                                                      \
 `----------------------------------------*/
 
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, yyscan_t scanner)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, parser_context_t *parserContext)
 {
   FILE *yyo = yyoutput;
   YYUSE (yyo);
-  YYUSE (scanner);
+  YYUSE (parserContext);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
@@ -1487,12 +1504,12 @@ yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvalue
 `--------------------------------*/
 
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, yyscan_t scanner)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, parser_context_t *parserContext)
 {
   YYFPRINTF (yyoutput, "%s %s (",
              yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
-  yy_symbol_value_print (yyoutput, yytype, yyvaluep, scanner);
+  yy_symbol_value_print (yyoutput, yytype, yyvaluep, parserContext);
   YYFPRINTF (yyoutput, ")");
 }
 
@@ -1525,7 +1542,7 @@ do {                                                            \
 `------------------------------------------------*/
 
 static void
-yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule, yyscan_t scanner)
+yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule, parser_context_t *parserContext)
 {
   unsigned long int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
@@ -1539,7 +1556,7 @@ yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule, yyscan_t scann
       yy_symbol_print (stderr,
                        yystos[yyssp[yyi + 1 - yynrhs]],
                        &(yyvsp[(yyi + 1) - (yynrhs)])
-                                              , scanner);
+                                              , parserContext);
       YYFPRINTF (stderr, "\n");
     }
 }
@@ -1547,7 +1564,7 @@ yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule, yyscan_t scann
 # define YY_REDUCE_PRINT(Rule)          \
 do {                                    \
   if (yydebug)                          \
-    yy_reduce_print (yyssp, yyvsp, Rule, scanner); \
+    yy_reduce_print (yyssp, yyvsp, Rule, parserContext); \
 } while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -1805,10 +1822,10 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
 `-----------------------------------------------*/
 
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, yyscan_t scanner)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, parser_context_t *parserContext)
 {
   YYUSE (yyvaluep);
-  YYUSE (scanner);
+  YYUSE (parserContext);
   if (!yymsg)
     yymsg = "Deleting";
   YY_SYMBOL_PRINT (yymsg, yytype, yyvaluep, yylocationp);
@@ -1826,7 +1843,7 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, yyscan_t scanner)
 `----------*/
 
 int
-yyparse (yyscan_t scanner)
+yyparse (parser_context_t *parserContext)
 {
 /* The lookahead symbol.  */
 int yychar;
@@ -2073,182 +2090,190 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 43:
-#line 342 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+        case 2:
+#line 285 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		std::cout << parserContext << std::endl;
+	}
+#line 2099 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 43:
+#line 365 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2080 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2105 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 344 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 367 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2086 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2111 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 346 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 369 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2092 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2117 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 376 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 399 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2098 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2123 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 409 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 432 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2104 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2129 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 411 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 434 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2110 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2135 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 413 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 436 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2116 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2141 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 428 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 451 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2122 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2147 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 473 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 496 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2128 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2153 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 476 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 499 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2134 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2159 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 125:
-#line 508 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 531 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { std::cout << "ConstructorDeclaration" << std::endl; }
-#line 2140 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2165 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 128:
-#line 515 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 538 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2146 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2171 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 129:
-#line 519 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 542 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { std::cout << "BlockStatementsOpt" << std::endl; }
-#line 2152 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2177 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 130:
-#line 520 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 543 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2158 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2183 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 132:
-#line 523 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 546 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2164 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2189 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 134:
-#line 531 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 554 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { std::cout << "ExplicitConstructorInvocation" << std::endl; }
-#line 2170 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2195 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 137:
-#line 535 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 558 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2176 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2201 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 142:
-#line 545 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 568 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2182 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2207 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 151:
-#line 564 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 587 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2188 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2213 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 152:
-#line 566 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 589 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2194 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2219 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 153:
-#line 566 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 589 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2200 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2225 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 198:
-#line 653 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 676 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2206 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2231 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 200:
-#line 655 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 678 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2212 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2237 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 213:
-#line 684 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 707 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2218 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2243 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 215:
-#line 686 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 709 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2224 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2249 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 217:
-#line 688 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 711 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2230 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2255 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 226:
-#line 710 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 733 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2236 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2261 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 234:
-#line 729 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 752 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2242 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2267 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 254:
-#line 765 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 788 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
-#line 2248 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2273 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
 
-#line 2252 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2277 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2298,7 +2323,7 @@ yyerrlab:
     {
       ++yynerrs;
 #if ! YYERROR_VERBOSE
-      yyerror (scanner, YY_("syntax error"));
+      yyerror (parserContext, YY_("syntax error"));
 #else
 # define YYSYNTAX_ERROR yysyntax_error (&yymsg_alloc, &yymsg, \
                                         yyssp, yytoken)
@@ -2325,7 +2350,7 @@ yyerrlab:
                 yymsgp = yymsg;
               }
           }
-        yyerror (scanner, yymsgp);
+        yyerror (parserContext, yymsgp);
         if (yysyntax_error_status == 2)
           goto yyexhaustedlab;
       }
@@ -2349,7 +2374,7 @@ yyerrlab:
       else
         {
           yydestruct ("Error: discarding",
-                      yytoken, &yylval, scanner);
+                      yytoken, &yylval, parserContext);
           yychar = YYEMPTY;
         }
     }
@@ -2405,7 +2430,7 @@ yyerrlab1:
 
 
       yydestruct ("Error: popping",
-                  yystos[yystate], yyvsp, scanner);
+                  yystos[yystate], yyvsp, parserContext);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -2442,7 +2467,7 @@ yyabortlab:
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
 yyexhaustedlab:
-  yyerror (scanner, YY_("memory exhausted"));
+  yyerror (parserContext, YY_("memory exhausted"));
   yyresult = 2;
   /* Fall through.  */
 #endif
@@ -2454,7 +2479,7 @@ yyreturn:
          user semantic actions for why this is necessary.  */
       yytoken = YYTRANSLATE (yychar);
       yydestruct ("Cleanup: discarding lookahead",
-                  yytoken, &yylval, scanner);
+                  yytoken, &yylval, parserContext);
     }
   /* Do not reclaim the symbols of the rule whose action triggered
      this YYABORT or YYACCEPT.  */
@@ -2463,7 +2488,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-                  yystos[*yyssp], yyvsp, scanner);
+                  yystos[*yyssp], yyvsp, parserContext);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -2476,8 +2501,13 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 933 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1906  */
+#line 956 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1906  */
 
+
+
+#ifdef scanner
+#undef scanner
+#endif
 
 // Note: we need to create this function because the variable 'yytname'
 //       and the macro 'YYTRANSLATE' are only visible in this file.

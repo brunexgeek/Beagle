@@ -60,7 +60,9 @@ void Parser::tokens()
 
 int Parser::parse( )
 {
-	return beagle_parse(scanner);
+	parser_context_t context;
+	context.scanner = scanner;
+	return beagle_parse(&context);
 }
 
 bool Parser::readFile( )
