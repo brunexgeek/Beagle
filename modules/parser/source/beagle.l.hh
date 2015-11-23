@@ -2,9 +2,9 @@
 #define beagle_HEADER_H 1
 #define beagle_IN_HEADER 1
 
-#line 6 "/media/dados/projetos/Beagle/modules/parser/source/scanner.hh"
+#line 6 "/media/dados/projetos/beagle/modules/parser/source/beagle.l.hh"
 
-#line 8 "/media/dados/projetos/Beagle/modules/parser/source/scanner.hh"
+#line 8 "/media/dados/projetos/beagle/modules/parser/source/beagle.l.hh"
 
 #define  YY_INT_ALIGNED short int
 
@@ -282,7 +282,6 @@ void *beagle_realloc (void *,yy_size_t ,yyscan_t yyscanner );
 void beagle_free (void * ,yyscan_t yyscanner );
 
 /* %% [1.0] yytext/yyin/yyout/yy_state_type/yylineno etc. def's & init go here */
-/* Begin user sect3 */
 
 #define beagle_wrap(n) 1
 #define YY_SKIP_YYWRAP
@@ -297,6 +296,7 @@ void beagle_free (void * ,yyscan_t yyscanner );
 
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0
+#define IN_COMMENT 1
 
 #endif
 
@@ -466,9 +466,8 @@ extern int beagle_lex \
 #undef YY_DECL
 #endif
 
-#line 268 "/media/dados/projetos/Beagle/modules/parser/source/beagle.l"
+#line 346 "/media/dados/projetos/beagle/modules/parser/source/beagle.l"
 
-
-#line 473 "/media/dados/projetos/Beagle/modules/parser/source/scanner.hh"
+#line 472 "/media/dados/projetos/beagle/modules/parser/source/beagle.l.hh"
 #undef beagle_IN_HEADER
 #endif /* beagle_HEADER_H */

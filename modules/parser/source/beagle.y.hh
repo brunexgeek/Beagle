@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_PARSER_HH_INCLUDED
-# define YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_PARSER_HH_INCLUDED
+#ifndef YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_BEAGLE_Y_HH_INCLUDED
+# define YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_BEAGLE_Y_HH_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -40,7 +40,7 @@
 extern int beagle_debug;
 #endif
 /* "%code requires" blocks.  */
-#line 15 "/media/dados/projetos/Beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
+#line 15 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
 
 
 
@@ -48,38 +48,23 @@ extern int beagle_debug;
 #include <iostream>
 #include <sstream>
 
-namespace beagle
-{
 
-	class Parser
-	{
-		public:
-			Parser(
-				std::istream* in = NULL,
-				std::ostream* out = NULL);
-
-			virtual ~Parser();
-
-			static const char *name( int tok );
-
-			int parse( );
-
-		private:
-			std::istream *in;
-			std::ostream *out;
-			void* scanner;
-			void* buffer;
-
-			bool readFile( );
-	};
-
-}; // namespace beagle
-
+/*
+ * The parser need to know about the 'yyscan_t' type,
+ * but the generated header by Flex don't provide this information.
+ */
 typedef void *yyscan_t;
 
+/**
+ * Get the current column in the lexer scanner.
+ *
+ * For some reason this prototype is not generated in the Flex
+ * header file, so we include it here.
+ */
+int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 83 "/media/dados/projetos/Beagle/modules/parser/source/parser.hh" /* yacc.c:1909  */
+#line 68 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -193,7 +178,11 @@ typedef void *yyscan_t;
     TOK_LSRASN = 362,
     TOK_MODASN = 363,
     TOK_BAD_TOKEN = 364,
-    TOK_EOL = 365
+    TOK_EOL = 365,
+    TOK_AT = 366,
+    TOK_VARARG = 367,
+    TOK_INDENT = 368,
+    TOK_DEDENT = 369
   };
 #endif
 
@@ -202,12 +191,12 @@ typedef void *yyscan_t;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 85 "/media/dados/projetos/Beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
+#line 71 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
 
    char* node;
    
 
-#line 211 "/media/dados/projetos/Beagle/modules/parser/source/parser.hh" /* yacc.c:1909  */
+#line 200 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -217,4 +206,4 @@ union YYSTYPE
 
 int beagle_parse (yyscan_t scanner);
 
-#endif /* !YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_PARSER_HH_INCLUDED  */
+#endif /* !YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_BEAGLE_Y_HH_INCLUDED  */

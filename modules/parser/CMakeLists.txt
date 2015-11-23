@@ -1,24 +1,25 @@
-project(parser)
 
-cmake_minimum_required(VERSION 2.6)
+include_directories(
+	"include")
 
 add_custom_target(parser_bison COMMAND
-	bison --defines=${CMAKE_CURRENT_SOURCE_DIR}/source/parser.hh
-	    -o ${CMAKE_CURRENT_SOURCE_DIR}/source/parser.cpp
+	bison --defines=${CMAKE_CURRENT_SOURCE_DIR}/source/beagle.y.hh
+	    -o ${CMAKE_CURRENT_SOURCE_DIR}/source/beagle.y.cc
 	    -vt ${CMAKE_CURRENT_SOURCE_DIR}/source/beagle.y)
 add_custom_target(parser_flex COMMAND flex
 		-v
-		-o ${CMAKE_CURRENT_SOURCE_DIR}/source/lexer.cpp
-		--header-file=${CMAKE_CURRENT_SOURCE_DIR}/source/scanner.hh
+		-o ${CMAKE_CURRENT_SOURCE_DIR}/source/beagle.l.cc
+		--header-file=${CMAKE_CURRENT_SOURCE_DIR}/source/beagle.l.hh
 		${CMAKE_CURRENT_SOURCE_DIR}/source/beagle.l)
 
 
 file(GLOB PARSER_SOURCES
-	"source/*.cpp")
+	"source/*.cc")
 
-add_executable(module_parser ${PARSER_SOURCES})
+add_library(module_parser STATIC ${PARSER_SOURCES})
 set_target_properties(module_parser PROPERTIES
-    OUTPUT_NAME "compiler"
+    OUTPUT_NAME "bgl-parser"
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}" )
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+    PREFIX "lib" )

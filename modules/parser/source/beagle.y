@@ -19,46 +19,32 @@
 #include <iostream>
 #include <sstream>
 
-namespace beagle
-{
 
-	class Parser
-	{
-		public:
-			Parser(
-				std::istream* in = NULL,
-				std::ostream* out = NULL);
-
-			virtual ~Parser();
-
-			static const char *name( int tok );
-
-			int parse( );
-
-		private:
-			std::istream *in;
-			std::ostream *out;
-			void* scanner;
-			void* buffer;
-
-			bool readFile( );
-	};
-
-}; // namespace beagle
-
+/*
+ * The parser need to know about the 'yyscan_t' type,
+ * but the generated header by Flex don't provide this information.
+ */
 typedef void *yyscan_t;
 
+/**
+ * Get the current column in the lexer scanner.
+ *
+ * For some reason this prototype is not generated in the Flex
+ * header file, so we include it here.
+ */
+int beagle_get_column  (yyscan_t yyscanner);
 
 }
 
 %code{
 
 #include <iostream>
-#include "scanner.hh"
+#include "beagle.l.hh"
 
 void beagle_error(yyscan_t scanner, const char *msg)
 {
-	return;
+	printf ("%s:%d:%d: error: %s\n", "String.bgl", beagle_get_lineno(scanner), beagle_get_column(scanner), msg);
+    return;
 }
 
 }
@@ -71,8 +57,8 @@ void beagle_error(yyscan_t scanner, const char *msg)
 %locations
 %initial-action
 {
-	// initialize the initial location object
-	//@$.begin.filename = @$.end.filename = &driver.streamname;
+    // initialize the initial location object
+    //@$.begin.filename = @$.end.filename = &driver.streamname;
 };*/
 
 
@@ -203,6 +189,10 @@ void beagle_error(yyscan_t scanner, const char *msg)
 %token < node > TOK_MODASN
 %token < node > TOK_BAD_TOKEN
 %token < node > TOK_EOL
+%token < node > TOK_AT
+%token < node > TOK_VARARG
+%token < node > TOK_INDENT
+%token < node > TOK_DEDENT
 
 /*
  * each nonterminal is declared.  nonterminals correspond to internal nodes
@@ -230,7 +220,6 @@ void beagle_error(yyscan_t scanner, const char *msg)
 %type < node > LocalVariableDeclarationStatement LocalVariableDeclaration
 %type < node > Statement StatementNoShortIf
 %type < node > StatementWithoutTrailingSubstatement EmptyStatement
-%type < node > LabeledStatement LabeledStatementNoShortIf
 %type < node > ExpressionStatement StatementExpression IfThenStatement
 %type < node > IfThenElseStatement IfThenElseStatementNoShortIf
 %type < node > SwitchStatement SwitchBlock SwitchBlockStatementGroups
@@ -260,6 +249,8 @@ void beagle_error(yyscan_t scanner, const char *msg)
 %type < node > ExtendsInterfacesOpt InterfaceMemberDeclarationsOpt
 %type < node > VariableInitializersOpt CMOpt SwitchBlockStatementGroupsOpt
 %type < node > SwitchLabelsOpt ForInitOpt ExpressionOpt ForUpdateOpt
+%type < node > AnnotationDeclarations AnnotationDeclaration
+%type < node > BeginBlock EndBlock EndPart AnnotationDeclarationsOpt
 
 /*
  * the start symbol, Goal, may seem to be here for rhetorical purposes,
@@ -270,79 +261,83 @@ void beagle_error(yyscan_t scanner, const char *msg)
 
 %%
 
-Goal:		  CompilationUnit
-		;
+Goal: CompilationUnit
+        ;
 
-Literal:	  TOK_INTLITERAL
-		| TOK_FLOATLITERAL
-		| TOK_BOOLLITERAL
-		| TOK_STRINGLITERAL
-		| TOK_CHARLITERAL
-		| TOK_NULLLITERAL
-		;
+Literal:
+	TOK_INTLITERAL
+    | TOK_FLOATLITERAL
+    | TOK_BOOLLITERAL
+    | TOK_STRINGLITERAL
+    | TOK_CHARLITERAL
+    | TOK_NULLLITERAL
+    ;
 
-Type:		  PrimitiveType
-		| ReferenceType
-		;
+Type:         PrimitiveType
+        | ReferenceType
+        ;
 
-PrimitiveType:	  NumericType
-		| TOK_BOOLEAN
-		;
+PrimitiveType:    NumericType
+        | TOK_BOOLEAN
+        ;
 
-NumericType:	  IntegralType
-		| FloatingPointType
-		;
+NumericType:      IntegralType
+        | FloatingPointType
+        ;
 
 IntegralType:
-	TOK_UINT8
-	| TOK_UINT16
-	| TOK_UINT32
-	| TOK_UINT64
-	| TOK_INT8
-	| TOK_INT16
-	| TOK_INT32
-	| TOK_INT64
-	| TOK_INT
-	| TOK_LONG
-	| TOK_CHAR
-	;
+    TOK_UINT8
+    | TOK_UINT16
+    | TOK_UINT32
+    | TOK_UINT64
+    | TOK_INT8
+    | TOK_INT16
+    | TOK_INT32
+    | TOK_INT64
+    | TOK_INT
+    | TOK_LONG
+    | TOK_CHAR
+    ;
 
 FloatingPointType:
-	TOK_FLOAT
-	| TOK_DOUBLE
-	;
+    TOK_FLOAT
+    | TOK_DOUBLE
+    ;
 
-ReferenceType:	  ClassOrInterfaceType
-		| ArrayType
-		;
+ReferenceType:    ClassOrInterfaceType
+        | ArrayType
+        ;
 
-ClassOrInterfaceType: Name
-		;
+ClassOrInterfaceType:
+	Name
+	| Name TOK_LT InterfaceTypeList TOK_GT
+    ;
 
-ClassType:	  ClassOrInterfaceType
-		;
+ClassType:    ClassOrInterfaceType
+        ;
 
-InterfaceType:	  ClassOrInterfaceType
-		;
+InterfaceType:    ClassOrInterfaceType
+        ;
 
-ArrayType:	  PrimitiveType TOK_LB TOK_RB
-		| Name TOK_LB TOK_RB
-		| ArrayType TOK_LB TOK_RB
-		;
+ArrayType:    PrimitiveType TOK_LB TOK_RB
+        | Name TOK_LB TOK_RB
+        | ArrayType TOK_LB TOK_RB
+        ;
 
-Name:		  SimpleName
-		| QualifiedName
-		;
+Name:         SimpleName
+        | QualifiedName
+        ;
 
-SimpleName:	  TOK_IDENT
-		;
+SimpleName:   TOK_IDENT
+        ;
 
-QualifiedName:	  Name TOK_DOT TOK_IDENT
-		;
+QualifiedName:
+	Name TOK_DOT TOK_IDENT
+    ;
 
-CompilationUnit:  PackageDeclarationOpt
-			ImportDeclarationsOpt TypeDeclarationsOpt
-		;
+CompilationUnit:
+	PackageDeclarationOpt ImportDeclarationsOpt TypeDeclarationsOpt
+    ;
 
 PackageDeclarationOpt: PackageDeclaration | { $$ = NULL; } ;
 
@@ -351,310 +346,340 @@ ImportDeclarationsOpt: ImportDeclarations | { $$ = NULL; } ;
 TypeDeclarationsOpt: TypeDeclarations | { $$ = NULL; } ;
 
 ImportDeclarations: ImportDeclaration
-		| ImportDeclarations ImportDeclaration
-		;
+        | ImportDeclarations ImportDeclaration
+        ;
 
 TypeDeclarations: TypeDeclaration
-		| TypeDeclarations TypeDeclaration
-		;
+        | TypeDeclarations TypeDeclaration
+        ;
 
-PackageDeclaration: TOK_PACKAGE Name TOK_SM
-		;
+PackageDeclaration: TOK_PACKAGE Name TOK_EOL
+        ;
 
 ImportDeclaration: SingleTypeImportDeclaration
-		| TypeImportOnDemandDeclaration
-		;
+        | TypeImportOnDemandDeclaration
+        ;
 
-SingleTypeImportDeclaration: TOK_IMPORT Name TOK_SM
-		;
+SingleTypeImportDeclaration: TOK_IMPORT Name TOK_EOL
+        ;
 
-TypeImportOnDemandDeclaration: TOK_IMPORT Name TOK_DOT TOK_MUL TOK_SM
-		;
+TypeImportOnDemandDeclaration: TOK_IMPORT Name TOK_DOT TOK_MUL TOK_EOL
+        ;
 
-TypeDeclaration:  ClassDeclaration
-		| InterfaceDeclaration
-		;
+TypeDeclaration:
+	AnnotationDeclarationsOpt ClassDeclaration
+	| AnnotationDeclarationsOpt InterfaceDeclaration
+    ;
+
+AnnotationDeclarationsOpt:
+	AnnotationDeclarations
+	| { $$ = NULL; }
+	;
+
+AnnotationDeclarations:
+	AnnotationDeclaration
+	| AnnotationDeclarations AnnotationDeclaration
+	;
+
+AnnotationDeclaration:
+	TOK_AT TOK_IDENT TOK_LP ArgumentListOpt TOK_RP TOK_EOL
+	| TOK_AT TOK_IDENT TOK_EOL
+	;
 
 Modifiers: Modifier
-		| Modifiers Modifier
-		;
+        | Modifiers Modifier
+        ;
 
-Modifier:	  TOK_PUBLIC
-		| TOK_PROTECTED
-		| TOK_PRIVATE
-		| TOK_STATIC
-		| TOK_ABSTRACT
-		| TOK_FINAL
-		| TOK_NATIVE
-		| TOK_SYNCHRONIZED
-		| TOK_TRANSIENT
-		| TOK_VOLATILE
-		;
+Modifier:     TOK_PUBLIC
+        | TOK_PROTECTED
+        | TOK_PRIVATE
+        | TOK_STATIC
+        | TOK_ABSTRACT
+        | TOK_FINAL
+        | TOK_NATIVE
+        | TOK_SYNCHRONIZED
+        | TOK_TRANSIENT
+        | TOK_VOLATILE
+        ;
 
-ClassDeclaration: ModifiersOpt TOK_CLASS TOK_IDENT SuperOpt InterfacesOpt ClassBody
-		;
+ClassDeclaration:
+	ModifiersOpt TOK_CLASS TOK_IDENT SuperOpt InterfacesOpt TOK_EOL ClassBody
+    ;
 
 ModifiersOpt: Modifiers | { $$ = NULL; } ;
 
-SuperOpt:	  Super | { $$ = NULL; } ;
+SuperOpt:     Super | { $$ = NULL; } ;
 
-InterfacesOpt:	  Interfaces | { $$ = NULL; } ;
+InterfacesOpt:    Interfaces | { $$ = NULL; } ;
 
-Super:		  TOK_EXTENDS ClassType
-		;
+Super:        TOK_EXTENDS ClassType
+        ;
 
-Interfaces:	  TOK_IMPLEMENTS InterfaceTypeList
-		;
+Interfaces:   TOK_IMPLEMENTS InterfaceTypeList
+        ;
 
 InterfaceTypeList: InterfaceType
-		| InterfaceTypeList TOK_CM InterfaceType
-		;
+        | InterfaceTypeList TOK_CM InterfaceType
+        ;
 
-ClassBody:	  TOK_LC ClassBodyDeclarationsOpt TOK_RC
-		;
+ClassBody:    BeginBlock ClassBodyDeclarationsOpt EndBlock
+        ;
 
 ClassBodyDeclarationsOpt: ClassBodyDeclarations | { $$ = NULL; } ;
 
 ClassBodyDeclarations: ClassBodyDeclaration
-		| ClassBodyDeclarations ClassBodyDeclaration
-		;
+        | ClassBodyDeclarations ClassBodyDeclaration
+        ;
 
-ClassBodyDeclaration: ClassMemberDeclaration
-		| StaticInitializer
-		| ConstructorDeclaration
-		;
+ClassBodyDeclaration:
+	AnnotationDeclarationsOpt ClassMemberDeclaration
+    | AnnotationDeclarationsOpt StaticInitializer
+    | AnnotationDeclarationsOpt ConstructorDeclaration
+    ;
 
 ClassMemberDeclaration: FieldDeclaration
-		| MethodDeclaration
-		;
+        | MethodDeclaration
+        ;
 
-FieldDeclaration: ModifiersOpt Type VariableDeclarators TOK_SM
-		;
+FieldDeclaration: ModifiersOpt Type VariableDeclarators TOK_EOL
+        ;
 
-VariableDeclarators: VariableDeclarator
-		| VariableDeclarators TOK_CM VariableDeclarator
-		;
+VariableDeclarators:
+	VariableDeclarator
+    | VariableDeclarators TOK_CM VariableDeclarator
+    ;
 
 VariableDeclarator: VariableDeclaratorId
-		| VariableDeclaratorId TOK_ASN VariableInitializer
-		;
+        | VariableDeclaratorId TOK_ASN VariableInitializer
+        ;
 
 VariableDeclaratorId: TOK_IDENT
-		| VariableDeclaratorId TOK_LB TOK_RB
-		;
+        | VariableDeclaratorId TOK_LB TOK_RB
+        ;
 
-VariableInitializer: Expression
-		| ArrayInitializer
-		;
+VariableInitializer:
+	Expression
+    | ArrayInitializer
+    ;
 
-MethodDeclaration: MethodHeader MethodBody
-		;
+MethodDeclaration: MethodHeader TOK_EOL MethodBody
+        ;
 
 MethodHeader: ModifiersOpt Type MethodDeclarator ThrowsOpt
-		|  ModifiersOpt TOK_VOID MethodDeclarator ThrowsOpt
-		;
+        |  ModifiersOpt TOK_VOID MethodDeclarator ThrowsOpt
+        ;
 
 
-ThrowsOpt:	  Throws | { $$ = NULL; } ;
+ThrowsOpt:    Throws | { $$ = NULL; } ;
 
 
 FormalParameterListOpt: FormalParameterList | { $$ = NULL; } ;
 
 MethodDeclarator: TOK_IDENT TOK_LP FormalParameterListOpt TOK_RP
-		| MethodDeclarator TOK_LB TOK_RB
-		;
+        | MethodDeclarator TOK_LB TOK_RB
+        ;
 
 FormalParameterList: FormalParameter
-		| FormalParameterList TOK_CM FormalParameter
-		;
+        | FormalParameterList TOK_CM FormalParameter
+        ;
 
-FormalParameter: Type VariableDeclaratorId
-		;
+FormalParameter:
+	Type VariableDeclaratorId
+	| TOK_VARARG Type VariableDeclaratorId
+    ;
 
 
 Throws: TOK_THROWS ClassTypeList
-		;
+        ;
 
 
 ClassTypeList: ClassType
-		| ClassTypeList TOK_CM ClassType
-		;
+        | ClassTypeList TOK_CM ClassType
+        ;
 
 MethodBody: Block
-		;
+        ;
 
 StaticInitializer: TOK_STATIC Block
-		;
+        ;
 
-ConstructorDeclaration: ModifiersOpt ConstructorDeclarator
-				ThrowsOpt ConstructorBody
-		;
+ConstructorDeclaration:
+	ModifiersOpt ConstructorDeclarator ThrowsOpt EndPart ConstructorBody
+	{ std::cout << "ConstructorDeclaration" << std::endl; }
+	;
 
-ConstructorDeclarator: SimpleName TOK_LP FormalParameterListOpt TOK_RP
-		;
+ConstructorDeclarator:
+	SimpleName TOK_LP FormalParameterListOpt TOK_RP
+    ;
 
 ExplicitConstructorInvocationOpt: ExplicitConstructorInvocation | { $$ = NULL; } ;
 
-BlockStatementsOpt: BlockStatements | { $$ = NULL; } ;
+BlockStatementsOpt:
+	BlockStatements
+	{ std::cout << "BlockStatementsOpt" << std::endl; }
+	| { $$ = NULL; }
+	;
 
 ArgumentListOpt:  ArgumentList | { $$ = NULL; } ;
 
-ConstructorBody: TOK_LC ExplicitConstructorInvocationOpt BlockStatementsOpt TOK_RC
-		;
+ConstructorBody:
+	BeginBlock ExplicitConstructorInvocationOpt BlockStatementsOpt EndBlock
+    ;
 
-ExplicitConstructorInvocation: TOK_THIS TOK_LP ArgumentListOpt TOK_RP TOK_SM
-		| TOK_SUPER TOK_LP ArgumentListOpt TOK_RP TOK_SM
-		;
+ExplicitConstructorInvocation:
+	TOK_THIS TOK_LP ArgumentListOpt TOK_RP TOK_EOL
+	{ std::cout << "ExplicitConstructorInvocation" << std::endl; }
+    | TOK_SUPER TOK_LP ArgumentListOpt TOK_RP TOK_EOL
+    ;
 
 ExtendsInterfacesOpt: ExtendsInterfaces | { $$ = NULL; } ;
 
 InterfaceDeclaration: ModifiersOpt TOK_INTERFACE TOK_IDENT
-			ExtendsInterfacesOpt InterfaceBody
-		;
+            ExtendsInterfacesOpt InterfaceBody
+        ;
 
 ExtendsInterfaces: TOK_EXTENDS InterfaceType
-		| ExtendsInterfaces TOK_CM InterfaceType
-		;
+        | ExtendsInterfaces TOK_CM InterfaceType
+        ;
 
 InterfaceMemberDeclarationsOpt: InterfaceMemberDeclarations | { $$ = NULL; } ;
 
-InterfaceBody: TOK_LC InterfaceMemberDeclarationsOpt TOK_RC
-		;
+InterfaceBody: BeginBlock InterfaceMemberDeclarationsOpt EndBlock
+        ;
 
 InterfaceMemberDeclarations: InterfaceMemberDeclaration
-		| InterfaceMemberDeclarations InterfaceMemberDeclaration
-		;
+        | InterfaceMemberDeclarations InterfaceMemberDeclaration
+        ;
 
 InterfaceMemberDeclaration: ConstantDeclaration
-		| AbstractMethodDeclaration
-		;
+        | AbstractMethodDeclaration
+        ;
 
 ConstantDeclaration: FieldDeclaration
-		;
+        ;
 
-AbstractMethodDeclaration: MethodHeader TOK_SM
-		;
+AbstractMethodDeclaration: MethodHeader TOK_EOL
+        ;
 
 VariableInitializersOpt: VariableInitializers | { $$ = NULL; } ;
 
-CMOpt:	TOK_CM { $$ = NULL; } | { $$ = NULL; } ;
+CMOpt:  TOK_CM { $$ = NULL; } | { $$ = NULL; } ;
 
 ArrayInitializer: TOK_LC VariableInitializersOpt CMOpt TOK_RC
-		;
+        ;
 
 VariableInitializers: VariableInitializer
-		| VariableInitializers TOK_CM VariableInitializer
-		;
+        | VariableInitializers TOK_CM VariableInitializer
+        ;
 
-Block:		  TOK_LC BlockStatementsOpt TOK_RC
-		;
+Block:
+	BeginBlock BlockStatementsOpt EndBlock
+    ;
 
-BlockStatements:  BlockStatement
-		| BlockStatements BlockStatement
-		;
+BlockStatements:
+	BlockStatement
+    | BlockStatements BlockStatement
+    ;
 
 BlockStatement:   LocalVariableDeclarationStatement
-		| Statement
-		;
+        | Statement
+        ;
 
-LocalVariableDeclarationStatement: LocalVariableDeclaration TOK_SM
-		;
+LocalVariableDeclarationStatement: LocalVariableDeclaration TOK_EOL
+        ;
 
 LocalVariableDeclaration: Type VariableDeclarators
-		;
+        ;
 
-Statement:	  StatementWithoutTrailingSubstatement
-		| LabeledStatement
-		| IfThenStatement
-		| IfThenElseStatement
-		| WhileStatement
-		| ForStatement
-		;
+Statement:    StatementWithoutTrailingSubstatement
+        | IfThenStatement
+        | IfThenElseStatement
+        | WhileStatement
+        | ForStatement
+        ;
 
 StatementNoShortIf: StatementWithoutTrailingSubstatement
-		| LabeledStatementNoShortIf
-		| IfThenElseStatementNoShortIf
-		| WhileStatementNoShortIf
-		| ForStatementNoShortIf
-		;
+        | IfThenElseStatementNoShortIf
+        | WhileStatementNoShortIf
+        | ForStatementNoShortIf
+        ;
 
 StatementWithoutTrailingSubstatement: Block
-		| EmptyStatement
-		| ExpressionStatement
-		| SwitchStatement
-		| DoStatement
-		| BreakStatement
-		| ContinueStatement
-		| ReturnStatement
-		| SynchronizedStatement
-		| ThrowStatement
-		| TryStatement
-		;
+        | EmptyStatement
+        | ExpressionStatement
+        | SwitchStatement
+        | DoStatement
+        | BreakStatement
+        | ContinueStatement
+        | ReturnStatement
+        | SynchronizedStatement
+        | ThrowStatement
+        | TryStatement
+        ;
 
-EmptyStatement:	  TOK_SM
-		;
+EmptyStatement:
+	TOK_EOL
+    ;
 
-LabeledStatement: TOK_IDENT TOK_COLON Statement
-		;
 
-LabeledStatementNoShortIf: TOK_IDENT TOK_COLON StatementNoShortIf
-		;
-
-ExpressionStatement: StatementExpression TOK_SM
-		;
+ExpressionStatement: StatementExpression TOK_EOL
+        ;
 
 StatementExpression: Assignment
-		| PreIncrementExpression
-		| PreDecrementExpression
-		| PostIncrementExpression
-		| PostDecrementExpression
-		| MethodInvocation
-		| ClassInstanceCreationExpression
-		;
+        | PreIncrementExpression
+        | PreDecrementExpression
+        | PostIncrementExpression
+        | PostDecrementExpression
+        | MethodInvocation
+        | ClassInstanceCreationExpression
+        ;
 
-IfThenStatement:  TOK_IF TOK_LP Expression TOK_RP Statement
-		;
+IfThenStatement:
+	TOK_IF TOK_LP Expression TOK_RP EndPart Statement
+    ;
 
-IfThenElseStatement:  TOK_IF TOK_LP Expression TOK_RP StatementNoShortIf TOK_ELSE Statement
-		;
+IfThenElseStatement:
+	TOK_IF TOK_LP Expression TOK_RP EndPart StatementNoShortIf TOK_ELSE EndPart Statement
+    ;
 
-IfThenElseStatementNoShortIf:  TOK_IF TOK_LP Expression TOK_RP StatementNoShortIf
-			TOK_ELSE StatementNoShortIf
-		;
+IfThenElseStatementNoShortIf:
+	TOK_IF TOK_LP Expression TOK_RP EndPart StatementNoShortIf TOK_ELSE EndPart StatementNoShortIf
+    ;
 
-SwitchStatement:  TOK_SWITCH TOK_LP Expression TOK_RP SwitchBlock
-		;
+SwitchStatement:
+	TOK_SWITCH TOK_LP Expression TOK_RP EndPart SwitchBlock
+    ;
 
 SwitchBlockStatementGroupsOpt: SwitchBlockStatementGroups | { $$ = NULL; } ;
 
 SwitchLabelsOpt: SwitchLabels | { $$ = NULL; } ;
 
-SwitchBlock:	  TOK_LC SwitchBlockStatementGroupsOpt SwitchLabelsOpt TOK_RC
-		;
+SwitchBlock:      BeginBlock SwitchBlockStatementGroupsOpt SwitchLabelsOpt EndBlock
+        ;
 
 SwitchBlockStatementGroups: SwitchBlockStatementGroup
-		| SwitchBlockStatementGroups SwitchBlockStatementGroup
-		;
+        | SwitchBlockStatementGroups SwitchBlockStatementGroup
+        ;
 
 SwitchBlockStatementGroup: SwitchLabels BlockStatements
-		;
+        ;
 
-SwitchLabels:	  SwitchLabel
-		| SwitchLabels SwitchLabel
-		;
+SwitchLabels:     SwitchLabel
+        | SwitchLabels SwitchLabel
+        ;
 
-SwitchLabel:	  TOK_CASE ConstantExpression TOK_COLON
-		| TOK_DEFAULT TOK_COLON
-		;
+SwitchLabel:      TOK_CASE ConstantExpression TOK_COLON
+        | TOK_DEFAULT TOK_COLON
+        ;
 
-WhileStatement:	  TOK_WHILE TOK_LP Expression TOK_RP Statement
-		;
+WhileStatement:   TOK_WHILE TOK_LP Expression TOK_RP Statement
+        ;
 
 WhileStatementNoShortIf:  TOK_WHILE TOK_LP Expression TOK_RP StatementNoShortIf
-		;
+        ;
 
-DoStatement:	  TOK_DO Statement TOK_WHILE TOK_LP Expression TOK_RP TOK_SM
-		;
+DoStatement:      TOK_DO Statement TOK_WHILE TOK_LP Expression TOK_RP TOK_EOL
+        ;
 
 ForInitOpt: ForInit | { $$ = NULL; } ;
 
@@ -662,290 +687,257 @@ ExpressionOpt: Expression | { $$ = NULL; } ;
 
 ForUpdateOpt: ForUpdate | { $$ = NULL; } ;
 
-ForStatement:	  TOK_FOR TOK_LP ForInitOpt TOK_SM ExpressionOpt TOK_SM ForUpdateOpt TOK_RP
-			Statement
-		;
+ForStatement:     TOK_FOR TOK_LP ForInitOpt TOK_SM ExpressionOpt TOK_SM ForUpdateOpt TOK_RP
+            Statement
+        ;
 
-ForStatementNoShortIf:	  TOK_FOR TOK_LP ForInitOpt TOK_SM ExpressionOpt TOK_SM ForUpdateOpt TOK_RP
-			StatementNoShortIf
-		;
+ForStatementNoShortIf:    TOK_FOR TOK_LP ForInitOpt TOK_SM ExpressionOpt TOK_SM ForUpdateOpt TOK_RP
+            StatementNoShortIf
+        ;
 
 
-ForInit:	  StatementExpressionList
-		| LocalVariableDeclaration
-		;
+ForInit:      StatementExpressionList
+        | LocalVariableDeclaration
+        ;
 
-ForUpdate:	  StatementExpressionList
-		;
+ForUpdate:    StatementExpressionList
+        ;
 
 StatementExpressionList: StatementExpression
-		| StatementExpressionList TOK_CM StatementExpression
-		;
+        | StatementExpressionList TOK_CM StatementExpression
+        ;
 
 IDENTOpt: TOK_IDENT | { $$ = NULL; } ;
 
-BreakStatement:	  TOK_BREAK IDENTOpt TOK_SM
-		;
+BreakStatement:   TOK_BREAK IDENTOpt TOK_EOL
+        ;
 
-ContinueStatement: TOK_CONTINUE IDENTOpt TOK_SM
-		;
+ContinueStatement: TOK_CONTINUE IDENTOpt TOK_EOL
+        ;
 
-ReturnStatement:  TOK_RETURN ExpressionOpt TOK_SM
-		| TOK_SUSPEND ExpressionOpt TOK_SM
-		;
+ReturnStatement:  TOK_RETURN ExpressionOpt TOK_EOL
+        | TOK_SUSPEND ExpressionOpt TOK_EOL
+        ;
 
 
-ThrowStatement:  TOK_THROW Expression TOK_SM
-		;
+ThrowStatement:  TOK_THROW Expression TOK_EOL
+        ;
 
 SynchronizedStatement:  TOK_SYNCHRONIZED TOK_LP Expression TOK_RP Block
-		;
+        ;
 
 CatchesOpt: Catches | { $$ = NULL; } ;
 
-TryStatement:	  TOK_TRY Block Catches
-		| TOK_TRY Block CatchesOpt Finally
-		;
-Catches:	  CatchClause
-		| Catches CatchClause
-		;
+TryStatement:     TOK_TRY Block Catches
+        | TOK_TRY Block CatchesOpt Finally
+        ;
+Catches:      CatchClause
+        | Catches CatchClause
+        ;
 
-CatchClause:	  TOK_CATCH TOK_LP FormalParameter TOK_RP Block
+CatchClause:      TOK_CATCH TOK_LP FormalParameter TOK_RP Block
 
-		;
+        ;
 
-Finally:	  TOK_FINALLY Block
-		;
+Finally:      TOK_FINALLY Block
+        ;
 
-Primary:	  PrimaryNoNewArray
-		| ArrayCreationExpression
-		;
+Primary:      PrimaryNoNewArray
+        | ArrayCreationExpression
+        ;
 
 PrimaryNoNewArray: Literal
-		| TOK_THIS
-		| TOK_LP Expression TOK_RP
-		| ClassInstanceCreationExpression
-		| FieldAccess
-		| MethodInvocation
-		| ArrayAccess
-		;
+        | TOK_THIS
+        | TOK_LP Expression TOK_RP
+        | ClassInstanceCreationExpression
+        | FieldAccess
+        | MethodInvocation
+        | ArrayAccess
+        ;
 
 ClassInstanceCreationExpression: TOK_NEW ClassType TOK_LP ArgumentListOpt TOK_RP
-		;
+        ;
 
-ArgumentList:	  Expression
-		| ArgumentList TOK_CM Expression
-		;
+ArgumentList:     Expression
+        | ArgumentList TOK_CM Expression
+        ;
 
 DimsOpt: Dims | { $$ = NULL; } ;
 
 ArrayCreationExpression: TOK_NEW PrimitiveType DimExprs DimsOpt
-		| TOK_NEW ClassOrInterfaceType DimExprs DimsOpt
-		;
+        | TOK_NEW ClassOrInterfaceType DimExprs DimsOpt
+        ;
 
-DimExprs:	  DimExpr
-		| DimExprs DimExpr
-		;
+DimExprs:     DimExpr
+        | DimExprs DimExpr
+        ;
 
-DimExpr:	  TOK_LB Expression TOK_RB
-		;
+DimExpr:      TOK_LB Expression TOK_RB
+        ;
 
-Dims:		  TOK_LB TOK_RB
-		| Dims TOK_LB TOK_RB
-		;
+Dims:         TOK_LB TOK_RB
+        | Dims TOK_LB TOK_RB
+        ;
 
-FieldAccess:	  Primary TOK_DOT TOK_IDENT
-		| TOK_SUPER TOK_DOT TOK_IDENT
-		;
+FieldAccess:      Primary TOK_DOT TOK_IDENT
+        | TOK_SUPER TOK_DOT TOK_IDENT
+        ;
 
 MethodInvocation: Name TOK_LP ArgumentListOpt TOK_RP
-		| Primary TOK_DOT TOK_IDENT TOK_LP ArgumentListOpt TOK_RP
-		| TOK_SUPER TOK_DOT TOK_IDENT TOK_LP ArgumentListOpt TOK_RP
-		| Name TOK_LC ArgumentListOpt TOK_RC
-		| Primary TOK_DOT TOK_IDENT TOK_LC ArgumentListOpt TOK_RC
-		| TOK_SUPER TOK_DOT TOK_IDENT TOK_LC ArgumentListOpt TOK_RC
-		;
+        | Primary TOK_DOT TOK_IDENT TOK_LP ArgumentListOpt TOK_RP
+        | TOK_SUPER TOK_DOT TOK_IDENT TOK_LP ArgumentListOpt TOK_RP
+        | Name BeginBlock ArgumentListOpt EndBlock
+        | Primary TOK_DOT TOK_IDENT BeginBlock ArgumentListOpt EndBlock
+        | TOK_SUPER TOK_DOT TOK_IDENT BeginBlock ArgumentListOpt EndBlock
+        ;
 
-ArrayAccess:	  Name TOK_LB Expression TOK_RB
-		| PrimaryNoNewArray TOK_LB Expression TOK_RB
-		;
+ArrayAccess:      Name TOK_LB Expression TOK_RB
+        | PrimaryNoNewArray TOK_LB Expression TOK_RB
+        ;
 
 PostFixExpression: Primary
-		| Name
-		| PostIncrementExpression
-		| PostDecrementExpression
-		;
+        | Name
+        | PostIncrementExpression
+        | PostDecrementExpression
+        ;
 
 PostIncrementExpression: PostFixExpression TOK_INC
-		;
+        ;
 
 PostDecrementExpression: PostFixExpression TOK_DEC
-		;
+        ;
 
 UnaryExpression:  PreIncrementExpression
-		| PreDecrementExpression
-		| TOK_PLUS UnaryExpression
-		| TOK_MINUS UnaryExpression
-		| UnaryExpressionNotPlusMinus
-		;
+        | PreDecrementExpression
+        | TOK_PLUS UnaryExpression
+        | TOK_MINUS UnaryExpression
+        | UnaryExpressionNotPlusMinus
+        ;
 
 PreIncrementExpression: TOK_INC UnaryExpression
-		;
+        ;
 
 PreDecrementExpression: TOK_DEC UnaryExpression
-		;
+        ;
 
 UnaryExpressionNotPlusMinus: PostFixExpression
-		| TOK_TILDE UnaryExpression
-		| TOK_BANG UnaryExpression
-		| CastExpression
-		;
+        | TOK_TILDE UnaryExpression
+        | TOK_BANG UnaryExpression
+        | CastExpression
+        ;
 
 CastExpression:   TOK_LP PrimitiveType DimsOpt TOK_RP UnaryExpression
-		| TOK_LP Expression TOK_RP UnaryExpressionNotPlusMinus
-		| TOK_LP Name Dims TOK_RP UnaryExpressionNotPlusMinus
-		;
+        | TOK_LP Expression TOK_RP UnaryExpressionNotPlusMinus
+        | TOK_LP Name Dims TOK_RP UnaryExpressionNotPlusMinus
+        ;
 
 MultiplicativeExpression: UnaryExpression
-		| MultiplicativeExpression TOK_MUL UnaryExpression
-		| MultiplicativeExpression TOK_DIV UnaryExpression
-		| MultiplicativeExpression TOK_MOD UnaryExpression
-		;
+        | MultiplicativeExpression TOK_MUL UnaryExpression
+        | MultiplicativeExpression TOK_DIV UnaryExpression
+        | MultiplicativeExpression TOK_MOD UnaryExpression
+        ;
 
 AdditiveExpression: MultiplicativeExpression
-		| AdditiveExpression TOK_PLUS MultiplicativeExpression
-		| AdditiveExpression TOK_MINUS MultiplicativeExpression
-		;
+        | AdditiveExpression TOK_PLUS MultiplicativeExpression
+        | AdditiveExpression TOK_MINUS MultiplicativeExpression
+        ;
 
 ShiftExpression:  AdditiveExpression
-		| ShiftExpression TOK_SHL AdditiveExpression
-		| ShiftExpression TOK_SHR AdditiveExpression
-		;
+        | ShiftExpression TOK_SHL AdditiveExpression
+        | ShiftExpression TOK_SHR AdditiveExpression
+        ;
 
 RelationalExpression: ShiftExpression
-		| RelationalExpression TOK_LT ShiftExpression
-		| RelationalExpression TOK_GT ShiftExpression
-		| RelationalExpression TOK_LE ShiftExpression
-		| RelationalExpression TOK_GE ShiftExpression
-		| RelationalExpression TOK_INSTANCEOF ReferenceType
-		;
+        | RelationalExpression TOK_LT ShiftExpression
+        | RelationalExpression TOK_GT ShiftExpression
+        | RelationalExpression TOK_LE ShiftExpression
+        | RelationalExpression TOK_GE ShiftExpression
+        | RelationalExpression TOK_INSTANCEOF ReferenceType
+        ;
 
 EqualityExpression: RelationalExpression
-		| EqualityExpression TOK_EQ RelationalExpression
-		| EqualityExpression TOK_NE RelationalExpression
-		;
+        | EqualityExpression TOK_EQ RelationalExpression
+        | EqualityExpression TOK_NE RelationalExpression
+        ;
 
 AndExpression: EqualityExpression
-		| AndExpression TOK_AND EqualityExpression
-		;
+        | AndExpression TOK_AND EqualityExpression
+        ;
 
 ExclusiveOrExpression: AndExpression
-		| ExclusiveOrExpression TOK_CARET AndExpression
-		;
+        | ExclusiveOrExpression TOK_CARET AndExpression
+        ;
 
 InclusiveOrExpression: ExclusiveOrExpression
-		| InclusiveOrExpression TOK_OR ExclusiveOrExpression
-		;
+        | InclusiveOrExpression TOK_OR ExclusiveOrExpression
+        ;
 
 ConditionalAndExpression: InclusiveOrExpression
-		| ConditionalAndExpression TOK_ANDAND InclusiveOrExpression
-		;
+        | ConditionalAndExpression TOK_ANDAND InclusiveOrExpression
+        ;
 
 ConditionalOrExpression: ConditionalAndExpression
-		| ConditionalOrExpression TOK_OROR ConditionalAndExpression
-		;
+        | ConditionalOrExpression TOK_OROR ConditionalAndExpression
+        ;
 
 ConditionalExpression: ConditionalOrExpression
-		| ConditionalOrExpression TOK_QUEST Expression
-			TOK_COLON ConditionalExpression
-		;
+        | ConditionalOrExpression TOK_QUEST Expression
+            TOK_COLON ConditionalExpression
+        ;
 
 AssignmentExpression: ConditionalExpression
-		| Assignment
-		;
+        | Assignment
+        ;
 
-Assignment:	  LeftHandSide AssignmentOperator AssignmentExpression
-		;
+Assignment:   LeftHandSide AssignmentOperator AssignmentExpression
+        ;
 
-LeftHandSide:	  Name
-		| FieldAccess
-		| ArrayAccess
-		;
+LeftHandSide:     Name
+        | FieldAccess
+        | ArrayAccess
+        ;
 
 AssignmentOperator: TOK_ASN
-		| TOK_MUASN
-		| TOK_DIASN
-		| TOK_MODASN
-		| TOK_PLASN
-		| TOK_MIASN
-		| TOK_SLASN
-		| TOK_SRASN
-		| TOK_LSRASN
-		| TOK_ANDASN
-		| TOK_CARETASN
-		| TOK_ORASN
-		;
+        | TOK_MUASN
+        | TOK_DIASN
+        | TOK_MODASN
+        | TOK_PLASN
+        | TOK_MIASN
+        | TOK_SLASN
+        | TOK_SRASN
+        | TOK_LSRASN
+        | TOK_ANDASN
+        | TOK_CARETASN
+        | TOK_ORASN
+        ;
 
-Expression:	  AssignmentExpression
-		;
+Expression:   AssignmentExpression
+        ;
 
 ConstantExpression: Expression
-		;
+        ;
+
+BeginBlock:
+	TOK_INDENT
+	;
+
+EndBlock:
+	TOK_DEDENT
+	;
+
+EndPart:
+	TOK_EOL
+	;
 
 
 %%
 
+// Note: we need to create this function because the variable 'yytname'
+//       and the macro 'YYTRANSLATE' are only visible in this file.
 
-void beagle_set_column (int  column_no , yyscan_t yyscanner);
-
-namespace beagle
+const char *beagle_getTokenName( int tok )
 {
-
-	Parser::Parser(
-		std::istream *in,
-		std::ostream *out )
-	{
-		this->in = in;
-		this->out = out;
-		buffer = NULL;
-
-		// initialize the lexer
-		beagle_lex_init(&scanner);
-		readFile();
-		beagle_set_lineno(1, scanner);
-		beagle_set_column(1, scanner);
-	}
-
-	Parser::~Parser()
-	{
-		if (buffer != NULL)
-			beagle__delete_buffer((YY_BUFFER_STATE)buffer, scanner);
-		beagle_lex_destroy(scanner);
-	}
-
-	int Parser::parse( )
-	{
-		return beagle_parse(scanner);
-	}
-
-	bool Parser::readFile( )
-	{
-		std::stringstream ss;
-		std::string line;
-
-		while (std::getline(*in, line))
-		{
-			ss << line;
-			ss << std::endl;
-		}
-
-		buffer = beagle__scan_string(ss.str().c_str(), scanner);
-	}
-
-} // namespace beagle
-
-
-const char *beagle::Parser::name( int tok )
-{
-	return yytname[YYTRANSLATE(tok)];
+    return yytname[YYTRANSLATE(tok)];
 }
+
+
