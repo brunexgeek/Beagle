@@ -26,23 +26,26 @@ class Node
 
         virtual ~Node();
 
-        Node *getChild( int index ) const
+        Node &getChild( int index ) const
         {
-            return children[index];
+            return *children[index];
         }
 
-        Node *setChild( int index, Node *value )
+        void setChild( int index, Node *value )
         {
-            if (index < 0 || index > children.size()) return NULL;
-
-            return children[index] = value;
+            if (index >= 0 && index < children.size())
+				children[index] = value;
         }
 
-        Node *addChild( Node *value )
+        void addChild( Node *value )
         {
             children.push_back(value);
-            return value;
         }
+
+		int getChildCount()
+		{
+			return children.size();
+		}
 
         const char *getText() const
         {

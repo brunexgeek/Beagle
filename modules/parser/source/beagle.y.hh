@@ -229,7 +229,8 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_FOR_EACH = 395,
     TOK_GROUP = 396,
     TOK_ANNOTATION = 397,
-    TOK_NEW_ARRAY = 398
+    TOK_NEW_ARRAY = 398,
+    TOK_ARRAY = 399
   };
 #endif
 
@@ -242,7 +243,7 @@ union YYSTYPE
 
     char* node;
 
-#line 246 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 247 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

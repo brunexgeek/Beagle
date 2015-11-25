@@ -2,6 +2,7 @@
 #include <fstream>
 #include <beagle-parser/Parser.hh>
 #include <beagle-parser/Node.hh>
+#include <beagle-parser/CodeGenerator.hh>
 
 
 int main( int argc, char **argv )
@@ -17,13 +18,21 @@ int main( int argc, char **argv )
 	if (argc == 2)
 	{
 		beagle::Node *root = parser.parse();
-		if (root != NULL)
-			root->print(std::cout, &parser);
-		else
+		if (root == NULL)
+		{
 			std::cout << "Where's the root?" << std::endl;
+			return 1;
+		}
+
+		root->print(std::cout, &parser);
+
+		beagle::CodeGenerator codegen(*root);
+		codegen.visit();
 	}
 	else
+	{
 		parser.tokens();
+	}
 
 	if (in != std::cin)
 	{

@@ -319,12 +319,13 @@ static void beagle_push(
 %token < node > TOK_GROUP
 %token < node > TOK_ANNOTATION
 %token < node > TOK_NEW_ARRAY
+%token < node > TOK_ARRAY
 
 
 /*
  * each nonterminal is declared.  nonterminals correspond to internal nodes
  */
-%type < node > Goal Literal Type PrimitiveType NumericType IntegralType
+%type < node > Literal Type PrimitiveType NumericType IntegralType
 %type < node > FloatingPointType ReferenceType ClassOrInterfaceType
 %type < node > ClassType InterfaceType ArrayType Name SimpleName
 %type < node > QualifiedName CompilationUnit ImportDeclarations
@@ -374,23 +375,20 @@ static void beagle_push(
 %type < node > BlockStatementsOpt
 %type < node > ArgumentListOpt ExplicitConstructorInvocationOpt DimsOpt
 %type < node > ExtendsInterfacesOpt InterfaceMemberDeclarationsOpt
-%type < node > VariableInitializersOpt CMOpt SwitchBlockStatementGroupsOpt
+%type < node > VariableInitializersOpt SwitchBlockStatementGroupsOpt
 %type < node > ForInitOpt ExpressionOpt ForUpdateOpt
 %type < node > AnnotationDeclarations AnnotationDeclaration
 %type < node > BeginBlock EndBlock AnnotationDeclarationsOpt
 
-/*
- * the start symbol, Goal, may seem to be here for rhetorical purposes,
- * but it is also the ideal spot to insert a semantic action that passes
- * the completed parse tree to a later phase of compilation.
- */
-%start Goal
+
+%start CompilationUnit
 
 %%
 
 
-Goal:
-    CompilationUnit
+CompilationUnit:
+    PackageDeclarationOpt ImportDeclarationsOpt TypeDeclaration
+    {   COMBINE(TOK_UNIT, 3);   }
     ;
 
 Literal:
@@ -511,11 +509,6 @@ QualifiedName:
         PUSH(TOK_IDENT, $3);
         COMBINE(0, 1);
     }
-    ;
-
-CompilationUnit:
-    PackageDeclarationOpt ImportDeclarationsOpt TypeDeclaration
-    {   COMBINE(TOK_UNIT, 3);   }
     ;
 
 PackageDeclarationOpt:
@@ -762,13 +755,17 @@ FormalParameter:
     ;
 
 
-Throws: TOK_THROWS ClassTypeList
-        ;
+Throws:
+	TOK_THROWS ClassTypeList
+    ;
 
 
-ClassTypeList: ClassType
-        | ClassTypeList TOK_CM ClassType
-        ;
+ClassTypeList:
+	ClassType
+	{   COMBINE(TOK_THROWS, 1);   }
+    | ClassTypeList TOK_CM ClassType
+    {   COMBINE(0, 1);   }
+    ;
 
 MethodBody:
     Block
@@ -861,16 +858,21 @@ AbstractMethodDeclaration:
     }
     ;
 
-VariableInitializersOpt: VariableInitializers | { $$ = NULL; } ;
+ArrayInitializer:
+	TOK_LC VariableInitializersOpt TOK_RC
+    ;
 
-CMOpt:  TOK_CM { $$ = NULL; } | { $$ = NULL; } ;
+VariableInitializersOpt:
+	VariableInitializers
+	| {   PUSH(TOK_NONE, "VariableInitializers"); }
+	;
 
-ArrayInitializer: TOK_LC VariableInitializersOpt CMOpt TOK_RC
-        ;
-
-VariableInitializers: VariableInitializer
-        | VariableInitializers TOK_CM VariableInitializer
-        ;
+VariableInitializers:
+	VariableInitializer
+	{   COMBINE(TOK_ARRAY, 1);   }
+    | VariableInitializers TOK_CM VariableInitializer
+    {   COMBINE(0, 1);   }
+    ;
 
 Block:
     BeginBlock BlockStatementsOpt EndBlock
