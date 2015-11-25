@@ -26,19 +26,50 @@ class Node
 
         virtual ~Node();
 
-        Node *getChild( int index ) const;
+        Node *getChild( int index ) const
+        {
+            return children[index];
+        }
 
-        Node *setChild( int index, Node *value );
+        Node *setChild( int index, Node *value )
+        {
+            if (index < 0 || index > children.size()) return NULL;
 
-        Node *addChild( Node *value );
+            return children[index] = value;
+        }
 
-        const char *getText() const;
+        Node *addChild( Node *value )
+        {
+            children.push_back(value);
+            return value;
+        }
 
-        int getCounter() const;
+        const char *getText() const
+        {
+            return text.c_str();
+        }
 
-        void setCounter( int value );
+        int getCounter() const
+        {
+            return counter;
+        }
 
-        void print( std::ostream &out, Parser *parser = NULL, int level = 0);
+        void setCounter( int value )
+        {
+            counter = value;
+        }
+
+        int getType()
+        {
+            return type;
+        }
+
+        void setType( int type )
+        {
+            this->type = type;
+        }
+
+        void print( std::ostream &out, Parser *parser = NULL, int level = 0, bool recursive = true);
 
     private:
         std::vector<Node*> children;

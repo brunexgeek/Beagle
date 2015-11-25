@@ -127,6 +127,8 @@ typedef struct
 
     const char *rule;
 
+    beagle::Parser *parser;
+
 } parser_context_t;
 
 
@@ -139,7 +141,7 @@ typedef struct
 int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 143 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:355  */
+#line 145 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -182,75 +184,75 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_STATIC = 291,
     TOK_SUPER = 292,
     TOK_SWITCH = 293,
-    TOK_SYNCHRONIZED = 294,
-    TOK_THIS = 295,
-    TOK_THROW = 296,
-    TOK_THROWS = 297,
-    TOK_VOID = 298,
-    TOK_VOLATILE = 299,
-    TOK_WHILE = 300,
-    TOK_IDENT = 301,
-    TOK_CONTINUE = 302,
-    TOK_TRANSIENT = 303,
-    TOK_TRY = 304,
-    TOK_NULLLITERAL = 305,
-    TOK_BOOLLITERAL = 306,
-    TOK_INTLITERAL = 307,
-    TOK_CHARLITERAL = 308,
-    TOK_FLOATLITERAL = 309,
-    TOK_STRINGLITERAL = 310,
-    TOK_UINT8 = 311,
-    TOK_UINT16 = 312,
-    TOK_UINT32 = 313,
-    TOK_UINT64 = 314,
-    TOK_INT8 = 315,
-    TOK_INT16 = 316,
-    TOK_INT32 = 317,
-    TOK_INT64 = 318,
-    TOK_LP = 319,
-    TOK_RP = 320,
-    TOK_LC = 321,
-    TOK_RC = 322,
-    TOK_LB = 323,
-    TOK_RB = 324,
-    TOK_SM = 325,
-    TOK_CM = 326,
-    TOK_DOT = 327,
-    TOK_ASN = 328,
-    TOK_LT = 329,
-    TOK_GT = 330,
-    TOK_BANG = 331,
-    TOK_TILDE = 332,
-    TOK_QUEST = 333,
-    TOK_COLON = 334,
-    TOK_EQ = 335,
-    TOK_NE = 336,
-    TOK_LE = 337,
-    TOK_GE = 338,
-    TOK_ANDAND = 339,
-    TOK_OROR = 340,
-    TOK_INC = 341,
-    TOK_DEC = 342,
-    TOK_PLUS = 343,
-    TOK_MINUS = 344,
-    TOK_MUL = 345,
-    TOK_DIV = 346,
-    TOK_AND = 347,
-    TOK_OR = 348,
-    TOK_CARET = 349,
-    TOK_MOD = 350,
-    TOK_SHL = 351,
-    TOK_SHR = 352,
-    TOK_PLASN = 353,
-    TOK_MIASN = 354,
-    TOK_MUASN = 355,
-    TOK_DIASN = 356,
-    TOK_ANDASN = 357,
-    TOK_ORASN = 358,
-    TOK_CARETASN = 359,
-    TOK_SLASN = 360,
-    TOK_SRASN = 361,
-    TOK_LSRASN = 362,
+    TOK_READLOCK = 294,
+    TOK_WRITELOCK = 295,
+    TOK_THIS = 296,
+    TOK_THROW = 297,
+    TOK_THROWS = 298,
+    TOK_VOID = 299,
+    TOK_VOLATILE = 300,
+    TOK_WHILE = 301,
+    TOK_IDENT = 302,
+    TOK_CONTINUE = 303,
+    TOK_TRANSIENT = 304,
+    TOK_TRY = 305,
+    TOK_NULLLITERAL = 306,
+    TOK_BOOLLITERAL = 307,
+    TOK_INTLITERAL = 308,
+    TOK_CHARLITERAL = 309,
+    TOK_FLOATLITERAL = 310,
+    TOK_STRINGLITERAL = 311,
+    TOK_UINT8 = 312,
+    TOK_UINT16 = 313,
+    TOK_UINT32 = 314,
+    TOK_UINT64 = 315,
+    TOK_INT8 = 316,
+    TOK_INT16 = 317,
+    TOK_INT32 = 318,
+    TOK_INT64 = 319,
+    TOK_LP = 320,
+    TOK_RP = 321,
+    TOK_LC = 322,
+    TOK_RC = 323,
+    TOK_LB = 324,
+    TOK_RB = 325,
+    TOK_SM = 326,
+    TOK_CM = 327,
+    TOK_DOT = 328,
+    TOK_ASN = 329,
+    TOK_LT = 330,
+    TOK_GT = 331,
+    TOK_BANG = 332,
+    TOK_TILDE = 333,
+    TOK_QUEST = 334,
+    TOK_COLON = 335,
+    TOK_EQ = 336,
+    TOK_NE = 337,
+    TOK_LE = 338,
+    TOK_GE = 339,
+    TOK_ANDAND = 340,
+    TOK_OROR = 341,
+    TOK_INC = 342,
+    TOK_DEC = 343,
+    TOK_PLUS = 344,
+    TOK_MINUS = 345,
+    TOK_MUL = 346,
+    TOK_DIV = 347,
+    TOK_AND = 348,
+    TOK_OR = 349,
+    TOK_CARET = 350,
+    TOK_MOD = 351,
+    TOK_SHL = 352,
+    TOK_SHR = 353,
+    TOK_PLASN = 354,
+    TOK_MIASN = 355,
+    TOK_MUASN = 356,
+    TOK_DIASN = 357,
+    TOK_ANDASN = 358,
+    TOK_ORASN = 359,
+    TOK_CARETASN = 360,
+    TOK_SLASN = 361,
+    TOK_SRASN = 362,
     TOK_MODASN = 363,
     TOK_BAD_TOKEN = 364,
     TOK_EOL = 365,
@@ -258,23 +260,35 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_VARARG = 367,
     TOK_INDENT = 368,
     TOK_DEDENT = 369,
-    TOK_TYPE_CLASS = 370,
-    TOK_TYPE_ARRAY = 371,
-    TOK_INTERFACES = 372,
-    TOK_NONE = 373,
-    TOK_BODY = 374,
-    TOK_FIELD = 375,
-    TOK_METHOD = 376,
-    TOK_CONSTRUCTOR = 377,
-    TOK_LIST = 378,
-    TOK_VARIABLE = 379,
-    TOK_MODIFIERS = 380,
-    TOK_UNIT = 381,
-    TOK_TYPE = 382,
-    TOK_MEMBER = 383,
-    TOK_IMPORT_ALL = 384,
-    TOK_STATIC_INIT = 385,
-    TOK_PARAMETER = 386
+    TOK_IN = 370,
+    TOK_RANGE = 371,
+    TOK_PASS = 372,
+    TOK_TYPE_CLASS = 373,
+    TOK_TYPE_ARRAY = 374,
+    TOK_INTERFACES = 375,
+    TOK_NONE = 376,
+    TOK_BODY = 377,
+    TOK_FIELD = 378,
+    TOK_METHOD = 379,
+    TOK_CONSTRUCTOR = 380,
+    TOK_LIST = 381,
+    TOK_VARIABLE = 382,
+    TOK_MODIFIERS = 383,
+    TOK_UNIT = 384,
+    TOK_TYPE = 385,
+    TOK_MEMBER = 386,
+    TOK_IMPORT_ALL = 387,
+    TOK_STATIC_INIT = 388,
+    TOK_PARAMETER = 389,
+    TOK_BLOCK = 390,
+    TOK_CALL = 391,
+    TOK_FIELD_ACCESS = 392,
+    TOK_CAST = 393,
+    TOK_ARRAY_ACCESS = 394,
+    TOK_FOR_EACH = 395,
+    TOK_GROUP = 396,
+    TOK_ANNOTATION = 397,
+    TOK_NEW_ARRAY = 398
   };
 #endif
 
@@ -283,11 +297,11 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 136 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:355  */
+#line 167 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:355  */
 
     char* node;
 
-#line 291 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:355  */
+#line 305 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -301,9 +315,9 @@ int beagle_parse (parser_context_t *parserContext);
 
 /* Copy the second part of user declarations.  */
 
-#line 305 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:358  */
+#line 319 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:358  */
 /* Unqualified %code blocks.  */
-#line 55 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:359  */
+#line 57 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:359  */
 
 
 #include <iostream>
@@ -314,18 +328,18 @@ int beagle_parse (parser_context_t *parserContext);
 static void beagle_error(parser_context_t *context, const char *msg)
 {
     printf ("%s:%d:%d: error: %s - %s\n",
-		context->fileName,
-		beagle_get_lineno(context->scanner),
-		beagle_get_column(context->scanner),
-		context->rule,
-		msg);
+        context->fileName,
+        beagle_get_lineno(context->scanner),
+        beagle_get_column(context->scanner),
+        context->rule,
+        msg);
     return;
 }
 
 
 static beagle::Node *beagle_pop( std::vector<beagle::Node*> &stack )
 {
-	if (stack.size() == 0) return NULL;
+    if (stack.size() == 0) return NULL;
     beagle::Node *node = stack[ stack.size() - 1 ];
     stack.pop_back();
     return node;
@@ -334,38 +348,67 @@ static beagle::Node *beagle_pop( std::vector<beagle::Node*> &stack )
 
 static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok, int n )
 {
-	beagle::Node *temp;
+    beagle::Node *temp;
 
-	if (stack.size() < n) return NULL;
+    if (stack.size() < n) return NULL;
 
-	if (tok > 0 )
-		temp = new beagle::Node(tok, NULL);
-	else
-	{
-		if (stack.size() <= n) return NULL;
-		temp = stack[ stack.size() - 1 - n ];
-	}
-	for (int i = stack.size() - n; i < stack.size(); ++i)
-	{
-		//std::cout << temp->getValue() << ": adding child " << p->getValue() << std::endl;;
-		temp->addChild( stack[i] );
-	}
-	for (int i = 0; i < n; ++i)
-		stack.pop_back();
+    if (tok > 0 )
+        temp = new beagle::Node(tok, NULL);
+    else
+    {
+        if (stack.size() <= n) return NULL;
+        temp = stack[ stack.size() - 1 - n ];
+    }
+    for (int i = stack.size() - n; i < stack.size(); ++i)
+    {
+        //std::cout << temp->getValue() << ": adding child " << p->getValue() << std::endl;;
+        temp->addChild( stack[i] );
+    }
+    for (int i = 0; i < n; ++i)
+        stack.pop_back();
 
-	if (tok > 0) stack.push_back(temp);
+    if (tok > 0) stack.push_back(temp);
+}
+
+
+static void beagle_printStack( std::vector<beagle::Node*> &stack, beagle::Parser *parser )
+{
+    std::cout << "Stack:" << std::endl;
+    for (int i = 0; i < stack.size(); ++i)
+        stack[i]->print(std::cout, parser, 1, false);
+}
+
+
+static void beagle_push(
+    parser_context_t *context,
+    int token,
+    const char *value )
+{
+    std::cout << "PUSH " << value << std::endl;
+    context->stack.push_back( new beagle::Node(token,value) );
+}
+
+
+static void beagle_push(
+    parser_context_t *context,
+    beagle::Node *node )
+{
+    std::cout << "PUSH " << node->getText() << std::endl;
+    context->stack.push_back(node);
 }
 
 
 #define scanner              parserContext->scanner
-#define PUSH(tok,value)      std::cout << "PUSH " << value << std::endl, parserContext->stack.push_back( new beagle::Node((tok),(value)) )
+#define PUSH(token,value)    beagle_push( parserContext, (token), (value) )
+#define NPUSH(node)          beagle_push( parserContext, (node) )
 #define POP()                beagle_pop(parserContext->stack)
 #define TOP()                (parserContext->stack[ parserContext->stack.size() - 1 ])
 #define COMBINE(tok,n)       beagle_combine(parserContext->stack, (tok), (n))
-#define RULE(x)				 parserContext->rule = (x)
+#define RULE(x)              parserContext->rule = (x)
+#define PSTACK()             beagle_printStack(parserContext->stack, parserContext->parser)
 
 
-#line 369 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:359  */
+#line 412 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:359  */
 
 #ifdef short
 # undef short
@@ -607,21 +650,21 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  10
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   1528
+#define YYLAST   1154
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  132
+#define YYNTOKENS  144
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  161
+#define YYNNTS  157
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  340
+#define YYNRULES  332
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  571
+#define YYNSTATES  561
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   386
+#define YYMAXUTOK   398
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -668,48 +711,48 @@ static const yytype_uint8 yytranslate[] =
       95,    96,    97,    98,    99,   100,   101,   102,   103,   104,
      105,   106,   107,   108,   109,   110,   111,   112,   113,   114,
      115,   116,   117,   118,   119,   120,   121,   122,   123,   124,
-     125,   126,   127,   128,   129,   130,   131
+     125,   126,   127,   128,   129,   130,   131,   132,   133,   134,
+     135,   136,   137,   138,   139,   140,   141,   142,   143
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   349,   349,   353,   354,   355,   356,   357,   358,   362,
-     363,   367,   368,   373,   374,   378,   380,   382,   384,   386,
-     388,   390,   392,   394,   396,   398,   403,   405,   410,   411,
-     415,   420,   425,   429,   433,   437,   441,   449,   450,   454,
-     459,   467,   472,   473,   477,   478,   483,   485,   490,   495,
-     496,   500,   505,   512,   513,   517,   518,   522,   523,   527,
-     528,   532,   534,   539,   541,   543,   545,   547,   549,   551,
-     553,   555,   557,   562,   567,   568,   572,   573,   577,   578,
-     583,   587,   591,   593,   598,   602,   603,   607,   609,   614,
-     615,   616,   620,   621,   622,   626,   631,   633,   638,   643,
-     647,   649,   653,   654,   658,   666,   672,   674,   680,   681,
-     686,   687,   690,   692,   697,   699,   707,   711,   712,   715,
-     719,   724,   729,   730,   734,   735,   738,   738,   741,   748,
-     749,   753,   754,   758,   763,   765,   770,   774,   775,   779,
-     781,   786,   787,   791,   795,   802,   802,   804,   804,   806,
-     809,   810,   814,   818,   819,   822,   823,   826,   829,   832,
-     833,   834,   835,   836,   839,   840,   841,   842,   845,   846,
-     847,   848,   849,   850,   851,   852,   853,   854,   855,   859,
-     863,   866,   867,   868,   869,   870,   871,   872,   876,   880,
-     884,   888,   891,   891,   893,   893,   895,   898,   899,   902,
-     905,   906,   909,   910,   913,   916,   919,   922,   922,   924,
-     924,   926,   926,   928,   932,   937,   938,   941,   944,   945,
-     948,   948,   950,   953,   956,   957,   961,   964,   967,   967,
-     969,   970,   972,   973,   976,   980,   983,   984,   987,   988,
-     989,   990,   991,   992,   993,   996,   999,  1000,  1003,  1003,
-    1005,  1006,  1009,  1010,  1013,  1016,  1017,  1020,  1021,  1024,
-    1025,  1026,  1027,  1028,  1029,  1032,  1033,  1036,  1037,  1038,
-    1039,  1042,  1045,  1048,  1049,  1050,  1051,  1052,  1055,  1058,
-    1061,  1062,  1063,  1064,  1067,  1068,  1069,  1072,  1073,  1074,
-    1075,  1078,  1079,  1080,  1083,  1084,  1085,  1088,  1089,  1090,
-    1091,  1092,  1093,  1096,  1097,  1098,  1101,  1102,  1105,  1106,
-    1109,  1110,  1113,  1114,  1117,  1118,  1121,  1122,  1126,  1127,
-    1130,  1133,  1134,  1135,  1138,  1139,  1140,  1141,  1142,  1143,
-    1144,  1145,  1146,  1147,  1148,  1149,  1152,  1155,  1159,  1163,
-    1167
+       0,   393,   393,   397,   399,   401,   403,   405,   407,   412,
+     413,   417,   418,   423,   424,   428,   430,   432,   434,   436,
+     438,   440,   442,   444,   446,   448,   453,   455,   460,   461,
+     465,   470,   475,   479,   483,   487,   491,   499,   500,   504,
+     509,   517,   522,   523,   527,   528,   533,   535,   540,   545,
+     546,   550,   555,   562,   563,   567,   568,   572,   574,   579,
+     581,   589,   591,   596,   598,   600,   602,   604,   606,   608,
+     610,   612,   614,   616,   621,   626,   627,   631,   632,   636,
+     637,   642,   646,   650,   652,   657,   661,   662,   666,   668,
+     673,   674,   675,   679,   680,   681,   685,   690,   692,   697,
+     702,   707,   709,   713,   714,   718,   724,   730,   732,   738,
+     739,   744,   745,   748,   750,   755,   757,   765,   769,   770,
+     774,   778,   783,   788,   789,   793,   794,   798,   799,   803,
+     808,   810,   815,   816,   820,   825,   827,   832,   836,   837,
+     841,   843,   848,   849,   853,   857,   864,   864,   866,   866,
+     868,   871,   872,   876,   880,   882,   887,   888,   892,   896,
+     901,   902,   903,   904,   905,   906,   907,   911,   912,   913,
+     914,   915,   916,   917,   918,   919,   920,   921,   925,   930,
+     934,   935,   936,   937,   938,   939,   940,   944,   952,   961,
+     966,   971,   972,   976,   980,   982,   987,   992,   994,   999,
+    1001,  1009,  1015,  1020,  1021,  1025,  1026,  1030,  1031,  1035,
+    1040,  1042,  1047,  1052,  1053,  1057,  1061,  1063,  1068,  1073,
+    1081,  1086,  1094,  1100,  1105,  1107,  1112,  1113,  1117,  1122,
+    1127,  1129,  1134,  1139,  1144,  1145,  1149,  1150,  1152,  1153,
+    1154,  1155,  1156,  1160,  1165,  1167,  1172,  1173,  1177,  1211,
+    1216,  1218,  1223,  1228,  1233,  1239,  1241,  1249,  1261,  1263,
+    1285,  1287,  1292,  1293,  1294,  1295,  1299,  1304,  1309,  1310,
+    1311,  1313,  1315,  1319,  1324,  1329,  1330,  1332,  1334,  1339,
+    1359,  1364,  1365,  1367,  1369,  1374,  1375,  1377,  1382,  1383,
+    1385,  1390,  1391,  1393,  1395,  1397,  1399,  1404,  1405,  1407,
+    1412,  1413,  1418,  1419,  1424,  1425,  1430,  1431,  1436,  1437,
+    1442,  1443,  1448,  1449,  1453,  1473,  1474,  1475,  1479,  1481,
+    1483,  1485,  1487,  1489,  1491,  1493,  1495,  1497,  1499,  1504,
+    1508,  1512,  1516
 };
 #endif
 
@@ -726,8 +769,8 @@ static const char *const yytname[] =
   "TOK_INT", "TOK_INTERFACE", "TOK_LONG", "TOK_NATIVE", "TOK_NEW",
   "TOK_PACKAGE", "TOK_PRIVATE", "TOK_PROTECTED", "TOK_PUBLIC",
   "TOK_RETURN", "TOK_SUSPEND", "TOK_STATIC", "TOK_SUPER", "TOK_SWITCH",
-  "TOK_SYNCHRONIZED", "TOK_THIS", "TOK_THROW", "TOK_THROWS", "TOK_VOID",
-  "TOK_VOLATILE", "TOK_WHILE", "TOK_IDENT", "TOK_CONTINUE",
+  "TOK_READLOCK", "TOK_WRITELOCK", "TOK_THIS", "TOK_THROW", "TOK_THROWS",
+  "TOK_VOID", "TOK_VOLATILE", "TOK_WHILE", "TOK_IDENT", "TOK_CONTINUE",
   "TOK_TRANSIENT", "TOK_TRY", "TOK_NULLLITERAL", "TOK_BOOLLITERAL",
   "TOK_INTLITERAL", "TOK_CHARLITERAL", "TOK_FLOATLITERAL",
   "TOK_STRINGLITERAL", "TOK_UINT8", "TOK_UINT16", "TOK_UINT32",
@@ -739,15 +782,18 @@ static const char *const yytname[] =
   "TOK_MINUS", "TOK_MUL", "TOK_DIV", "TOK_AND", "TOK_OR", "TOK_CARET",
   "TOK_MOD", "TOK_SHL", "TOK_SHR", "TOK_PLASN", "TOK_MIASN", "TOK_MUASN",
   "TOK_DIASN", "TOK_ANDASN", "TOK_ORASN", "TOK_CARETASN", "TOK_SLASN",
-  "TOK_SRASN", "TOK_LSRASN", "TOK_MODASN", "TOK_BAD_TOKEN", "TOK_EOL",
-  "TOK_AT", "TOK_VARARG", "TOK_INDENT", "TOK_DEDENT", "TOK_TYPE_CLASS",
-  "TOK_TYPE_ARRAY", "TOK_INTERFACES", "TOK_NONE", "TOK_BODY", "TOK_FIELD",
-  "TOK_METHOD", "TOK_CONSTRUCTOR", "TOK_LIST", "TOK_VARIABLE",
-  "TOK_MODIFIERS", "TOK_UNIT", "TOK_TYPE", "TOK_MEMBER", "TOK_IMPORT_ALL",
-  "TOK_STATIC_INIT", "TOK_PARAMETER", "$accept", "Goal", "Literal", "Type",
-  "PrimitiveType", "NumericType", "IntegralType", "FloatingPointType",
-  "ReferenceType", "ClassOrInterfaceType", "ClassType", "InterfaceType",
-  "ArrayType", "Name", "SimpleName", "QualifiedName", "CompilationUnit",
+  "TOK_SRASN", "TOK_MODASN", "TOK_BAD_TOKEN", "TOK_EOL", "TOK_AT",
+  "TOK_VARARG", "TOK_INDENT", "TOK_DEDENT", "TOK_IN", "TOK_RANGE",
+  "TOK_PASS", "TOK_TYPE_CLASS", "TOK_TYPE_ARRAY", "TOK_INTERFACES",
+  "TOK_NONE", "TOK_BODY", "TOK_FIELD", "TOK_METHOD", "TOK_CONSTRUCTOR",
+  "TOK_LIST", "TOK_VARIABLE", "TOK_MODIFIERS", "TOK_UNIT", "TOK_TYPE",
+  "TOK_MEMBER", "TOK_IMPORT_ALL", "TOK_STATIC_INIT", "TOK_PARAMETER",
+  "TOK_BLOCK", "TOK_CALL", "TOK_FIELD_ACCESS", "TOK_CAST",
+  "TOK_ARRAY_ACCESS", "TOK_FOR_EACH", "TOK_GROUP", "TOK_ANNOTATION",
+  "TOK_NEW_ARRAY", "$accept", "Goal", "Literal", "Type", "PrimitiveType",
+  "NumericType", "IntegralType", "FloatingPointType", "ReferenceType",
+  "ClassOrInterfaceType", "ClassType", "InterfaceType", "ArrayType",
+  "Name", "SimpleName", "QualifiedName", "CompilationUnit",
   "PackageDeclarationOpt", "ImportDeclarationsOpt", "ImportDeclarations",
   "PackageDeclaration", "ImportDeclaration", "SingleTypeImportDeclaration",
   "TypeImportOnDemandDeclaration", "TypeDeclaration",
@@ -770,22 +816,21 @@ static const char *const yytname[] =
   "AbstractMethodDeclaration", "VariableInitializersOpt", "CMOpt",
   "ArrayInitializer", "VariableInitializers", "Block", "BlockStatements",
   "BlockStatement", "LocalVariableDeclarationStatement",
-  "LocalVariableDeclaration", "Statement", "StatementNoShortIf",
+  "LocalVariableDeclaration", "Statement",
   "StatementWithoutTrailingSubstatement", "EmptyStatement",
   "ExpressionStatement", "StatementExpression", "IfThenStatement",
-  "IfThenElseStatement", "IfThenElseStatementNoShortIf", "SwitchStatement",
-  "SwitchBlockStatementGroupsOpt", "SwitchLabelsOpt", "SwitchBlock",
+  "IfThenInlineStatement", "IfThenElseStatement", "SwitchStatement",
+  "SwitchBlockStatementGroupsOpt", "SwitchBlock",
   "SwitchBlockStatementGroups", "SwitchBlockStatementGroup",
-  "SwitchLabels", "SwitchLabel", "WhileStatement",
-  "WhileStatementNoShortIf", "DoStatement", "ForInitOpt", "ExpressionOpt",
-  "ForUpdateOpt", "ForStatement", "ForStatementNoShortIf", "ForInit",
-  "ForUpdate", "StatementExpressionList", "IDENTOpt", "BreakStatement",
-  "ContinueStatement", "ReturnStatement", "ThrowStatement",
-  "SynchronizedStatement", "CatchesOpt", "TryStatement", "Catches",
-  "CatchClause", "Finally", "Primary", "PrimaryNoNewArray",
-  "ClassInstanceCreationExpression", "ArgumentList", "DimsOpt",
-  "ArrayCreationExpression", "DimExprs", "DimExpr", "Dims", "FieldAccess",
-  "MethodInvocation", "ArrayAccess", "PostFixExpression",
+  "SwitchLabels", "SwitchLabel", "WhileStatement", "DoStatement",
+  "ForInitOpt", "ExpressionOpt", "ForUpdateOpt", "ForStatement",
+  "ForEachStatement", "Range", "ForInit", "ForUpdate",
+  "StatementExpressionList", "BreakStatement", "ContinueStatement",
+  "ReturnStatement", "ThrowStatement", "LockStatement", "CatchesOpt",
+  "TryStatement", "Catches", "CatchClause", "Finally", "Primary",
+  "PrimaryNoNewArray", "ClassInstanceCreationExpression", "ArgumentList",
+  "DimsOpt", "ArrayCreationExpression", "DimExprs", "DimExpr", "Dims",
+  "FieldAccess", "MethodInvocation", "ArrayAccess", "PostFixExpression",
   "PostIncrementExpression", "PostDecrementExpression", "UnaryExpression",
   "PreIncrementExpression", "PreDecrementExpression",
   "UnaryExpressionNotPlusMinus", "CastExpression",
@@ -795,7 +840,7 @@ static const char *const yytname[] =
   "ConditionalAndExpression", "ConditionalOrExpression",
   "ConditionalExpression", "AssignmentExpression", "Assignment",
   "LeftHandSide", "AssignmentOperator", "Expression", "ConstantExpression",
-  "BeginBlock", "EndBlock", "EndPart", YY_NULLPTR
+  "BeginBlock", "EndBlock", YY_NULLPTR
 };
 #endif
 
@@ -817,16 +862,17 @@ static const yytype_uint16 yytoknum[] =
      355,   356,   357,   358,   359,   360,   361,   362,   363,   364,
      365,   366,   367,   368,   369,   370,   371,   372,   373,   374,
      375,   376,   377,   378,   379,   380,   381,   382,   383,   384,
-     385,   386
+     385,   386,   387,   388,   389,   390,   391,   392,   393,   394,
+     395,   396,   397,   398
 };
 # endif
 
-#define YYPACT_NINF -467
+#define YYPACT_NINF -426
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-467)))
+  (!!((Yystate) == (-426)))
 
-#define YYTABLE_NINF -324
+#define YYTABLE_NINF -318
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -835,64 +881,63 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      43,    46,   104,  -467,   124,  -467,  -467,   -35,  -467,  -467,
-    -467,    46,    66,   124,  -467,  -467,  -467,   122,  -467,   -13,
-     163,  -467,   275,    66,  -467,  -467,  -467,  -467,  -467,   -10,
-    -467,   -24,  -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,
-    -467,  -467,   275,  -467,    44,  -467,   139,  1385,  -467,  -467,
-      46,    46,  -467,  1450,   142,  -467,  -467,  -467,  -467,  -467,
-    -467,  -467,  1257,  1385,  1385,  1385,  1385,  1385,  1385,  -467,
-     496,   176,   181,   201,  -467,   210,  -467,   953,  -467,  1030,
-      29,  -467,  -467,  -467,  -467,  -467,  -467,  -467,   140,   -40,
-     179,    59,   152,   197,   190,   202,   209,   117,  -467,  -467,
-    -467,  1420,  -467,   282,   287,  -467,  -467,  -467,  -467,  -467,
-    -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,   245,
-    -467,  -467,  -467,   245,   252,   113,   272,   254,  1384,   266,
-     106,  -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,  1385,
-    1385,  -467,  1385,   223,   288,  1385,  1385,  -467,  -467,  1385,
-    1385,  1385,  1385,  1385,  1385,  1385,  1450,  1385,  1385,  1385,
-    1385,  1385,  1385,  1385,  1385,  1385,  1385,  1385,  1385,  -467,
-    -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,
-    -467,  1385,    46,   315,  -467,    46,   225,   267,  1385,   271,
-    -467,   271,  1385,    46,   -23,   276,   283,   279,  1301,   161,
-     313,   286,   289,   238,  -467,   -20,   292,  -467,  -467,  -467,
-    -467,   140,   140,   -40,   -40,   301,  -467,  -467,   302,   149,
-     179,   179,   179,   179,    59,    59,   152,   197,   190,   202,
-     281,   209,  -467,  -467,  -467,    46,   261,  -467,  -467,  -467,
-     260,    46,   306,  1301,  -467,  -467,  -467,   311,  -467,    57,
-    1385,  1385,  -467,  1385,   310,   313,  -467,  -467,  -467,  -467,
-    -467,  1385,  1385,  -467,   312,   314,   319,  1385,   309,   260,
-    -467,   131,  -467,  -467,  -467,    46,  -467,   328,   238,  -467,
-    -467,  -467,   329,   238,  -467,  -467,  -467,  -467,  -467,   136,
-     275,  -467,   274,   238,   137,  -467,  -467,  -467,  -467,  -467,
-    -467,  -467,  -467,   661,   238,   153,  -467,  -467,  -467,  -467,
-     290,  -467,  -467,   200,  -467,  -467,  -467,   260,   200,  -467,
-    -467,  -467,   260,  -467,   352,   301,  -467,    46,  -467,  1061,
-     338,  -467,  -467,   339,   340,   -38,  -467,    98,   341,   360,
-    1138,   345,   346,  1385,  1385,   348,   354,  1385,   355,   360,
-     260,  1385,  -467,   370,   -18,   238,  -467,  1061,  -467,  -467,
-     316,  -467,  -467,  -467,  -467,   317,  -467,  -467,  -467,  -467,
-    -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,    58,   111,
-      29,   214,   218,  -467,  -467,  -467,   374,   374,   370,  -467,
-     356,  1329,   374,  -467,   331,   378,   897,  1385,   332,  -467,
-     333,  1385,  1385,   334,  1385,   335,   417,   364,  -467,   367,
-    1357,  -467,  -467,  -467,  -467,  1450,   370,   381,   376,  -467,
-     383,  -467,  -467,  1329,  -467,  -467,  -467,   384,  -467,   387,
-    -467,  -467,   389,  -467,   382,   396,  -467,  -467,   397,   399,
-    -467,   401,  -467,   403,   452,   114,  -467,  -467,   370,   402,
-     429,   374,   429,  -467,   404,   406,   429,  1385,  1385,  1237,
-     363,   363,   260,  1138,   374,   260,  -467,  -467,   402,    46,
-     369,  -467,  -467,  -467,  -467,   415,  1329,  -467,   418,   414,
-    -467,  -467,  1192,   260,  -467,  -467,   420,  -467,  -467,   419,
-     260,  -467,  -467,   386,  1237,   424,   427,   428,  -467,   480,
-     484,  -467,  -467,  -467,  -467,   185,   260,    46,  -467,   231,
-    -467,   436,  -467,   382,   897,  1385,  1385,   363,  1385,   423,
-     185,   185,  -467,   984,  -467,  -467,  -467,   439,   440,   238,
-    -467,  1138,   435,   442,   445,  1138,  -467,   433,  -467,   238,
-     185,  -467,  1061,  -467,  1385,  1385,  -467,  -467,  1385,   363,
-    1192,  -467,  -467,  -467,   449,   451,   447,  1192,  -467,   408,
-     410,  1237,   510,  -467,  -467,   462,   363,  1192,  1192,  -467,
-    -467
+      14,    10,    89,  -426,    91,  -426,  -426,   -30,  -426,  -426,
+    -426,    10,    23,    91,  -426,  -426,  -426,    74,  -426,   -23,
+      10,  -426,   326,    23,  -426,  -426,  -426,  -426,  -426,    -5,
+    -426,   -49,  -426,  -426,  -426,  -426,  -426,  -426,  -426,  -426,
+    -426,  -426,  -426,   326,  -426,    29,  -426,    57,   920,  -426,
+    -426,    10,    10,  -426,   974,    96,  -426,  -426,  -426,  -426,
+    -426,  -426,  -426,   669,   920,   920,   920,   920,   920,   920,
+    -426,  1046,   107,   106,   132,  -426,   149,  -426,   424,  -426,
+     912,   -15,  -426,  -426,  -426,  -426,  -426,  -426,  -426,    39,
+     118,   116,     9,   145,   130,   136,   139,   151,   -38,  -426,
+    -426,  -426,  1025,  -426,   225,   232,  -426,  -426,  -426,  -426,
+    -426,  -426,  -426,  -426,  -426,  -426,  -426,  -426,  -426,  -426,
+     192,  -426,  -426,  -426,   192,   197,    24,    10,   195,   199,
+      44,  -426,  -426,  -426,  -426,  -426,  -426,  -426,  -426,   920,
+     920,   162,    10,   920,   920,  -426,  -426,   920,   920,   920,
+     920,   920,   920,   920,   974,   920,   920,   920,   920,   920,
+     920,   920,   920,   920,   920,   920,   920,  -426,  -426,  -426,
+    -426,  -426,  -426,  -426,  -426,  -426,  -426,  -426,   920,    10,
+     256,  -426,    10,   170,   215,   920,   192,  -426,   219,   920,
+      10,   224,   220,   227,   228,  1030,   233,   230,  -426,   229,
+     231,  -426,  -426,  -426,  -426,    39,    39,   118,   118,   234,
+    -426,  -426,   235,    69,   116,   116,   116,   116,     9,     9,
+     145,   130,   136,   139,   218,   151,  -426,  -426,  -426,    10,
+     198,  -426,  -426,  -426,   194,    10,   239,  -426,   802,  -426,
+     244,  -426,   -25,   920,  -426,   920,   241,  -426,  -426,  -426,
+     920,  -426,   245,   248,   252,   920,   259,   194,  -426,  -426,
+      72,  -426,  -426,  -426,    10,  -426,   258,  -426,  -426,   266,
+    -426,  -426,  -426,  -426,  -426,    77,   326,  -426,   223,   221,
+      79,  -426,  -426,  -426,  -426,  -426,  -426,  1073,   221,    88,
+    -426,  -426,  -426,  -426,   226,  -426,  -426,   428,  -426,  -426,
+    -426,  -426,   194,   428,  -426,  -426,  -426,   194,  -426,   287,
+     234,  -426,    10,  -426,   563,   272,  -426,  -426,   -34,   274,
+     -32,  -426,    22,   275,   -41,   236,   278,   279,   920,   282,
+     285,   288,   920,   295,   -39,   251,   920,   254,   320,   596,
+     221,  -426,   563,  -426,  -426,   267,  -426,  -426,  -426,  -426,
+     270,  -426,  -426,  -426,  -426,  -426,  -426,  -426,  -426,  -426,
+    -426,  -426,  -426,  -426,  -426,    97,   137,   -15,   142,   155,
+    -426,  -426,  -426,   366,   366,   320,  -426,   298,   847,   366,
+     273,  -426,   194,   735,   920,   276,  -426,   920,   920,   920,
+     277,   920,   280,  -426,   194,   303,  -426,  -426,   304,   876,
+    -426,  -426,  -426,  -426,   974,   320,   322,   317,  -426,   328,
+    -426,  -426,   847,  -426,  -426,  -426,   329,  -426,   346,   287,
+    -426,  -426,   330,  -426,   325,   333,  -426,   334,   344,   345,
+    -426,   348,  -426,   405,  -426,   320,   347,   372,   366,   372,
+    -426,   361,   362,   372,   370,   323,   920,  1010,   773,   332,
+     335,   338,   339,   374,   423,    32,  -426,   347,    10,   341,
+    -426,  -426,  -426,  -426,   376,   847,  -426,   920,   601,   381,
+    -426,   194,   354,   194,   194,   194,   194,   366,   355,  -426,
+    -426,  -426,   382,   194,  -426,  -426,   390,   401,   402,   403,
+    1010,   453,  -426,  -426,   117,  -426,  -426,  -426,   404,   194,
+      10,  -426,    70,   363,   920,   364,   367,   413,  -426,   325,
+     373,   920,   391,   221,   117,  -426,    19,  -426,   383,  -426,
+    -426,   415,   417,   563,  -426,  -426,   412,   194,   194,   384,
+     194,  -426,   416,   385,  -426,  -426,  -426,  -426,   194,   920,
+     920,   221,   920,  -426,  -426,   194,  -426,   387,  -426,  -426,
+     441,   452,  -426,   454,  -426,  -426,   411,   425,  -426,  -426,
+    -426
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -902,106 +947,103 @@ static const yytype_uint16 yydefact[] =
 {
       43,     0,     0,     2,    45,    42,    39,     0,    37,    38,
        1,     0,    56,    44,    46,    49,    50,     0,    48,     0,
-       0,    41,    75,    55,    57,    53,    54,    47,    40,     0,
+       0,    41,    76,    55,    57,    53,    54,    47,    40,     0,
       51,     0,    67,    68,    69,    65,    64,    63,    66,    70,
-      72,    71,    74,    61,     0,    58,     0,   127,    60,    62,
-       0,     0,    52,     0,     0,   239,     8,     5,     3,     7,
-       4,     6,     0,     0,     0,     0,     0,     0,     0,   238,
-     268,     0,   267,   236,   241,   126,   237,   242,   243,   244,
-     280,   269,   270,   287,   273,   274,   277,   283,   291,   294,
-     297,   303,   306,   308,   310,   312,   314,   316,   318,   336,
-     319,     0,   246,    77,   132,    12,    25,    27,    26,    23,
-      24,    15,    16,    17,    18,    19,    20,    21,    22,     0,
-      11,    13,    14,    32,     0,    30,     0,   249,   268,     0,
-     268,   242,   244,   282,   281,   278,   279,   275,   276,   127,
-       0,   338,   127,     0,     0,     0,     0,   271,   272,     0,
+      71,    73,    72,    75,    61,     0,    58,     0,   128,    60,
+      62,     0,     0,    52,     0,     0,   237,     8,     5,     3,
+       7,     4,     6,     0,     0,     0,     0,     0,     0,     0,
+     236,   263,     0,   262,   234,   239,   127,   235,   240,   241,
+     242,   275,   264,   265,   281,   268,   269,   272,   278,   285,
+     288,   291,   297,   300,   302,   304,   306,   308,   310,   312,
+     329,   313,     0,   244,    78,   133,    12,    25,    27,    26,
+      23,    24,    15,    16,    17,    18,    19,    20,    21,    22,
+       0,    11,    13,    14,    32,     0,    30,     0,   247,     0,
+     263,   240,   242,   277,   276,   273,   274,   270,   271,   128,
+       0,     0,     0,     0,     0,   266,   267,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,   324,
-     328,   329,   325,   326,   333,   335,   334,   330,   331,   332,
-     327,     0,     0,    79,    76,     0,     0,   131,     0,   249,
-     252,   249,   127,     0,   258,     0,     0,   248,     0,     0,
-     240,     0,     0,     0,    59,   257,     0,   247,   288,   289,
-     290,   292,   293,   295,   296,     0,   302,    28,    29,    30,
-     298,   299,   300,   301,   304,   305,   307,   309,   311,   313,
-       0,   315,   320,    32,    80,     0,     0,    78,    33,   134,
-       0,     0,     0,     0,   250,   253,   251,     0,    82,     0,
-     127,   127,   255,     0,     0,     0,   285,   259,   265,   339,
-     262,   127,   127,   266,     0,     0,     0,     0,    81,     0,
-     133,    56,   135,   254,   245,     0,    31,     0,     0,   284,
-     256,   286,     0,     0,    34,    36,    35,   317,    73,    56,
-      75,   143,     0,     0,    56,   139,   141,   142,    83,   261,
-     264,   260,   263,    75,     0,    56,    87,    89,    92,    93,
-       0,    91,    94,     0,   144,   136,   140,    66,     0,    90,
-      84,    88,   144,   105,     0,     9,    10,     0,   120,   125,
-      37,   104,   119,   100,     0,     0,    96,    98,     0,   221,
-       0,     0,     0,   210,   210,     0,     0,     0,     0,   221,
-       0,     0,   179,     0,   321,     0,   168,   124,   153,   155,
-       0,   156,   159,   169,   170,     0,   160,   161,   171,   162,
-     172,   163,   173,   174,   175,   177,   176,   178,   187,   186,
-       0,   184,   185,   182,   183,   181,   111,   111,     0,    95,
-       0,     0,   111,   220,     0,     0,   208,     0,     0,   209,
-       0,     0,     0,     0,     0,     0,   229,     0,   100,   158,
-       0,   152,   154,   157,   180,     0,     0,     0,   110,   112,
-       0,    97,   101,   146,    99,   103,   102,     0,   222,     0,
-     216,   218,     0,   207,   215,     0,   224,   225,     0,     0,
-     226,     0,   223,     0,     0,   230,   232,   240,     0,   114,
-     109,     0,   109,   150,   148,   145,   109,     0,   210,     0,
-       0,     0,     0,     0,     0,     0,   231,   233,   115,     0,
-       0,   108,   113,   106,   147,     0,     0,   107,     0,     0,
-     219,   340,     0,     0,   227,   204,     0,   235,   117,   116,
-       0,   149,   151,     0,   212,     0,     0,     0,   188,     0,
-     159,   165,   166,   167,   191,   193,     0,     0,   121,   123,
-     206,     0,   211,   217,   208,     0,     0,     0,     0,     0,
-     195,   192,   197,     0,   200,   234,   118,     0,     0,     0,
-     122,     0,     0,     0,     0,     0,   337,     0,   203,     0,
-     194,   198,   199,   201,   127,   127,   128,   213,   210,     0,
-       0,   189,   202,   196,     0,     0,     0,     0,   205,     0,
-       0,   212,     0,   130,   129,     0,     0,     0,     0,   214,
-     190
+       0,     0,     0,     0,     0,     0,     0,   318,   322,   323,
+     319,   320,   326,   328,   327,   324,   325,   321,     0,     0,
+      80,    77,     0,     0,   132,     0,   248,   250,   247,   128,
+       0,   256,     0,     0,   246,   238,     0,     0,    59,   255,
+       0,   245,   282,   283,   284,   286,   287,   289,   290,     0,
+     296,    28,    29,    30,   292,   293,   294,   295,   298,   299,
+     301,   303,   305,   307,     0,   309,   314,    32,    81,     0,
+       0,    79,    33,   135,     0,     0,     0,   251,     0,   249,
+       0,    83,     0,   128,   253,     0,     0,   280,   257,   260,
+     128,   261,     0,     0,     0,     0,    82,     0,   331,   134,
+      56,   136,   252,   243,     0,    31,     0,   279,   254,     0,
+      34,    36,    35,   311,    74,    56,    76,   144,     0,     0,
+      56,   140,   142,   143,    84,   259,   258,    76,     0,    56,
+      88,    90,    93,    94,     0,    92,    95,     0,   145,   332,
+     137,   141,    66,     0,    91,    85,    89,   145,   106,     0,
+       9,    10,     0,   121,   126,    37,   105,   120,   101,     0,
+       0,    97,    99,     0,     0,     0,     0,     0,   206,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,   315,
+       0,   167,   125,   154,   156,     0,   157,   160,   177,   168,
+       0,   161,   162,   163,   169,   164,   170,   165,   166,   171,
+     172,   173,   175,   174,   176,   186,   185,     0,   183,   184,
+     181,   182,   180,   112,   112,     0,    96,     0,     0,   112,
+       0,   219,     0,   204,     0,     0,   205,     0,     0,     0,
+       0,     0,     0,   221,     0,     0,   178,   101,   159,     0,
+     153,   155,   158,   179,     0,     0,     0,   111,   113,     0,
+      98,   102,   147,   100,   104,   103,     0,   218,     0,     0,
+     214,   216,     0,   203,   213,     0,   222,     0,     0,     0,
+     223,     0,   220,   227,   238,     0,   115,   110,     0,   110,
+     151,   149,   146,   110,     0,     0,   206,     0,     0,     0,
+       0,     0,     0,     0,     0,   228,   230,   116,     0,     0,
+     109,   114,   107,   148,     0,     0,   108,     0,     0,     0,
+     217,     0,     0,     0,     0,     0,     0,     0,     0,   229,
+     231,   118,   117,     0,   150,   152,     0,     0,     0,     0,
+     208,   187,   188,   190,   192,   224,   225,   201,     0,     0,
+       0,   122,   124,     0,     0,     0,     0,     0,   207,   215,
+       0,     0,     0,     0,   191,   194,     0,   197,     0,   233,
+     119,     0,     0,   126,   123,   202,     0,     0,     0,     0,
+       0,   330,     0,     0,   193,   195,   196,   198,     0,   128,
+     128,     0,     0,   211,   210,     0,   189,     0,   200,   232,
+       0,     0,   129,     0,   209,   199,     0,     0,   212,   131,
+     130
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -467,  -467,  -467,  -275,   -27,  -467,  -467,  -467,   372,   -47,
-    -175,  -165,  -467,    -1,   -39,  -467,  -467,  -467,  -467,  -467,
-    -467,   517,  -467,  -467,  -467,    -9,  -467,   512,  -467,   491,
-    -467,  -183,  -467,  -467,  -467,  -467,   304,  -467,  -467,  -467,
-     232,  -467,  -247,   183,   154,  -377,  -399,  -467,  -467,  -211,
-    -405,  -186,  -467,  -278,  -467,  -467,  -467,  -467,  -467,  -467,
-    -467,  -137,  -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,
-     249,  -467,  -187,  -467,  -467,  -467,  -467,  -290,    21,  -335,
-    -467,  -375,  -258,  -357,  -459,  -467,  -467,  -371,  -467,  -467,
-    -467,  -467,  -467,  -467,  -467,  -467,    24,    27,  -466,  -467,
-    -467,  -467,    39,  -336,    -7,  -467,  -467,  -467,  -467,  -465,
-     206,  -467,  -467,  -467,  -467,  -467,  -467,  -467,  -467,   116,
-    -467,  -467,  -467,   -42,  -467,    31,  -467,   443,    81,   458,
-     712,    15,   732,    17,    99,   192,   -50,   194,   251,  -166,
-    -467,   168,   170,    79,   165,   393,   407,   398,   409,   405,
-    -467,   303,   411,   291,  -467,  -467,   -61,  -467,   -25,  -274,
-    -430
+    -426,  -426,  -426,  -288,   -27,  -426,  -426,  -426,   379,   -53,
+    -175,  -158,  -426,    -1,   -17,  -426,  -426,  -426,  -426,  -426,
+    -426,   521,  -426,  -426,  -426,    -7,  -426,   513,  -426,   494,
+    -426,  -231,  -426,  -426,  -426,  -426,   309,  -426,  -426,  -426,
+     250,  -426,  -229,   253,   165,  -373,  -375,  -426,  -426,  -201,
+    -298,  -199,  -426,  -425,  -426,  -426,  -426,  -426,  -426,  -426,
+      36,  -131,  -426,  -426,  -426,  -426,  -426,  -426,  -426,  -426,
+     281,  -426,  -181,  -426,  -426,  -426,  -426,  -279,  -426,   222,
+    -426,   180,  -426,  -426,  -426,  -426,  -372,  -426,  -426,  -426,
+    -426,  -426,  -426,  -426,    51,  -426,    50,  -426,  -426,  -426,
+     123,  -426,  -426,  -426,  -426,  -426,  -426,    80,  -426,  -426,
+    -426,  -426,  -426,  -426,  -426,  -426,   119,  -426,  -426,  -426,
+    -244,  -426,   389,  -426,   448,   -66,  -426,   353,  -209,   394,
+    -178,  -174,  -171,   -47,  -142,  -127,   378,  -426,   102,   105,
+      61,   125,   418,   421,   422,   414,   420,  -426,   336,   409,
+     -92,  -426,  -426,   -61,  -426,  -228,  -281
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,     2,    69,   353,   325,   120,   121,   122,   326,   217,
-     124,   248,   218,    70,     8,     9,     3,     4,    12,    13,
-       5,    14,    15,    16,    21,   290,    23,    24,    42,    43,
-      25,    44,   183,   236,   184,   237,   249,   288,   304,   305,
-     306,   307,   291,   335,   336,   337,   424,   309,   327,   292,
-     470,   417,   418,   419,   471,   489,   331,   319,   311,   529,
-     355,    71,   508,   530,   186,    26,   187,   270,   293,   294,
-     295,   296,   297,   454,   475,   425,   455,   356,   357,   358,
-     359,   360,   361,   499,   362,   363,   364,   365,   366,   367,
-     501,   368,   520,   539,   504,   521,   522,   523,   524,   369,
-     502,   370,   432,   398,   511,   371,   503,   433,   512,   434,
-     394,   372,   373,   374,   375,   376,   444,   377,   445,   446,
-     466,    72,    73,    74,    75,   196,    76,   189,   190,   197,
-      77,    78,    79,    80,    81,    82,    83,    84,    85,    86,
-      87,    88,    89,    90,    91,    92,    93,    94,    95,    96,
-      97,    98,    99,   100,   101,   181,   102,   537,   329,   260,
-     482
+      -1,     2,    70,   405,   310,   121,   122,   123,   311,   211,
+     125,   241,   212,    71,     8,     9,     3,     4,    12,    13,
+       5,    14,    15,    16,    21,   276,    23,    24,    43,    44,
+      25,    45,   180,   230,   181,   231,   242,   274,   288,   289,
+     290,   291,   277,   398,   321,   322,   413,   293,   312,   278,
+     459,   406,   407,   408,   460,   482,   316,   304,   295,   523,
+     340,    72,   501,   524,   183,    26,   184,   259,   279,   280,
+     281,   282,   283,   441,   464,   414,   442,   341,   342,   343,
+     344,   345,   346,   347,   348,   349,   350,   351,   352,   353,
+     354,   513,   493,   514,   515,   516,   517,   355,   356,   422,
+     385,   507,   357,   358,   488,   423,   508,   424,   359,   360,
+     361,   362,   363,   454,   364,   455,   456,   479,    73,    74,
+      75,    76,   193,    77,   186,   187,   194,    78,    79,    80,
+      81,    82,    83,    84,    85,    86,    87,    88,    89,    90,
+      91,    92,    93,    94,    95,    96,    97,    98,    99,   100,
+     101,   102,   178,   103,   532,   314,   300
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -1009,420 +1051,344 @@ static const yytype_int16 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
-       7,   129,   201,    22,   300,   203,   123,   234,   400,   302,
-      19,   103,   104,   133,   134,   135,   136,   137,   138,   315,
-     239,   430,   412,   500,   453,   431,   119,   328,   -30,   513,
-     320,   483,   332,   388,   256,   127,    28,    17,   324,   449,
-      47,   250,   308,   324,   261,   142,   139,   473,   152,   153,
-     410,   477,   125,    50,    17,   247,   193,   543,   308,    29,
-     406,   128,   130,   130,   130,   130,   130,   130,  -268,  -268,
-      51,   468,   389,     1,   543,    18,   272,   492,   310,   202,
-      46,   411,   395,   156,   206,   207,    48,   535,   480,   281,
-     141,   500,     6,   141,   310,   141,   513,    30,   500,   208,
-     209,   210,   312,   142,    10,   142,   230,   313,   500,   500,
-     298,   416,   416,   277,   278,   147,   148,   416,   312,   557,
-     318,   443,   479,   431,   282,   283,  -241,   242,   275,   215,
-    -241,  -228,   276,   157,   158,   233,   568,   202,   238,   430,
-     448,   159,   160,   431,  -241,  -241,   238,    11,   130,   130,
-     130,   130,   130,   130,   130,   219,   130,   130,   130,   130,
-     130,   130,   130,   130,   130,   130,   390,   130,    28,   251,
-     139,   391,   484,   472,   140,   487,   416,    20,    17,  -243,
-     262,   125,   242,  -243,   125,    17,   486,   193,   238,   416,
-     431,   518,   125,   558,   238,   167,   519,  -243,  -243,   130,
-     562,   420,   168,   279,   105,   485,   427,   412,   106,    31,
-     569,   570,   556,   107,   126,   271,   525,   266,   108,   141,
-     244,    17,   246,   193,   498,   109,   255,   110,   238,   254,
-     149,   150,   161,   162,   125,   151,   220,   221,   222,   223,
-     125,   143,    20,   323,   289,  -138,     6,    20,    20,    52,
-     -86,  -137,   130,   144,   130,   546,   111,   112,   113,   114,
-     115,   116,   117,   118,    20,   553,   130,   -85,   527,   145,
-     245,   528,   245,   547,   125,   154,   155,   551,    32,   330,
-     303,   146,   399,   399,   164,   334,   403,   378,   338,   163,
-     407,    33,   485,   166,   488,   165,   303,   182,   378,   498,
-    -269,  -269,   185,    34,  -270,  -270,    35,    36,    37,   547,
-     551,    38,   219,   188,    39,   378,   192,   219,   194,    40,
-     211,   212,   195,    41,   213,   214,   224,   225,   354,   142,
-     426,   200,   526,   204,   205,   240,   435,   235,   241,   243,
-     438,   439,    53,   441,   379,   252,   380,   254,   253,   202,
-      54,   257,   259,    55,   378,   379,   354,   380,   258,     6,
-     267,   263,   426,    56,    57,    58,    59,    60,    61,   264,
-     265,   269,   379,   141,   380,   273,   274,    62,   105,   280,
-     275,   284,   106,   285,   314,   219,   219,   107,   286,    63,
-      64,   219,   108,   299,   301,   354,   478,   399,   333,   109,
-     322,   110,   386,   -39,   387,   392,   393,   554,   555,   396,
-     397,   379,   401,   380,   219,   426,   408,   378,   402,   404,
-       6,   378,   233,   429,   443,   422,   413,   414,   381,   447,
-     111,   112,   113,   114,   115,   116,   117,   118,   388,   381,
-     378,   428,   436,   437,   440,   442,   450,   451,   452,   456,
-     219,   457,   378,   459,   533,   534,   381,   536,   505,   458,
-     233,   460,   461,   219,   462,   509,   463,   464,   125,   465,
-     390,   469,   378,   481,   379,   474,   380,   476,   379,   490,
-     380,   378,   491,   493,   494,   506,   415,   399,   514,   378,
-     507,   515,   516,   378,   517,   381,   510,   379,  -164,   380,
-     378,   531,   538,   544,   545,   548,   125,   549,   378,   379,
-     550,   380,   552,   354,   559,   378,   560,   561,   563,   378,
-     564,   382,   354,   383,   566,   378,   378,   567,   216,   379,
-      27,   380,   382,    49,   383,    45,   409,   321,   379,   268,
-     380,   354,   421,   316,   542,   541,   379,   540,   380,   382,
-     379,   383,   380,   532,   565,   405,   226,   379,   381,   380,
-     139,   467,   381,   228,   140,   379,   191,   380,    17,  -321,
-     287,   227,   379,   231,   380,   229,   379,     0,   380,     0,
-     384,   381,   379,   379,   380,   380,   199,     0,   382,     0,
-     383,   384,   232,   381,  -321,  -321,  -321,  -321,  -321,  -321,
-    -321,  -321,  -321,  -321,  -321,     0,     0,     0,   384,   141,
-       0,     0,     0,   381,     0,     0,     0,     0,     0,     0,
-     385,     0,   381,     0,     0,     0,     0,     0,     0,     0,
-     381,   385,     0,     0,   381,     0,     0,     0,     0,     0,
-       0,   381,     0,     0,     0,     0,     0,   384,   385,   381,
-       0,   382,     0,   383,     0,   382,   381,   383,     0,     0,
-     381,     0,     0,     0,    32,     0,   381,   381,     0,     0,
-       0,     0,     0,     0,   382,     0,   383,    33,     0,     0,
-       0,     0,     0,     0,     0,     0,   382,   385,   383,    34,
-       0,     0,    35,    36,    37,     0,     0,   317,     0,     0,
-      39,     0,     0,     0,     0,    40,   382,     0,   383,    41,
-     384,     0,     0,     0,   384,   382,     0,   383,     0,     0,
-       0,     0,     0,   382,     0,   383,     0,   382,     0,   383,
-       0,     0,     0,   384,   382,     0,   383,     0,     0,     0,
-       0,     0,   382,     0,   383,   384,     0,     0,     0,   382,
-     385,   383,     0,   382,   385,   383,     0,     0,     0,   382,
-     382,   383,   383,     0,     0,   384,     0,     0,     0,     0,
-       0,     0,     0,   385,   384,   131,   131,   131,   131,   131,
-     131,     0,   384,     0,     0,   385,   384,     0,     0,     0,
-       0,     0,     0,   384,     0,   132,   132,   132,   132,   132,
-     132,   384,     0,     0,     0,   385,     0,     0,   384,     0,
-       0,     0,   384,     0,   385,     0,     0,     0,   384,   384,
-       0,     0,   385,     0,     0,     0,   385,     0,     0,     0,
-       0,     0,     0,   385,     0,     0,     0,     0,     0,     0,
-       0,   385,     0,     0,     0,     0,     0,     0,   385,     0,
-       0,     0,   385,     0,     0,     0,     0,     0,   385,   385,
-       0,   131,   131,   131,   131,   131,   131,   131,     0,   131,
-     131,   131,   131,   131,   131,   131,   131,   131,   131,     0,
-     131,   132,   132,   132,   132,   132,   132,   132,     0,   132,
-     132,   132,   132,   132,   132,   132,   132,   132,   132,     0,
-     132,   105,     0,     0,     0,   106,     0,     0,     0,     0,
-     107,     0,   131,     0,     0,   108,     0,     0,     0,     0,
-       0,     0,   109,     0,   110,     0,    53,     0,     0,     0,
-       0,     0,   132,     0,    54,     0,     0,    55,     0,     0,
-       0,     0,     0,     6,     0,     0,     0,    56,    57,    58,
-      59,    60,    61,   111,   112,   113,   114,   115,   116,   117,
-     118,   351,     0,     0,     0,   131,     0,   131,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,   131,
-       0,     0,     0,    65,    66,   132,     0,   132,   105,   339,
-     518,     0,   106,     0,     0,   519,   340,   107,     0,   132,
-       0,     0,   108,   341,     0,   342,     0,     0,     0,   109,
-       0,   110,     0,    53,     0,     0,     0,     0,   343,   344,
-       0,    54,   345,   346,    55,   347,  -322,     0,     0,   348,
-       6,   349,     0,   350,    56,    57,    58,    59,    60,    61,
-     111,   112,   113,   114,   115,   116,   117,   118,   351,     0,
-       0,  -322,  -322,  -322,  -322,  -322,  -322,  -322,  -322,  -322,
-    -322,  -322,     0,     0,     0,   105,   339,     0,     0,   106,
-      65,    66,     0,   340,   107,     0,     0,     0,     0,   108,
-     341,     0,   342,     0,     0,     0,   109,     0,   110,     0,
-      53,     0,     0,     0,   352,   343,   344,   141,    54,   345,
-     346,    55,   347,  -323,     0,     0,   348,     6,   349,     0,
-     350,    56,    57,    58,    59,    60,    61,   111,   112,   113,
-     114,   115,   116,   117,   118,   351,     0,     0,  -323,  -323,
-    -323,  -323,  -323,  -323,  -323,  -323,  -323,  -323,  -323,     0,
-       0,     0,     0,   339,     0,     0,     0,    65,    66,     0,
-     340,     0,     0,     0,     0,     0,     0,   341,     0,   342,
-       0,     0,     0,     0,     0,     0,     0,    53,     0,     0,
-       0,   352,   343,   344,   141,    54,   345,   346,    55,   347,
-       0,     0,     0,   348,     6,   349,     0,   350,    56,    57,
-      58,    59,    60,    61,     0,     0,     0,   339,     0,     0,
-       0,     0,   351,     0,   340,     0,     0,     0,     0,     0,
-       0,   495,     0,   496,     0,     0,     0,     0,     0,     0,
-       0,    53,     0,     0,    65,    66,   343,   344,     0,    54,
-     345,   346,    55,   347,     0,     0,     0,   497,     6,   349,
-       0,   350,    56,    57,    58,    59,    60,    61,   352,     0,
-       0,   141,     0,     0,     0,     0,   351,     0,     0,     0,
-       0,   105,     0,     0,     0,   106,    53,     0,     0,     0,
-     107,     0,     0,     0,    54,   108,     0,    55,    65,    66,
-       0,     0,   109,     6,   110,     0,    53,    56,    57,    58,
-      59,    60,    61,     0,    54,     0,     0,    55,     0,     0,
-       0,   351,   352,     6,     0,   141,     0,    56,    57,    58,
-      59,    60,    61,   111,   112,   113,   114,   115,   116,   117,
-     118,    62,     0,    65,    66,     0,     0,     0,     0,     0,
-      53,     0,     0,    63,    64,     0,     0,     0,    54,     0,
-       0,    55,     0,    65,    66,    67,    68,     6,     0,     0,
-       0,    56,    57,    58,    59,    60,    61,     0,    53,     0,
-       0,     0,     0,     0,     0,    62,    54,     0,     0,    55,
-     252,     0,     0,     0,     0,     6,     0,    63,    64,    56,
-      57,    58,    59,    60,    61,     0,    53,    65,    66,    67,
-      68,     0,     0,    62,    54,   423,     0,    55,     0,     0,
-       0,     0,     0,     6,     0,    63,    64,    56,    57,    58,
-      59,    60,    61,     0,    53,    65,    66,    67,    68,     0,
-       0,    62,    54,     0,     0,    55,   286,     0,     0,     0,
-       0,     6,     0,    63,    64,    56,    57,    58,    59,    60,
-      61,     0,     0,    65,    66,    67,    68,     0,   139,    62,
-       0,     0,   198,     0,   105,     0,    17,  -321,   106,     0,
-       0,    63,    64,   107,     0,     0,     0,     0,   108,     0,
-       0,    65,    66,    67,    68,   109,     0,   110,     0,     0,
-       0,     0,  -321,  -321,  -321,  -321,  -321,  -321,  -321,  -321,
-    -321,  -321,  -321,   169,     0,     0,     6,   141,     0,     0,
-       0,     0,     0,     0,     0,     0,   111,   112,   113,   114,
-     115,   116,   117,   118,     0,     0,     0,     0,   170,   171,
-     172,   173,   174,   175,   176,   177,   178,   179,   180
+       7,   124,   129,    31,   228,    22,   260,   305,   196,   309,
+      19,   421,   380,   461,   392,   309,    48,   133,   134,   135,
+     136,   137,   138,   313,   233,   511,   338,   120,   317,   275,
+     512,   -39,   436,   154,   104,   105,   128,   440,    51,   453,
+     375,   165,    28,    17,     1,   297,   292,   264,   166,  -226,
+      29,   265,   498,   126,   338,    52,   303,     6,   240,   400,
+     292,    49,   457,   130,   130,   130,   130,   130,   130,   381,
+     365,   393,   145,   146,   294,   470,   472,   261,   376,   197,
+      18,   -39,   200,   201,   155,   156,    47,    30,   294,    10,
+     485,   377,   157,   158,   296,   419,   378,    17,   365,   190,
+     202,   203,   204,   418,   224,   366,   284,   521,   296,   139,
+     191,   522,   266,   140,    11,   433,   435,    17,   421,   269,
+     237,    28,   237,   511,   236,   199,   227,   209,   512,   232,
+     147,   148,   258,   366,    20,   149,   367,   232,   254,   365,
+     368,   462,    17,   369,   190,   466,   130,   130,   130,   130,
+     130,   130,   130,   213,   130,   130,   130,   130,   130,   130,
+     130,   130,   130,   130,   367,   130,  -239,    53,   368,   127,
+    -239,   369,   370,   141,   366,   409,   232,   236,   126,   142,
+     416,   126,   232,    20,  -239,  -239,  -139,   371,    20,   126,
+      20,   -87,   491,  -138,   130,   495,   496,   497,   267,    20,
+     370,   143,   -86,   365,   365,   367,  -241,   150,   151,   368,
+    -241,   232,   369,   152,   153,   371,   214,   215,   216,   217,
+     519,   144,   372,   161,  -241,  -241,   159,   160,   126,  -264,
+    -264,   162,   534,   163,   126,   338,   164,   536,   366,   366,
+     179,   370,  -265,  -265,   130,   494,   365,   182,   543,   544,
+     372,   546,   205,   206,   130,   502,   371,   207,   208,   549,
+     552,   185,   189,   126,   192,   195,   554,   386,   287,   367,
+     367,   390,   198,   368,   368,   395,   369,   369,   229,   365,
+     234,   366,   287,   481,   218,   219,   315,   235,   238,   243,
+     244,   372,   319,   245,   250,   323,   213,   246,   255,   248,
+     249,   251,   213,   252,   253,   370,   370,   258,   257,   262,
+     263,   268,   367,   339,   366,   270,   368,   415,   271,   369,
+     371,   371,   272,   425,   285,   520,   427,   428,   429,    32,
+     431,   264,   286,   298,   318,   299,   307,   373,   197,   374,
+     379,   339,    33,   383,   384,   367,   382,   387,   370,   368,
+     388,   415,   369,   389,    34,   372,   372,    35,    36,    37,
+     391,   394,    38,   371,   396,    39,    40,   397,   411,   434,
+     106,    41,   213,   213,   107,    42,   375,   402,   213,   108,
+     403,   370,   339,   417,   109,   386,   426,   430,   437,   438,
+     432,   110,   444,   111,   439,   443,   371,   447,   372,   448,
+     449,   446,   445,   213,   415,   227,   486,   489,   550,   551,
+     450,   451,   453,     6,   452,   458,   377,   131,   131,   131,
+     131,   131,   131,   112,   113,   114,   115,   116,   117,   118,
+     119,   372,   106,   463,   465,   467,   107,   213,   468,   477,
+     478,   108,   473,   526,   484,   474,   109,   227,   475,   476,
+     531,   483,   490,   110,   500,   111,   503,   126,   132,   132,
+     132,   132,   132,   132,   492,   499,   504,   510,   505,   506,
+     518,   533,   308,   525,   527,     6,   213,   528,   404,   529,
+     539,   553,   540,   530,   542,   112,   113,   114,   115,   116,
+     117,   118,   119,   538,   545,   548,   547,   555,  -316,   126,
+     131,   131,   131,   131,   131,   131,   131,   556,   131,   131,
+     131,   131,   131,   131,   131,   131,   131,   131,   557,   131,
+     558,   559,   339,  -316,  -316,  -316,  -316,  -316,  -316,  -316,
+    -316,  -316,  -316,   210,    27,   560,    46,    50,   256,   306,
+     410,   132,   132,   132,   132,   132,   132,   132,   131,   132,
+     132,   132,   132,   132,   132,   132,   132,   132,   132,   541,
+     132,   301,   320,   420,   401,   535,   537,   106,   324,   469,
+     509,   107,   188,   247,   480,   325,   108,   239,   223,   220,
+       0,   109,   326,   221,   327,   222,   225,   226,   110,   132,
+     111,   273,    54,     0,     0,     0,     0,   328,   131,     0,
+      55,   329,   330,   331,    56,   332,     0,     0,   131,   333,
+       6,   334,     0,   335,    57,    58,    59,    60,    61,    62,
+     112,   113,   114,   115,   116,   117,   118,   119,   336,     0,
+      54,     0,     0,     0,     0,     0,     0,     0,    55,   132,
+       0,     0,    56,   -30,     0,     0,     0,     0,     6,   132,
+      66,    67,    57,    58,    59,    60,    61,    62,     0,     0,
+       0,   139,     0,     0,     0,   399,    63,     0,     0,    17,
+       0,   190,     0,   106,     0,     0,   258,   107,    64,    65,
+     337,     0,   108,  -263,  -263,     0,     0,   109,    66,    67,
+      68,    69,     0,     0,   110,     0,   111,     0,    54,     0,
+       0,     0,     0,     0,     0,     0,    55,     0,     0,     0,
+      56,     0,     0,     0,     0,     0,     6,   487,     0,     0,
+      57,    58,    59,    60,    61,    62,   112,   113,   114,   115,
+     116,   117,   118,   119,    63,     0,     0,     0,     0,   106,
+       0,     0,     0,   107,     0,     0,    64,    65,   108,     0,
+       0,     0,     0,   109,     0,     0,    66,    67,    68,    69,
+     110,     0,   111,     0,    54,     0,     0,     0,     0,     0,
+       0,     0,    55,     0,     0,     0,    56,     0,     0,     0,
+       0,     0,     6,     0,     0,     0,    57,    58,    59,    60,
+      61,    62,   112,   113,   114,   115,   116,   117,   118,   119,
+     336,     0,    54,     0,     0,     0,     0,     0,     0,     0,
+      55,     0,     0,     0,    56,     0,     0,     0,     0,     0,
+       6,     0,    66,    67,    57,    58,    59,    60,    61,    62,
+       0,    54,     0,     0,     0,     0,     0,     0,   336,    55,
+       0,     0,     0,    56,     0,     0,     0,     0,     0,     6,
+       0,     0,     0,    57,    58,    59,    60,    61,    62,     0,
+      66,    67,     0,     0,     0,     0,     0,    63,     0,     0,
+       0,     0,   244,     0,     0,     0,    54,     0,     0,    64,
+      65,     0,     0,   471,    55,     0,     0,     0,    56,    66,
+      67,    68,    69,     0,     6,     0,     0,     0,    57,    58,
+      59,    60,    61,    62,     0,    54,     0,     0,     0,     0,
+       0,     0,    63,    55,   412,     0,     0,    56,     0,     0,
+       0,     0,     0,     6,    64,    65,     0,    57,    58,    59,
+      60,    61,    62,     0,    66,    67,    68,    69,     0,     0,
+       0,    63,     0,     0,     0,     0,   272,     0,     0,    54,
+       0,     0,     0,    64,    65,     0,     0,    55,     0,     0,
+       0,    56,     0,    66,    67,    68,    69,     6,     0,     0,
+       0,    57,    58,    59,    60,    61,    62,     0,   106,     0,
+       0,     0,   107,     0,     0,    63,  -317,   108,     0,     0,
+       0,     0,   109,     0,     0,     0,     0,    64,    65,   110,
+       0,   111,     0,     0,     0,     0,     0,    66,    67,    68,
+      69,  -317,  -317,  -317,  -317,  -317,  -317,  -317,  -317,  -317,
+    -317,     6,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,   112,   113,   114,   115,   116,   117,   118,   119,    54,
+       0,     0,     0,     0,     0,     0,     0,    55,     0,     0,
+       0,    56,     0,     0,     0,     0,     0,     6,     0,    54,
+       0,    57,    58,    59,    60,    61,    62,    55,     0,     0,
+       0,    56,     0,     0,     0,   336,    32,     6,     0,     0,
+       0,    57,    58,    59,    60,    61,    62,     0,     0,    33,
+       0,     0,     0,     0,     0,    63,     0,    66,    67,   167,
+       0,    34,     0,     0,    35,    36,    37,    64,    65,   302,
+       0,   139,    39,    40,     0,   140,     0,     0,    41,    17,
+    -315,     0,    42,     0,   168,   169,   170,   171,   172,   173,
+     174,   175,   176,   177,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,  -315,  -315,  -315,  -315,  -315,
+    -315,  -315,  -315,  -315,  -315
 };
 
 static const yytype_int16 yycheck[] =
 {
-       1,    62,   139,    12,   278,   142,    53,   182,   344,   283,
-      11,    50,    51,    63,    64,    65,    66,    67,    68,   293,
-     185,   396,   357,   482,   423,   396,    53,   317,    46,   494,
-     304,   461,   322,    71,   200,    62,    46,    72,   313,   416,
-      64,    64,   289,   318,    64,    70,    64,   452,    88,    89,
-      68,   456,    53,     9,    72,   192,    74,   523,   305,    72,
-     350,    62,    63,    64,    65,    66,    67,    68,    86,    87,
-      26,   448,   110,    30,   540,   110,   241,   476,   289,   140,
-      90,   355,   340,    24,   145,   146,   110,   517,   459,   255,
-     113,   550,    46,   113,   305,   113,   561,   110,   557,   149,
-     150,   151,   289,   128,     0,   130,   167,   290,   567,   568,
-     275,   386,   387,   250,   251,    86,    87,   392,   305,   549,
-     303,     7,   458,   494,   261,   262,    68,   188,    71,   156,
-      72,    17,    75,    74,    75,   182,   566,   198,   185,   514,
-     415,    82,    83,   514,    86,    87,   193,    23,   149,   150,
+       1,    54,    63,    20,   179,    12,   234,   288,   139,   297,
+      11,   383,    53,   438,    53,   303,    65,    64,    65,    66,
+      67,    68,    69,   302,   182,     6,   314,    54,   307,   257,
+      11,    65,   405,    24,    51,    52,    63,   412,     9,     7,
+      72,    79,    47,    73,    30,   276,   275,    72,    86,    17,
+      73,    76,   477,    54,   342,    26,   287,    47,   189,   340,
+     289,   110,   435,    64,    65,    66,    67,    68,    69,   110,
+     314,   110,    87,    88,   275,   447,   448,   235,   110,   140,
+     110,   115,   143,   144,    75,    76,    91,   110,   289,     0,
+     465,    69,    83,    84,   275,   383,    74,    73,   342,    75,
+     147,   148,   149,   382,   165,   314,   264,    37,   289,    65,
+     127,    41,   243,    69,    23,   394,   404,    73,   490,   250,
+     186,    47,   188,     6,   185,   142,   179,   154,    11,   182,
+      91,    92,   113,   342,   111,    96,   314,   190,    69,   383,
+     314,   439,    73,   314,    75,   443,   147,   148,   149,   150,
      151,   152,   153,   154,   155,   156,   157,   158,   159,   160,
-     161,   162,   163,   164,   165,   166,    68,   168,    46,   194,
-      64,    73,   462,   451,    68,   465,   451,   111,    72,    68,
-     205,   182,   243,    72,   185,    72,   464,    74,   235,   464,
-     561,     6,   193,   550,   241,    78,    11,    86,    87,   200,
-     557,   387,    85,   253,     4,   463,   392,   542,     8,    46,
-     567,   568,   548,    13,    72,   240,   506,    68,    18,   113,
-     189,    72,   191,    74,   482,    25,    65,    27,   275,    68,
-      90,    91,    80,    81,   235,    95,   157,   158,   159,   160,
-     241,    65,   111,    43,   269,   114,    46,   111,   111,   110,
-     114,   114,   253,    72,   255,   529,    56,    57,    58,    59,
-      60,    61,    62,    63,   111,   539,   267,   114,    37,    68,
-     189,    40,   191,   531,   275,    96,    97,   535,     3,   318,
-     289,    71,   343,   344,    94,   324,   347,   329,   327,    92,
-     351,    16,   550,    84,   469,    93,   305,    15,   340,   557,
-      86,    87,    15,    28,    86,    87,    31,    32,    33,   567,
-     568,    36,   313,    68,    39,   357,    64,   318,    46,    44,
-     152,   153,    68,    48,   154,   155,   161,   162,   329,   354,
-     391,    65,   507,   110,    46,   110,   397,    22,    71,    68,
-     401,   402,    29,   404,   329,    69,   329,    68,    65,   410,
-      37,    65,   114,    40,   396,   340,   357,   340,    69,    46,
-      79,    69,   423,    50,    51,    52,    53,    54,    55,    68,
-      68,   110,   357,   113,   357,    69,    65,    64,     4,    69,
-      71,    69,     8,    69,   110,   386,   387,    13,    69,    76,
-      77,   392,    18,    65,    65,   396,   457,   458,    46,    25,
-     110,    27,    64,    64,    64,    64,    46,   544,   545,    64,
-      64,   396,    64,   396,   415,   476,    46,   459,    64,    64,
-      46,   463,   469,    45,     7,    69,   110,   110,   329,    65,
-      56,    57,    58,    59,    60,    61,    62,    63,    71,   340,
-     482,   110,   110,   110,   110,   110,    65,    71,    65,    65,
-     451,    64,   494,    71,   515,   516,   357,   518,   483,    70,
-     507,    65,    65,   464,    65,   490,    65,    64,   469,    17,
-      68,    42,   514,   110,   459,    71,   459,    71,   463,   110,
-     463,   523,    67,    65,    70,    65,   112,   548,    64,   531,
-      71,    64,    64,   535,    14,   396,   110,   482,    14,   482,
-     542,    65,    79,    64,    64,    70,   507,    65,   550,   494,
-      65,   494,    79,   514,    65,   557,    65,    70,   110,   561,
-     110,   329,   523,   329,    14,   567,   568,    65,   156,   514,
-      13,   514,   340,    42,   340,    23,   353,   305,   523,   235,
-     523,   542,   388,   294,   523,   521,   531,   520,   531,   357,
-     535,   357,   535,   514,   561,   349,   163,   542,   459,   542,
-      64,   445,   463,   165,    68,   550,   123,   550,    72,    73,
-     267,   164,   557,   168,   557,   166,   561,    -1,   561,    -1,
-     329,   482,   567,   568,   567,   568,   128,    -1,   396,    -1,
-     396,   340,   181,   494,    98,    99,   100,   101,   102,   103,
-     104,   105,   106,   107,   108,    -1,    -1,    -1,   357,   113,
-      -1,    -1,    -1,   514,    -1,    -1,    -1,    -1,    -1,    -1,
-     329,    -1,   523,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-     531,   340,    -1,    -1,   535,    -1,    -1,    -1,    -1,    -1,
-      -1,   542,    -1,    -1,    -1,    -1,    -1,   396,   357,   550,
-      -1,   459,    -1,   459,    -1,   463,   557,   463,    -1,    -1,
-     561,    -1,    -1,    -1,     3,    -1,   567,   568,    -1,    -1,
-      -1,    -1,    -1,    -1,   482,    -1,   482,    16,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,   494,   396,   494,    28,
-      -1,    -1,    31,    32,    33,    -1,    -1,    36,    -1,    -1,
-      39,    -1,    -1,    -1,    -1,    44,   514,    -1,   514,    48,
-     459,    -1,    -1,    -1,   463,   523,    -1,   523,    -1,    -1,
-      -1,    -1,    -1,   531,    -1,   531,    -1,   535,    -1,   535,
-      -1,    -1,    -1,   482,   542,    -1,   542,    -1,    -1,    -1,
-      -1,    -1,   550,    -1,   550,   494,    -1,    -1,    -1,   557,
-     459,   557,    -1,   561,   463,   561,    -1,    -1,    -1,   567,
-     568,   567,   568,    -1,    -1,   514,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,   482,   523,    63,    64,    65,    66,    67,
-      68,    -1,   531,    -1,    -1,   494,   535,    -1,    -1,    -1,
-      -1,    -1,    -1,   542,    -1,    63,    64,    65,    66,    67,
-      68,   550,    -1,    -1,    -1,   514,    -1,    -1,   557,    -1,
-      -1,    -1,   561,    -1,   523,    -1,    -1,    -1,   567,   568,
-      -1,    -1,   531,    -1,    -1,    -1,   535,    -1,    -1,    -1,
-      -1,    -1,    -1,   542,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,   550,    -1,    -1,    -1,    -1,    -1,    -1,   557,    -1,
-      -1,    -1,   561,    -1,    -1,    -1,    -1,    -1,   567,   568,
-      -1,   149,   150,   151,   152,   153,   154,   155,    -1,   157,
-     158,   159,   160,   161,   162,   163,   164,   165,   166,    -1,
-     168,   149,   150,   151,   152,   153,   154,   155,    -1,   157,
-     158,   159,   160,   161,   162,   163,   164,   165,   166,    -1,
-     168,     4,    -1,    -1,    -1,     8,    -1,    -1,    -1,    -1,
-      13,    -1,   200,    -1,    -1,    18,    -1,    -1,    -1,    -1,
-      -1,    -1,    25,    -1,    27,    -1,    29,    -1,    -1,    -1,
-      -1,    -1,   200,    -1,    37,    -1,    -1,    40,    -1,    -1,
-      -1,    -1,    -1,    46,    -1,    -1,    -1,    50,    51,    52,
-      53,    54,    55,    56,    57,    58,    59,    60,    61,    62,
-      63,    64,    -1,    -1,    -1,   253,    -1,   255,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,   267,
-      -1,    -1,    -1,    86,    87,   253,    -1,   255,     4,     5,
-       6,    -1,     8,    -1,    -1,    11,    12,    13,    -1,   267,
-      -1,    -1,    18,    19,    -1,    21,    -1,    -1,    -1,    25,
-      -1,    27,    -1,    29,    -1,    -1,    -1,    -1,    34,    35,
-      -1,    37,    38,    39,    40,    41,    73,    -1,    -1,    45,
-      46,    47,    -1,    49,    50,    51,    52,    53,    54,    55,
-      56,    57,    58,    59,    60,    61,    62,    63,    64,    -1,
-      -1,    98,    99,   100,   101,   102,   103,   104,   105,   106,
-     107,   108,    -1,    -1,    -1,     4,     5,    -1,    -1,     8,
-      86,    87,    -1,    12,    13,    -1,    -1,    -1,    -1,    18,
-      19,    -1,    21,    -1,    -1,    -1,    25,    -1,    27,    -1,
-      29,    -1,    -1,    -1,   110,    34,    35,   113,    37,    38,
-      39,    40,    41,    73,    -1,    -1,    45,    46,    47,    -1,
-      49,    50,    51,    52,    53,    54,    55,    56,    57,    58,
-      59,    60,    61,    62,    63,    64,    -1,    -1,    98,    99,
-     100,   101,   102,   103,   104,   105,   106,   107,   108,    -1,
-      -1,    -1,    -1,     5,    -1,    -1,    -1,    86,    87,    -1,
-      12,    -1,    -1,    -1,    -1,    -1,    -1,    19,    -1,    21,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    29,    -1,    -1,
-      -1,   110,    34,    35,   113,    37,    38,    39,    40,    41,
-      -1,    -1,    -1,    45,    46,    47,    -1,    49,    50,    51,
-      52,    53,    54,    55,    -1,    -1,    -1,     5,    -1,    -1,
-      -1,    -1,    64,    -1,    12,    -1,    -1,    -1,    -1,    -1,
-      -1,    19,    -1,    21,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    29,    -1,    -1,    86,    87,    34,    35,    -1,    37,
-      38,    39,    40,    41,    -1,    -1,    -1,    45,    46,    47,
-      -1,    49,    50,    51,    52,    53,    54,    55,   110,    -1,
-      -1,   113,    -1,    -1,    -1,    -1,    64,    -1,    -1,    -1,
-      -1,     4,    -1,    -1,    -1,     8,    29,    -1,    -1,    -1,
-      13,    -1,    -1,    -1,    37,    18,    -1,    40,    86,    87,
-      -1,    -1,    25,    46,    27,    -1,    29,    50,    51,    52,
-      53,    54,    55,    -1,    37,    -1,    -1,    40,    -1,    -1,
-      -1,    64,   110,    46,    -1,   113,    -1,    50,    51,    52,
-      53,    54,    55,    56,    57,    58,    59,    60,    61,    62,
-      63,    64,    -1,    86,    87,    -1,    -1,    -1,    -1,    -1,
-      29,    -1,    -1,    76,    77,    -1,    -1,    -1,    37,    -1,
-      -1,    40,    -1,    86,    87,    88,    89,    46,    -1,    -1,
-      -1,    50,    51,    52,    53,    54,    55,    -1,    29,    -1,
-      -1,    -1,    -1,    -1,    -1,    64,    37,    -1,    -1,    40,
-      69,    -1,    -1,    -1,    -1,    46,    -1,    76,    77,    50,
-      51,    52,    53,    54,    55,    -1,    29,    86,    87,    88,
-      89,    -1,    -1,    64,    37,    66,    -1,    40,    -1,    -1,
-      -1,    -1,    -1,    46,    -1,    76,    77,    50,    51,    52,
-      53,    54,    55,    -1,    29,    86,    87,    88,    89,    -1,
-      -1,    64,    37,    -1,    -1,    40,    69,    -1,    -1,    -1,
-      -1,    46,    -1,    76,    77,    50,    51,    52,    53,    54,
-      55,    -1,    -1,    86,    87,    88,    89,    -1,    64,    64,
-      -1,    -1,    68,    -1,     4,    -1,    72,    73,     8,    -1,
-      -1,    76,    77,    13,    -1,    -1,    -1,    -1,    18,    -1,
-      -1,    86,    87,    88,    89,    25,    -1,    27,    -1,    -1,
-      -1,    -1,    98,    99,   100,   101,   102,   103,   104,   105,
-     106,   107,   108,    73,    -1,    -1,    46,   113,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    56,    57,    58,    59,
-      60,    61,    62,    63,    -1,    -1,    -1,    -1,    98,    99,
-     100,   101,   102,   103,   104,   105,   106,   107,   108
+     161,   162,   163,   164,   342,   166,    69,   110,   342,    73,
+      73,   342,   314,    66,   383,   374,   229,   238,   179,    73,
+     379,   182,   235,   111,    87,    88,   114,   314,   111,   190,
+     111,   114,   471,   114,   195,   474,   475,   476,   245,   111,
+     342,    69,   114,   447,   448,   383,    69,    89,    90,   383,
+      73,   264,   383,    97,    98,   342,   155,   156,   157,   158,
+     499,    72,   314,    93,    87,    88,    81,    82,   229,    87,
+      88,    95,   513,    94,   235,   523,    85,   516,   447,   448,
+      15,   383,    87,    88,   245,   473,   490,    15,   527,   528,
+     342,   530,   150,   151,   255,   483,   383,   152,   153,   538,
+     541,    69,    65,   264,    69,    66,   545,   328,   275,   447,
+     448,   332,   110,   447,   448,   336,   447,   448,    22,   523,
+     110,   490,   289,   458,   159,   160,   303,    72,    69,    65,
+      70,   383,   309,    66,    65,   312,   297,    69,    80,    66,
+      70,    70,   303,    69,    69,   447,   448,   113,   110,    70,
+      66,    70,   490,   314,   523,    70,   490,   378,    70,   490,
+     447,   448,    70,   384,    66,   500,   387,   388,   389,     3,
+     391,    72,    66,   110,    47,   114,   110,    65,   399,    65,
+      65,   342,    16,    65,    65,   523,   110,    65,   490,   523,
+      65,   412,   523,    65,    28,   447,   448,    31,    32,    33,
+      65,   110,    36,   490,   110,    39,    40,    47,    70,    66,
+       4,    45,   373,   374,     8,    49,    72,   110,   379,    13,
+     110,   523,   383,   110,    18,   446,   110,   110,    66,    72,
+     110,    25,    46,    27,    66,    66,   523,    72,   490,    66,
+      66,    71,   419,   404,   465,   458,   467,   468,   539,   540,
+      66,    66,     7,    47,    66,    43,    69,    64,    65,    66,
+      67,    68,    69,    57,    58,    59,    60,    61,    62,    63,
+      64,   523,     4,    72,    72,    65,     8,   438,   115,    65,
+      17,    13,   110,   504,    68,   110,    18,   500,   110,   110,
+     511,   110,    71,    25,    72,    27,    66,   458,    64,    65,
+      66,    67,    68,    69,   110,   110,    65,    14,    66,    66,
+      66,    80,    44,   110,   110,    47,   477,   110,   112,    66,
+      65,   542,    65,   110,    72,    57,    58,    59,    60,    61,
+      62,    63,    64,   110,   110,   110,    80,   110,    74,   500,
+     147,   148,   149,   150,   151,   152,   153,    66,   155,   156,
+     157,   158,   159,   160,   161,   162,   163,   164,    66,   166,
+      66,   110,   523,    99,   100,   101,   102,   103,   104,   105,
+     106,   107,   108,   154,    13,   110,    23,    43,   229,   289,
+     375,   147,   148,   149,   150,   151,   152,   153,   195,   155,
+     156,   157,   158,   159,   160,   161,   162,   163,   164,   523,
+     166,   280,   309,   383,   342,   514,   516,     4,     5,   446,
+     490,     8,   124,   195,   455,    12,    13,   188,   164,   161,
+      -1,    18,    19,   162,    21,   163,   166,   178,    25,   195,
+      27,   255,    29,    -1,    -1,    -1,    -1,    34,   245,    -1,
+      37,    38,    39,    40,    41,    42,    -1,    -1,   255,    46,
+      47,    48,    -1,    50,    51,    52,    53,    54,    55,    56,
+      57,    58,    59,    60,    61,    62,    63,    64,    65,    -1,
+      29,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    37,   245,
+      -1,    -1,    41,    47,    -1,    -1,    -1,    -1,    47,   255,
+      87,    88,    51,    52,    53,    54,    55,    56,    -1,    -1,
+      -1,    65,    -1,    -1,    -1,    69,    65,    -1,    -1,    73,
+      -1,    75,    -1,     4,    -1,    -1,   113,     8,    77,    78,
+     117,    -1,    13,    87,    88,    -1,    -1,    18,    87,    88,
+      89,    90,    -1,    -1,    25,    -1,    27,    -1,    29,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    37,    -1,    -1,    -1,
+      41,    -1,    -1,    -1,    -1,    -1,    47,   116,    -1,    -1,
+      51,    52,    53,    54,    55,    56,    57,    58,    59,    60,
+      61,    62,    63,    64,    65,    -1,    -1,    -1,    -1,     4,
+      -1,    -1,    -1,     8,    -1,    -1,    77,    78,    13,    -1,
+      -1,    -1,    -1,    18,    -1,    -1,    87,    88,    89,    90,
+      25,    -1,    27,    -1,    29,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    37,    -1,    -1,    -1,    41,    -1,    -1,    -1,
+      -1,    -1,    47,    -1,    -1,    -1,    51,    52,    53,    54,
+      55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
+      65,    -1,    29,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      37,    -1,    -1,    -1,    41,    -1,    -1,    -1,    -1,    -1,
+      47,    -1,    87,    88,    51,    52,    53,    54,    55,    56,
+      -1,    29,    -1,    -1,    -1,    -1,    -1,    -1,    65,    37,
+      -1,    -1,    -1,    41,    -1,    -1,    -1,    -1,    -1,    47,
+      -1,    -1,    -1,    51,    52,    53,    54,    55,    56,    -1,
+      87,    88,    -1,    -1,    -1,    -1,    -1,    65,    -1,    -1,
+      -1,    -1,    70,    -1,    -1,    -1,    29,    -1,    -1,    77,
+      78,    -1,    -1,   110,    37,    -1,    -1,    -1,    41,    87,
+      88,    89,    90,    -1,    47,    -1,    -1,    -1,    51,    52,
+      53,    54,    55,    56,    -1,    29,    -1,    -1,    -1,    -1,
+      -1,    -1,    65,    37,    67,    -1,    -1,    41,    -1,    -1,
+      -1,    -1,    -1,    47,    77,    78,    -1,    51,    52,    53,
+      54,    55,    56,    -1,    87,    88,    89,    90,    -1,    -1,
+      -1,    65,    -1,    -1,    -1,    -1,    70,    -1,    -1,    29,
+      -1,    -1,    -1,    77,    78,    -1,    -1,    37,    -1,    -1,
+      -1,    41,    -1,    87,    88,    89,    90,    47,    -1,    -1,
+      -1,    51,    52,    53,    54,    55,    56,    -1,     4,    -1,
+      -1,    -1,     8,    -1,    -1,    65,    74,    13,    -1,    -1,
+      -1,    -1,    18,    -1,    -1,    -1,    -1,    77,    78,    25,
+      -1,    27,    -1,    -1,    -1,    -1,    -1,    87,    88,    89,
+      90,    99,   100,   101,   102,   103,   104,   105,   106,   107,
+     108,    47,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    57,    58,    59,    60,    61,    62,    63,    64,    29,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    37,    -1,    -1,
+      -1,    41,    -1,    -1,    -1,    -1,    -1,    47,    -1,    29,
+      -1,    51,    52,    53,    54,    55,    56,    37,    -1,    -1,
+      -1,    41,    -1,    -1,    -1,    65,     3,    47,    -1,    -1,
+      -1,    51,    52,    53,    54,    55,    56,    -1,    -1,    16,
+      -1,    -1,    -1,    -1,    -1,    65,    -1,    87,    88,    74,
+      -1,    28,    -1,    -1,    31,    32,    33,    77,    78,    36,
+      -1,    65,    39,    40,    -1,    69,    -1,    -1,    45,    73,
+      74,    -1,    49,    -1,    99,   100,   101,   102,   103,   104,
+     105,   106,   107,   108,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    99,   100,   101,   102,   103,
+     104,   105,   106,   107,   108
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint16 yystos[] =
 {
-       0,    30,   133,   148,   149,   152,    46,   145,   146,   147,
-       0,    23,   150,   151,   153,   154,   155,    72,   110,   145,
-     111,   156,   157,   158,   159,   162,   197,   153,    46,    72,
-     110,    46,     3,    16,    28,    31,    32,    33,    36,    39,
-      44,    48,   160,   161,   163,   159,    90,    64,   110,   161,
-       9,    26,   110,    29,    37,    40,    50,    51,    52,    53,
-      54,    55,    64,    76,    77,    86,    87,    88,    89,   134,
-     145,   193,   253,   254,   255,   256,   258,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
-     285,   286,   288,   146,   146,     4,     8,    13,    18,    25,
-      27,    56,    57,    58,    59,    60,    61,    62,    63,   136,
-     137,   138,   139,   141,   142,   145,    72,   136,   145,   288,
-     145,   262,   264,   268,   268,   268,   268,   268,   268,    64,
-      68,   113,   290,    65,    72,    68,    71,    86,    87,    90,
-      91,    95,    88,    89,    96,    97,    24,    74,    75,    82,
-      83,    80,    81,    92,    94,    93,    84,    78,    85,    73,
-      98,    99,   100,   101,   102,   103,   104,   105,   106,   107,
-     108,   287,    15,   164,   166,    15,   196,   198,    68,   259,
-     260,   259,    64,    74,    46,    68,   257,   261,    68,   261,
-      65,   193,   288,   193,   110,    46,   288,   288,   268,   268,
-     268,   273,   273,   274,   274,   136,   140,   141,   144,   145,
-     275,   275,   275,   275,   276,   276,   277,   278,   279,   280,
-     288,   281,   284,   141,   142,    22,   165,   167,   141,   143,
-     110,    71,   288,    68,   257,   260,   257,   193,   143,   168,
-      64,   290,    69,    65,    68,    65,   271,    65,    69,   114,
-     291,    64,   290,    69,    68,    68,    68,    79,   168,   110,
-     199,   290,   143,    69,    65,    71,    75,   193,   193,   268,
-      69,   271,   193,   193,    69,    69,    69,   283,   169,   290,
-     157,   174,   181,   200,   201,   202,   203,   204,   143,    65,
-     291,    65,   291,   157,   170,   171,   172,   173,   174,   179,
-     181,   190,   204,   163,   110,   291,   202,    36,   163,   189,
-     291,   172,   110,    43,   135,   136,   140,   180,   209,   290,
-     146,   188,   209,    46,   146,   175,   176,   177,   146,     5,
-      12,    19,    21,    34,    35,    38,    39,    41,    45,    47,
-      49,    64,   110,   135,   145,   192,   209,   210,   211,   212,
-     213,   214,   216,   217,   218,   219,   220,   221,   223,   231,
-     233,   237,   243,   244,   245,   246,   247,   249,   255,   263,
-     265,   266,   267,   269,   270,   285,    64,    64,    71,   110,
-      68,    73,    64,    46,   242,   214,    64,    64,   235,   288,
-     235,    64,    64,   288,    64,   242,   209,   288,    46,   175,
-      68,   291,   211,   110,   110,   112,   135,   183,   184,   185,
-     183,   176,    69,    66,   178,   207,   288,   183,   110,    45,
-     213,   219,   234,   239,   241,   288,   110,   110,   288,   288,
-     110,   288,   110,     7,   248,   250,   251,    65,   135,   177,
-      65,    71,    65,   178,   205,   208,    65,    64,    70,    71,
-      65,    65,    65,    65,    64,    17,   252,   251,   177,    42,
-     182,   186,   185,   182,    71,   206,    71,   182,   288,   235,
-     219,   110,   292,   292,   209,   214,   185,   209,   142,   187,
-     110,    67,   178,    65,    70,    19,    21,    45,   214,   215,
-     216,   222,   232,   238,   226,   290,    65,    71,   194,   290,
-     110,   236,   240,   241,    64,    64,    64,    14,     6,    11,
-     224,   227,   228,   229,   230,   209,   142,    37,    40,   191,
-     195,    65,   234,   288,   288,   292,   288,   289,    79,   225,
-     229,   228,   210,   230,    64,    64,   291,   214,    70,    65,
-      65,   214,    79,   291,   193,   193,   235,   292,   215,    65,
-      65,    70,   215,   110,   110,   236,    14,    65,   292,   215,
-     215
+       0,    30,   145,   160,   161,   164,    47,   157,   158,   159,
+       0,    23,   162,   163,   165,   166,   167,    73,   110,   157,
+     111,   168,   169,   170,   171,   174,   209,   165,    47,    73,
+     110,   158,     3,    16,    28,    31,    32,    33,    36,    39,
+      40,    45,    49,   172,   173,   175,   171,    91,    65,   110,
+     173,     9,    26,   110,    29,    37,    41,    51,    52,    53,
+      54,    55,    56,    65,    77,    78,    87,    88,    89,    90,
+     146,   157,   205,   262,   263,   264,   265,   267,   271,   272,
+     273,   274,   275,   276,   277,   278,   279,   280,   281,   282,
+     283,   284,   285,   286,   287,   288,   289,   290,   291,   292,
+     293,   294,   295,   297,   158,   158,     4,     8,    13,    18,
+      25,    27,    57,    58,    59,    60,    61,    62,    63,    64,
+     148,   149,   150,   151,   153,   154,   157,    73,   148,   297,
+     157,   271,   273,   277,   277,   277,   277,   277,   277,    65,
+      69,    66,    73,    69,    72,    87,    88,    91,    92,    96,
+      89,    90,    97,    98,    24,    75,    76,    83,    84,    81,
+      82,    93,    95,    94,    85,    79,    86,    74,    99,   100,
+     101,   102,   103,   104,   105,   106,   107,   108,   296,    15,
+     176,   178,    15,   208,   210,    69,   268,   269,   268,    65,
+      75,   158,    69,   266,   270,    66,   205,   297,   110,   158,
+     297,   297,   277,   277,   277,   282,   282,   283,   283,   148,
+     152,   153,   156,   157,   284,   284,   284,   284,   285,   285,
+     286,   287,   288,   289,   297,   290,   293,   153,   154,    22,
+     177,   179,   153,   155,   110,    72,   297,   269,    69,   266,
+     205,   155,   180,    65,    70,    66,    69,   280,    66,    70,
+      65,    70,    69,    69,    69,    80,   180,   110,   113,   211,
+     299,   155,    70,    66,    72,    76,   205,   277,    70,   205,
+      70,    70,    70,   292,   181,   299,   169,   186,   193,   212,
+     213,   214,   215,   216,   155,    66,    66,   169,   182,   183,
+     184,   185,   186,   191,   193,   202,   216,   175,   110,   114,
+     300,   214,    36,   175,   201,   300,   184,   110,    44,   147,
+     148,   152,   192,   221,   299,   158,   200,   221,    47,   158,
+     187,   188,   189,   158,     5,    12,    19,    21,    34,    38,
+      39,    40,    42,    46,    48,    50,    65,   117,   147,   157,
+     204,   221,   222,   223,   224,   225,   226,   227,   228,   229,
+     230,   231,   232,   233,   234,   241,   242,   246,   247,   252,
+     253,   254,   255,   256,   258,   264,   272,   274,   275,   276,
+     278,   279,   294,    65,    65,    72,   110,    69,    74,    65,
+      53,   110,   110,    65,    65,   244,   297,    65,    65,    65,
+     297,    65,    53,   110,   110,   297,   110,    47,   187,    69,
+     300,   223,   110,   110,   112,   147,   195,   196,   197,   195,
+     188,    70,    67,   190,   219,   297,   195,   110,   221,   147,
+     225,   230,   243,   249,   251,   297,   110,   297,   297,   297,
+     110,   297,   110,   221,    66,   147,   189,    66,    72,    66,
+     190,   217,   220,    66,    46,   158,    71,    72,    66,    66,
+      66,    66,    66,     7,   257,   259,   260,   189,    43,   194,
+     198,   197,   194,    72,   218,    72,   194,    65,   115,   244,
+     230,   110,   230,   110,   110,   110,   110,    65,    17,   261,
+     260,   154,   199,   110,    68,   190,   297,   116,   248,   297,
+      71,   221,   110,   236,   299,   221,   221,   221,   197,   110,
+      72,   206,   299,    66,    65,    66,    66,   245,   250,   251,
+      14,     6,    11,   235,   237,   238,   239,   240,    66,   221,
+     154,    37,    41,   203,   207,   110,   297,   110,   110,    66,
+     110,   297,   298,    80,   300,   238,   221,   240,   110,    65,
+      65,   204,    72,   221,   221,   110,   221,    80,   110,   221,
+     205,   205,   300,   297,   221,   110,    66,    66,    66,   110,
+     110
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint16 yyr1[] =
 {
-       0,   132,   133,   134,   134,   134,   134,   134,   134,   135,
-     135,   136,   136,   137,   137,   138,   138,   138,   138,   138,
-     138,   138,   138,   138,   138,   138,   139,   139,   140,   140,
-     141,   141,   142,   143,   144,   144,   144,   145,   145,   146,
-     147,   148,   149,   149,   150,   150,   151,   151,   152,   153,
-     153,   154,   155,   156,   156,   157,   157,   158,   158,   159,
-     159,   160,   160,   161,   161,   161,   161,   161,   161,   161,
-     161,   161,   161,   162,   163,   163,   164,   164,   165,   165,
-     166,   167,   168,   168,   169,   170,   170,   171,   171,   172,
-     172,   172,   173,   173,   173,   174,   175,   175,   176,   176,
-     177,   177,   178,   178,   179,   180,   181,   181,   182,   182,
-     183,   183,   184,   184,   185,   185,   186,   187,   187,   188,
-     189,   190,   191,   191,   192,   192,   193,   193,   194,   195,
-     195,   196,   196,   197,   198,   198,   199,   200,   200,   201,
-     201,   202,   202,   203,   204,   205,   205,   206,   206,   207,
-     208,   208,   209,   210,   210,   211,   211,   212,   213,   214,
-     214,   214,   214,   214,   215,   215,   215,   215,   216,   216,
-     216,   216,   216,   216,   216,   216,   216,   216,   216,   217,
-     218,   219,   219,   219,   219,   219,   219,   219,   220,   221,
-     222,   223,   224,   224,   225,   225,   226,   227,   227,   228,
-     229,   229,   230,   230,   231,   232,   233,   234,   234,   235,
-     235,   236,   236,   237,   238,   239,   239,   240,   241,   241,
-     242,   242,   243,   244,   245,   245,   246,   247,   248,   248,
-     249,   249,   250,   250,   251,   252,   253,   253,   254,   254,
-     254,   254,   254,   254,   254,   255,   256,   256,   257,   257,
-     258,   258,   259,   259,   260,   261,   261,   262,   262,   263,
-     263,   263,   263,   263,   263,   264,   264,   265,   265,   265,
-     265,   266,   267,   268,   268,   268,   268,   268,   269,   270,
-     271,   271,   271,   271,   272,   272,   272,   273,   273,   273,
-     273,   274,   274,   274,   275,   275,   275,   276,   276,   276,
-     276,   276,   276,   277,   277,   277,   278,   278,   279,   279,
-     280,   280,   281,   281,   282,   282,   283,   283,   284,   284,
-     285,   286,   286,   286,   287,   287,   287,   287,   287,   287,
-     287,   287,   287,   287,   287,   287,   288,   289,   290,   291,
-     292
+       0,   144,   145,   146,   146,   146,   146,   146,   146,   147,
+     147,   148,   148,   149,   149,   150,   150,   150,   150,   150,
+     150,   150,   150,   150,   150,   150,   151,   151,   152,   152,
+     153,   153,   154,   155,   156,   156,   156,   157,   157,   158,
+     159,   160,   161,   161,   162,   162,   163,   163,   164,   165,
+     165,   166,   167,   168,   168,   169,   169,   170,   170,   171,
+     171,   172,   172,   173,   173,   173,   173,   173,   173,   173,
+     173,   173,   173,   173,   174,   175,   175,   176,   176,   177,
+     177,   178,   179,   180,   180,   181,   182,   182,   183,   183,
+     184,   184,   184,   185,   185,   185,   186,   187,   187,   188,
+     188,   189,   189,   190,   190,   191,   192,   193,   193,   194,
+     194,   195,   195,   196,   196,   197,   197,   198,   199,   199,
+     200,   201,   202,   203,   203,   204,   204,   205,   205,   206,
+     207,   207,   208,   208,   209,   210,   210,   211,   212,   212,
+     213,   213,   214,   214,   215,   216,   217,   217,   218,   218,
+     219,   220,   220,   221,   222,   222,   223,   223,   224,   225,
+     226,   226,   226,   226,   226,   226,   226,   227,   227,   227,
+     227,   227,   227,   227,   227,   227,   227,   227,   228,   229,
+     230,   230,   230,   230,   230,   230,   230,   231,   232,   233,
+     234,   235,   235,   236,   237,   237,   238,   239,   239,   240,
+     240,   241,   242,   243,   243,   244,   244,   245,   245,   246,
+     247,   247,   248,   249,   249,   250,   251,   251,   252,   252,
+     253,   253,   254,   255,   256,   256,   257,   257,   258,   258,
+     259,   259,   260,   261,   262,   262,   263,   263,   263,   263,
+     263,   263,   263,   264,   265,   265,   266,   266,   267,   267,
+     268,   268,   269,   270,   270,   271,   271,   272,   272,   272,
+     273,   273,   274,   274,   274,   274,   275,   276,   277,   277,
+     277,   277,   277,   278,   279,   280,   280,   280,   280,   281,
+     281,   282,   282,   282,   282,   283,   283,   283,   284,   284,
+     284,   285,   285,   285,   285,   285,   285,   286,   286,   286,
+     287,   287,   288,   288,   289,   289,   290,   290,   291,   291,
+     292,   292,   293,   293,   294,   295,   295,   295,   296,   296,
+     296,   296,   296,   296,   296,   296,   296,   296,   296,   297,
+     298,   299,   300
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -1435,34 +1401,33 @@ static const yytype_uint8 yyr2[] =
        3,     3,     1,     0,     1,     0,     1,     2,     3,     1,
        1,     3,     5,     1,     1,     1,     0,     1,     2,     6,
        3,     1,     2,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     8,     1,     0,     1,     0,     1,     0,
-       2,     2,     1,     3,     3,     1,     0,     1,     2,     1,
-       2,     1,     1,     1,     1,     5,     1,     3,     1,     3,
-       1,     3,     1,     1,     3,     1,     8,     8,     1,     0,
-       1,     0,     1,     3,     2,     3,     2,     1,     3,     1,
-       2,     9,     1,     0,     1,     0,     1,     0,     3,     5,
-       5,     1,     0,     7,     2,     3,     3,     1,     0,     1,
-       2,     1,     1,     1,     2,     1,     0,     1,     0,     4,
-       1,     3,     3,     1,     2,     1,     1,     2,     2,     1,
+       1,     1,     1,     1,     8,     1,     0,     1,     0,     1,
+       0,     2,     2,     1,     3,     3,     1,     0,     1,     2,
+       1,     2,     1,     1,     1,     1,     5,     1,     3,     1,
+       3,     1,     3,     1,     1,     3,     1,     8,     8,     1,
+       0,     1,     0,     1,     3,     2,     3,     2,     1,     3,
+       1,     2,     9,     1,     0,     1,     0,     1,     0,     4,
+       5,     5,     1,     0,     7,     2,     3,     3,     1,     0,
+       1,     2,     1,     1,     1,     2,     1,     0,     1,     0,
+       4,     1,     3,     3,     1,     2,     1,     1,     2,     2,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     2,     2,
+       1,     1,     1,     1,     1,     1,     1,     6,     6,     9,
+       6,     1,     0,     3,     1,     2,     2,     1,     2,     4,
+       3,     6,     8,     1,     0,     1,     0,     1,     0,    10,
+       9,     9,     6,     1,     1,     1,     1,     3,     3,     2,
+       3,     2,     3,     3,     6,     6,     1,     0,     4,     5,
+       1,     2,     6,     3,     1,     1,     1,     1,     3,     1,
+       1,     1,     1,     5,     1,     3,     1,     0,     3,     4,
+       1,     2,     3,     2,     3,     3,     3,     4,     6,     6,
+       4,     4,     1,     1,     1,     1,     2,     2,     1,     1,
+       2,     2,     1,     2,     2,     1,     2,     2,     1,     5,
+       4,     1,     3,     3,     3,     1,     3,     3,     1,     3,
+       3,     1,     3,     3,     3,     3,     3,     1,     3,     3,
+       1,     3,     1,     3,     1,     3,     1,     3,     1,     3,
+       1,     5,     1,     1,     3,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       2,     1,     1,     1,     1,     1,     1,     1,     6,     9,
-       9,     6,     1,     0,     1,     0,     4,     1,     2,     2,
-       1,     2,     3,     2,     5,     5,     7,     1,     0,     1,
-       0,     1,     0,     9,     9,     1,     1,     1,     1,     3,
-       1,     0,     3,     3,     3,     3,     3,     5,     1,     0,
-       3,     4,     1,     2,     5,     2,     1,     1,     1,     1,
-       3,     1,     1,     1,     1,     5,     1,     3,     1,     0,
-       4,     4,     1,     2,     3,     2,     3,     3,     3,     4,
-       6,     6,     4,     6,     6,     4,     4,     1,     1,     1,
-       1,     2,     2,     1,     1,     2,     2,     1,     2,     2,
-       1,     2,     2,     1,     5,     4,     5,     1,     3,     3,
-       3,     1,     3,     3,     1,     3,     3,     1,     3,     3,
-       3,     3,     3,     1,     3,     3,     1,     3,     1,     3,
-       1,     3,     1,     3,     1,     3,     1,     5,     1,     1,
-       3,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1
+       1,     1,     1
 };
 
 
@@ -2144,582 +2109,1354 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 12:
-#line 369 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+        case 3:
+#line 398 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_INTLITERAL, (yyvsp[0]. node ));   }
+#line 2116 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 4:
+#line 400 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_FLOATLITERAL, (yyvsp[0]. node ));   }
+#line 2122 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 5:
+#line 402 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_BOOLLITERAL, (yyvsp[0]. node ));   }
+#line 2128 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 6:
+#line 404 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_STRINGLITERAL, (yyvsp[0]. node ));   }
+#line 2134 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 7:
+#line 406 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_CHARLITERAL, (yyvsp[0]. node ));   }
+#line 2140 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 408 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NULLLITERAL, (yyvsp[0]. node ));   }
+#line 2146 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 12:
+#line 419 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_BOOLEAN, (yyvsp[0]. node ));    }
-#line 2151 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2152 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 379 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 429 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_UINT8, (yyvsp[0]. node ));    }
-#line 2157 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2158 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 381 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 431 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_UINT16, (yyvsp[0]. node ));    }
-#line 2163 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2164 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 383 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 433 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_UINT32, (yyvsp[0]. node ));    }
-#line 2169 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2170 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 385 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 435 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_UINT64, (yyvsp[0]. node ));    }
-#line 2175 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2176 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 387 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 437 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT8, (yyvsp[0]. node ));    }
-#line 2181 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2182 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 389 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 439 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT16, (yyvsp[0]. node ));    }
-#line 2187 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2188 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 391 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 441 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT32, (yyvsp[0]. node ));    }
-#line 2193 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2194 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 393 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 443 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT64, (yyvsp[0]. node ));    }
-#line 2199 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2200 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 395 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 445 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT32, (yyvsp[0]. node ));    }
-#line 2205 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2206 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 397 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 447 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT64, (yyvsp[0]. node ));    }
-#line 2211 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2212 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 399 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 449 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT8, (yyvsp[0]. node ));    }
-#line 2217 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2218 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 404 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 454 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_FLOAT, (yyvsp[0]. node ));    }
-#line 2223 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2224 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 406 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 456 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_DOUBLE, (yyvsp[0]. node ));    }
-#line 2229 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2230 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 416 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 466 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {
-		PUSH(TOK_NONE, "InterfaceTypeList");
-		COMBINE(TOK_TYPE_CLASS, 2);
-	}
-#line 2238 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+        PUSH(TOK_NONE, "InterfaceTypeList");
+        COMBINE(TOK_TYPE_CLASS, 2);
+    }
+#line 2239 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 421 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 471 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_TYPE_CLASS, 2);   }
-#line 2244 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2245 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 434 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 484 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {
-		COMBINE(TOK_TYPE_ARRAY, 1);
-	}
-#line 2252 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+        COMBINE(TOK_TYPE_ARRAY, 1);
+    }
+#line 2253 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 438 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 488 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {
-		COMBINE(TOK_TYPE_ARRAY, 1);
-	}
-#line 2260 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+        COMBINE(TOK_TYPE_ARRAY, 1);
+    }
+#line 2261 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 442 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 492 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {
-		beagle::Node *node = TOP();
-		node->setCounter( node->getCounter() + 1 );
+        beagle::Node *node = TOP();
+        node->setCounter( node->getCounter() + 1 );
     }
-#line 2269 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2270 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 455 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 505 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_IDENT, (yyvsp[0]. node ));    }
-#line 2275 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2276 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 460 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 510 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {
         PUSH(TOK_IDENT, (yyvsp[0]. node ));
         COMBINE(0, 1);
     }
-#line 2284 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2285 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 468 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 518 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_UNIT, 3);   }
-#line 2290 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2291 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 473 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 523 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NONE, "PackageDeclaration");   }
-#line 2296 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2297 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 478 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 528 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NONE, "ImportDeclarations");   }
-#line 2302 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2303 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 484 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 534 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_LIST, 1);   }
-#line 2308 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2309 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 486 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 536 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2314 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2315 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 491 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 541 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_PACKAGE, 1);   }
-#line 2320 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2321 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 501 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 551 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_IMPORT, 1);   }
-#line 2326 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2327 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 506 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 556 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {
-		COMBINE(TOK_IMPORT_ALL, 1);
-	}
-#line 2334 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+        COMBINE(TOK_IMPORT_ALL, 1);
+    }
+#line 2335 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 518 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 568 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NONE, "AnnotationDeclarations");   }
-#line 2340 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2341 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 57:
+#line 573 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LIST, 1);   }
+#line 2347 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 58:
+#line 575 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2353 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 59:
+#line 580 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_ANNOTATION, 2);   }
+#line 2359 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 60:
+#line 582 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_NONE, "ArgumentList");
+		COMBINE(TOK_ANNOTATION, 2);
+	}
+#line 2368 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 533 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 590 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_MODIFIERS, 1);   }
-#line 2346 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2374 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 535 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 592 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2352 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2380 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 540 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 597 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_PUBLIC, (yyvsp[0]. node ));   }
-#line 2358 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2386 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 542 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 599 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_PROTECTED, (yyvsp[0]. node ));   }
-#line 2364 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2392 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 544 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 601 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_PRIVATE, (yyvsp[0]. node ));   }
-#line 2370 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2398 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 546 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 603 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_STATIC, (yyvsp[0]. node ));   }
-#line 2376 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2404 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 548 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 605 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_ABSTRACT, (yyvsp[0]. node ));   }
-#line 2382 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2410 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 550 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 607 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_FINAL, (yyvsp[0]. node ));   }
-#line 2388 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2416 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 552 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 609 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NATIVE, (yyvsp[0]. node ));   }
-#line 2394 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2422 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 554 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_SYNCHRONIZED, (yyvsp[0]. node ));   }
-#line 2400 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 611 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_READLOCK, (yyvsp[0]. node ));   }
+#line 2428 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 556 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_TRANSIENT, (yyvsp[0]. node ));   }
-#line 2406 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 613 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_WRITELOCK, (yyvsp[0]. node ));   }
+#line 2434 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 558 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_VOLATILE, (yyvsp[0]. node ));   }
-#line 2412 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 615 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_TRANSIENT, (yyvsp[0]. node ));   }
+#line 2440 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 563 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 617 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_VOLATILE, (yyvsp[0]. node ));   }
+#line 2446 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 74:
+#line 622 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_CLASS, 6);   }
-#line 2418 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2452 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 75:
-#line 568 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+  case 76:
+#line 627 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NONE, "ModifiersOpt");   }
-#line 2424 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2458 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 77:
-#line 573 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+  case 78:
+#line 632 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NONE, "Super");   }
-#line 2430 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2464 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 79:
-#line 578 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+  case 80:
+#line 637 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NONE, "Intf");   }
-#line 2436 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 82:
-#line 592 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {    COMBINE(TOK_LIST, 1);   }
-#line 2442 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2470 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 594 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {    COMBINE(0, 1);    }
-#line 2448 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 651 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {    COMBINE(TOK_LIST, 1);   }
+#line 2476 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 86:
-#line 603 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_NONE, "ClassBodyDeclarations");   }
-#line 2454 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+  case 84:
+#line 653 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {    COMBINE(0, 1);    }
+#line 2482 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 608 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_BODY, 1);   }
-#line 2460 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 662 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "ClassBodyDeclarations");   }
+#line 2488 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 610 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(0, 1);   }
-#line 2466 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 667 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_BODY, 1);   }
+#line 2494 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 95:
-#line 627 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_FIELD, 4);   }
-#line 2472 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+  case 89:
+#line 669 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2500 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 632 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_LIST, 1);   }
-#line 2478 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 686 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_FIELD, 4);   }
+#line 2506 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 634 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(0, 1);   }
-#line 2484 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 691 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LIST, 1);   }
+#line 2512 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 639 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 693 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2518 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 99:
+#line 698 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {
-		PUSH(TOK_NONE, "VariableInitializer");
-		COMBINE(TOK_VARIABLE, 2);
-	}
-#line 2493 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+        PUSH(TOK_NONE, "VariableInitializer");
+        COMBINE(TOK_VARIABLE, 2);
+    }
+#line 2527 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 648 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_IDENT, (yyvsp[0]. node ));   }
-#line 2499 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 703 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_VARIABLE, 2);   }
+#line 2533 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 104:
-#line 659 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {
-		COMBINE(0, 1);
-	}
-#line 2507 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+  case 101:
+#line 708 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_IDENT, (yyvsp[0]. node ));   }
+#line 2539 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 667 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_VOID, (yyvsp[0]. node ));   }
-#line 2513 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 719 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2545 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 673 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_METHOD, 6);   }
-#line 2519 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 725 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_VOID, (yyvsp[0]. node ));   }
+#line 2551 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 675 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 731 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_METHOD, 6);   }
-#line 2525 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2557 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 109:
-#line 681 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+  case 108:
+#line 733 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_METHOD, 6);   }
+#line 2563 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 110:
+#line 739 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NONE, "Throws");   }
-#line 2531 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 111:
-#line 687 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_NONE, "FormalParameterList");   }
-#line 2537 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2569 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 112:
-#line 691 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {  COMBINE(TOK_LIST, 1);   }
-#line 2543 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 745 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "FormalParameterList");   }
+#line 2575 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 693 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {  COMBINE(0, 1);   }
-#line 2549 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 749 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {  COMBINE(TOK_LIST, 1);   }
+#line 2581 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 114:
-#line 698 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {  COMBINE(TOK_PARAMETER, 2);   }
-#line 2555 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+#line 751 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {  COMBINE(0, 1);   }
+#line 2587 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 700 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+#line 756 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {  COMBINE(TOK_PARAMETER, 2);   }
+#line 2593 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 116:
+#line 758 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {
-		COMBINE(TOK_PARAMETER, 2);
-		TOP()->setCounter( TOP()->getCounter() + 1 );
-	}
-#line 2564 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 120:
-#line 720 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_STATIC_INIT, 1);   }
-#line 2570 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 121:
-#line 725 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_CONSTRUCTOR, 6);   }
-#line 2576 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 123:
-#line 730 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_NONE, "ExplicitConstructorInvocation");   }
-#line 2582 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 125:
-#line 735 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_NONE, "BlockStatements");   }
-#line 2588 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 127:
-#line 738 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    { (yyval. node ) = NULL; }
-#line 2594 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 128:
-#line 742 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {
-    /* BeginBlock ExplicitConstructorInvocationOpt BlockStatementsOpt EndBlock */
-    PUSH(TOK_NONE, "ConstructorBody");   }
+        COMBINE(TOK_PARAMETER, 2);
+        TOP()->setCounter( TOP()->getCounter() + 1 );
+    }
 #line 2602 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 132:
-#line 754 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_NONE, "ExtendsInterfaces");   }
+  case 121:
+#line 779 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_STATIC_INIT, 1);   }
 #line 2608 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 133:
-#line 759 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_INTERFACE, 5);   }
+  case 122:
+#line 784 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_CONSTRUCTOR, 6);   }
 #line 2614 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 134:
-#line 764 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {    COMBINE(TOK_LIST, 1);   }
+  case 124:
+#line 789 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "ExplicitConstructorInvocation");   }
 #line 2620 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 135:
-#line 766 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {    COMBINE(0, 1);   }
+  case 126:
+#line 794 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "BlockStatements");   }
 #line 2626 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 138:
-#line 775 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   PUSH(TOK_NONE, "InterfaceMemberDeclarations");   }
+  case 128:
+#line 799 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "ArgumentList");   }
 #line 2632 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 139:
-#line 780 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_BODY, 1);   }
+  case 129:
+#line 804 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_BODY, 2);   }
 #line 2638 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 140:
-#line 782 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(0, 1);   }
+  case 130:
+#line 809 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   TOP()->setType(TOK_THIS);   }
 #line 2644 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 144:
-#line 796 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+  case 131:
+#line 811 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   TOP()->setType(TOK_SUPER);   }
+#line 2650 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 133:
+#line 816 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "ExtendsInterfaces");   }
+#line 2656 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 134:
+#line 821 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_INTERFACE, 5);   }
+#line 2662 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 135:
+#line 826 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {    COMBINE(TOK_LIST, 1);   }
+#line 2668 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 136:
+#line 828 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {    COMBINE(0, 1);   }
+#line 2674 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 139:
+#line 837 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "InterfaceMemberDeclarations");   }
+#line 2680 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 140:
+#line 842 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_BODY, 1);   }
+#line 2686 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 141:
+#line 844 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2692 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 145:
+#line 858 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     {
-		PUSH(TOK_NONE, "MethodBody");
-		COMBINE(0, 1);
-	}
-#line 2653 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 146:
-#line 802 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    { (yyval. node ) = NULL; }
-#line 2659 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 147:
-#line 804 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    { (yyval. node ) = NULL; }
-#line 2665 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 148:
-#line 804 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    { (yyval. node ) = NULL; }
-#line 2671 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 193:
-#line 891 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    { (yyval. node ) = NULL; }
-#line 2677 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 195:
-#line 893 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    { (yyval. node ) = NULL; }
-#line 2683 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 208:
-#line 922 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    { (yyval. node ) = NULL; }
-#line 2689 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 210:
-#line 924 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    { (yyval. node ) = NULL; }
-#line 2695 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
-    break;
-
-  case 212:
-#line 926 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
-    { (yyval. node ) = NULL; }
+        PUSH(TOK_NONE, "MethodBody");
+        COMBINE(0, 1);
+    }
 #line 2701 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 221:
-#line 948 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+  case 147:
+#line 864 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
 #line 2707 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 229:
-#line 967 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+  case 148:
+#line 866 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
 #line 2713 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
-  case 249:
-#line 1003 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+  case 149:
+#line 866 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
     { (yyval. node ) = NULL; }
 #line 2719 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
+  case 154:
+#line 881 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_BLOCK, 1);   }
+#line 2725 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
 
-#line 2723 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+  case 155:
+#line 883 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2731 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 159:
+#line 897 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_VARIABLE, 2);   }
+#line 2737 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 178:
+#line 926 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_PASS, (yyvsp[-1]. node ));   }
+#line 2743 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 187:
+#line 945 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_NONE, "Block");
+		COMBINE(TOK_IF, 3);
+	}
+#line 2752 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 188:
+#line 953 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		COMBINE(TOK_BLOCK, 1);
+		PUSH(TOK_NONE, "Block");
+		COMBINE(TOK_IF, 3);
+	}
+#line 2762 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 189:
+#line 962 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_IF, 3);   }
+#line 2768 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 190:
+#line 967 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_SWITCH, 2);   }
+#line 2774 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 192:
+#line 972 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "SwitchBlockStatementGroups");   }
+#line 2780 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 194:
+#line 981 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LIST, 1);   }
+#line 2786 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 195:
+#line 983 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2792 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 196:
+#line 988 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_GROUP, 2);   }
+#line 2798 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 197:
+#line 993 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LIST, 1);   }
+#line 2804 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 198:
+#line 995 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2810 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 199:
+#line 1000 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_CASE, 1);   }
+#line 2816 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 200:
+#line 1002 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_DEFAULT, (yyvsp[-2]. node ));
+		COMBINE(TOK_CASE, 1);
+	}
+#line 2825 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 201:
+#line 1010 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_WHILE, 2);   }
+#line 2831 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 202:
+#line 1016 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_DO, 2);   }
+#line 2837 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 204:
+#line 1021 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "ForInit");   }
+#line 2843 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 206:
+#line 1026 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "Expression");   }
+#line 2849 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 208:
+#line 1031 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "ForUpdate");   }
+#line 2855 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 209:
+#line 1036 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_FOR, 4);   }
+#line 2861 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 210:
+#line 1041 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_FOR_EACH, 4);   }
+#line 2867 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 211:
+#line 1043 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_FOR_EACH, 4);   }
+#line 2873 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 212:
+#line 1048 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_RANGE, 2);   }
+#line 2879 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 216:
+#line 1062 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LIST, 1);   }
+#line 2885 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 217:
+#line 1064 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2891 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 218:
+#line 1069 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_BREAK, (yyvsp[-1]. node ));
+		COMBINE(TOK_BREAK, 1);
+	}
+#line 2900 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 219:
+#line 1074 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_INTLITERAL, "1");
+		COMBINE(TOK_BREAK, 1);
+	}
+#line 2909 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 220:
+#line 1082 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_BREAK, (yyvsp[-1]. node ));
+		COMBINE(TOK_CONTINUE, 1);
+	}
+#line 2918 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 221:
+#line 1087 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_INTLITERAL, "1");
+		COMBINE(TOK_CONTINUE, 1);
+	}
+#line 2927 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 222:
+#line 1095 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_RETURN, 1);   }
+#line 2933 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 223:
+#line 1101 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_THROW, 1);   }
+#line 2939 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 224:
+#line 1106 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_READLOCK, 2);   }
+#line 2945 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 225:
+#line 1108 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_READLOCK, 2);   }
+#line 2951 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 227:
+#line 1113 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "Catches");   }
+#line 2957 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 228:
+#line 1118 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_NONE, "finally");
+		COMBINE(TOK_TRY, 3);
+	}
+#line 2966 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 229:
+#line 1123 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_TRY, 3);   }
+#line 2972 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 230:
+#line 1128 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LIST, 1);   }
+#line 2978 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 231:
+#line 1130 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 2984 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 232:
+#line 1135 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_CATCH, 2);   }
+#line 2990 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 233:
+#line 1140 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   TOP()->setType(TOK_FINALLY);   }
+#line 2996 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 237:
+#line 1151 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_THIS, (yyvsp[0]. node ));   }
+#line 3002 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 243:
+#line 1161 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_NEW, 2);   }
+#line 3008 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 244:
+#line 1166 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LIST, 1);   }
+#line 3014 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 245:
+#line 1168 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 3020 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 247:
+#line 1173 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_NONE, "Dims");   }
+#line 3026 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 248:
+#line 1178 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+        /*
+         * Note: unlike Java, the current specification of the language
+         *       don't support assymetric arrays (i.e. arrays which some
+         *       dimensions have different sizes). Example:
+         *
+         *     int[][] num = new int[2][];
+		 *     num[0] = new int[1];
+		 *     num[1] = new int[5];
+         *
+         * To enable this feature, the grammar should include/modify the
+         * following rules:
+         *
+         *     ArrayCreationExpression:
+         *         OK_NEW PrimitiveType DimExprs DimsOpt
+         *         ;
+         *
+         *     DimsOpt:
+         *         Dims
+         *         |
+         *         ;
+         *
+         *     Dims:
+         *         TOK_LB TOK_RB
+         *         | Dims TOK_LB TOK_RB
+         *         ;
+         */
+
+        // insert 'DimsOpt' node into 'DimExprs'
+        //COMBINE(0, 1);
+
+        COMBINE(TOK_NEW_ARRAY, 2);
+    }
+#line 3064 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 249:
+#line 1212 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_NEW_ARRAY, 3);   }
+#line 3070 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 250:
+#line 1217 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LIST, 1);   }
+#line 3076 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 251:
+#line 1219 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(0, 1);   }
+#line 3082 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 253:
+#line 1229 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_TYPE_ARRAY, "");
+		TOP()->setCounter(1);
+	}
+#line 3091 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 254:
+#line 1234 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		TOP()->setCounter( TOP()->getCounter() + 1 );
+	}
+#line 3099 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 255:
+#line 1240 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_FIELD_ACCESS, 2);   }
+#line 3105 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 256:
+#line 1242 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		PUSH(TOK_SUPER, (yyvsp[-2]. node ));
+		COMBINE(TOK_FIELD_ACCESS, 2);
+	}
+#line 3114 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 257:
+#line 1250 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		beagle::Node *second, *third;
+
+		third = POP();
+		second = POP();
+		PUSH(TOK_NONE, "Primary");
+		NPUSH(second);
+		NPUSH(third);
+
+		COMBINE(TOK_CALL, 3);
+	}
+#line 3130 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 258:
+#line 1262 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_CALL, 3);   }
+#line 3136 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 259:
+#line 1264 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+
+		beagle::Node *second, *third;
+
+		third = POP();
+		second = POP();
+		PUSH(TOK_SUPER, "super");
+		NPUSH(second);
+		NPUSH(third);
+
+		COMBINE(TOK_CALL, 3);
+	/*
+	| Name BeginBlock ArgumentListOpt EndBlock
+	| Primary TOK_DOT SimpleName BeginBlock ArgumentListOpt EndBlock
+	| TOK_SUPER TOK_DOT TOK_IDENT BeginBlock ArgumentListOpt EndBlock
+	*/
+
+	}
+#line 3159 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 260:
+#line 1286 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_ARRAY_ACCESS, 2);   }
+#line 3165 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 261:
+#line 1288 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_ARRAY_ACCESS, 2);   }
+#line 3171 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 266:
+#line 1300 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_INC, 1);   }
+#line 3177 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 267:
+#line 1305 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_DEC, 1);   }
+#line 3183 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 270:
+#line 1312 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_PLUS, 1);   }
+#line 3189 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 271:
+#line 1314 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_MINUS, 1);   }
+#line 3195 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 273:
+#line 1320 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_INC, 1);   }
+#line 3201 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 274:
+#line 1325 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_DEC, 1);   }
+#line 3207 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 276:
+#line 1331 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_TILDE, 1);   }
+#line 3213 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 277:
+#line 1333 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_BANG, 1);   }
+#line 3219 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 279:
+#line 1340 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+		beagle::Node *first, *second, *third;
+
+		third = POP();
+		second = POP();
+		first = POP();
+
+		if (second->getType() == TOK_NONE)
+		{
+			delete second;
+			second = first;
+		}
+		else
+			second->addChild(first);
+		NPUSH(second);
+		NPUSH(third);
+
+		COMBINE(TOK_CAST, 2);
+	}
+#line 3243 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 280:
+#line 1360 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_CAST, 2);   }
+#line 3249 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 282:
+#line 1366 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_MUL, 2);   }
+#line 3255 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 283:
+#line 1368 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_DIV, 2);   }
+#line 3261 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 284:
+#line 1370 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_MOD, 2);   }
+#line 3267 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 286:
+#line 1376 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_PLUS, 2);   }
+#line 3273 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 287:
+#line 1378 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_MINUS, 2);   }
+#line 3279 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 289:
+#line 1384 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_SHL, 2);   }
+#line 3285 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 290:
+#line 1386 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_SHR, 2);   }
+#line 3291 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 292:
+#line 1392 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LT, 2);   }
+#line 3297 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 293:
+#line 1394 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_GT, 2);   }
+#line 3303 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 294:
+#line 1396 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LE, 2);   }
+#line 3309 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 295:
+#line 1398 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_GE, 2);   }
+#line 3315 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 296:
+#line 1400 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_INSTANCEOF, 2);   }
+#line 3321 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 298:
+#line 1406 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_EQ, 2);   }
+#line 3327 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 299:
+#line 1408 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_NE, 2);   }
+#line 3333 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 301:
+#line 1414 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_AND, 2);   }
+#line 3339 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 303:
+#line 1420 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_CARET, 2);   }
+#line 3345 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 305:
+#line 1426 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_OR, 2);   }
+#line 3351 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 307:
+#line 1432 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_ANDAND, 2);   }
+#line 3357 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 309:
+#line 1438 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_OROR, 2);   }
+#line 3363 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 311:
+#line 1444 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_QUEST, 2);   }
+#line 3369 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 314:
+#line 1454 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {
+
+        /*
+         * Change the expression notation from infixed to prefixed
+         */
+
+        beagle::Node *left, *right, *oper;
+
+        right = POP();
+        oper = POP();
+        left = POP();
+
+        oper->addChild(left);
+        oper->addChild(right);
+        NPUSH(oper);
+    }
+#line 3390 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 318:
+#line 1480 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_ASN, (yyvsp[0]. node ));   }
+#line 3396 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 319:
+#line 1482 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_MUASN, (yyvsp[0]. node ));   }
+#line 3402 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 320:
+#line 1484 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_DIASN, (yyvsp[0]. node ));   }
+#line 3408 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 321:
+#line 1486 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_MODASN, (yyvsp[0]. node ));   }
+#line 3414 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 322:
+#line 1488 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_PLASN, (yyvsp[0]. node ));   }
+#line 3420 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 323:
+#line 1490 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_MIASN, (yyvsp[0]. node ));   }
+#line 3426 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 324:
+#line 1492 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_SLASN, (yyvsp[0]. node ));   }
+#line 3432 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 325:
+#line 1494 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_SRASN, (yyvsp[0]. node ));   }
+#line 3438 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 326:
+#line 1496 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_ANDASN, (yyvsp[0]. node ));   }
+#line 3444 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 327:
+#line 1498 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_CARETASN, (yyvsp[0]. node ));   }
+#line 3450 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+  case 328:
+#line 1500 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1646  */
+    {   PUSH(TOK_ORASN, (yyvsp[0]. node ));   }
+#line 3456 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
+    break;
+
+
+#line 3460 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.cc" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2947,7 +3684,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1171 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1906  */
+#line 1520 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1906  */
 
 
 

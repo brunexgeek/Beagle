@@ -253,7 +253,7 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 "catch"                         { EMIT(TOK_CATCH); }
 "class"                         { EMIT(TOK_CLASS); }
 "const"                         { EMIT(TOK_CONST); }
-"defualt"                       { EMIT(TOK_DEFAULT); }
+"default"                       { EMIT(TOK_DEFAULT); }
 "do"                            { EMIT(TOK_DO); }
 "double"                        { EMIT(TOK_DOUBLE); }
 "else"                          { EMIT(TOK_ELSE); }
@@ -274,6 +274,11 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 "protected"                     { EMIT(TOK_PROTECTED); }
 "public"                        { EMIT(TOK_PUBLIC); }
 "return"                        { EMIT(TOK_RETURN); }
+"readlock"                      { EMIT(TOK_READLOCK); }
+"writelock"                     { EMIT(TOK_WRITELOCK); }
+"in"                            { EMIT(TOK_IN); }
+"range"                         { EMIT(TOK_RANGE); }
+"pass"                          { EMIT(TOK_PASS); }
 
 "static"                        { EMIT(TOK_STATIC); }
 "super"                         { EMIT(TOK_SUPER); }

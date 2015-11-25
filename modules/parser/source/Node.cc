@@ -40,43 +40,8 @@ Node::~Node()
 
 }
 
-Node *Node::getChild( int index ) const
-{
-    return children[index];
-}
 
-Node *Node::setChild( int index, Node *value )
-{
-    if (index < 0 || index > children.size()) return NULL;
-
-    return children[index] = value;
-}
-
-Node *Node::addChild( Node *value )
-{
-    children.push_back(value);
-    return value;
-}
-
-
-const char *Node::getText() const
-{
-    return text.c_str();
-}
-
-
-int Node::getCounter() const
-{
-    return counter;
-}
-
-void Node::setCounter( int value )
-{
-    counter = value;
-}
-
-
-void Node::print( std::ostream &out, Parser *parser, int level )
+void Node::print( std::ostream &out, Parser *parser, int level, bool recursive )
 {
     for (int i = 0; i < level; ++i)
         out << "   ";
@@ -92,6 +57,8 @@ void Node::print( std::ostream &out, Parser *parser, int level )
     if (counter != 0)
         std::cout << "(" << counter << ")";
     std::cout << std::endl;
+
+    if (!recursive) return;
 
     for (int i = 0; i < children.size(); ++i)
         children[i]->print(out, parser, level + 1);

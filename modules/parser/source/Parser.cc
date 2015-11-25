@@ -66,6 +66,7 @@ Node *Parser::parse()
 	context.scanner = scanner;
 	context.fileName = fileName;
 	context.rule = NULL;
+	context.parser = this;
 	if (beagle_parse(&context) == 0)
 		return context.stack[ context.stack.size() - 1 ];
 	else

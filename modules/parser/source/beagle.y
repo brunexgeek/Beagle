@@ -39,6 +39,8 @@ typedef struct
 
     const char *rule;
 
+    beagle::Parser *parser;
+
 } parser_context_t;
 
 
@@ -62,18 +64,18 @@ int beagle_get_column  (yyscan_t yyscanner);
 static void beagle_error(parser_context_t *context, const char *msg)
 {
     printf ("%s:%d:%d: error: %s - %s\n",
-		context->fileName,
-		beagle_get_lineno(context->scanner),
-		beagle_get_column(context->scanner),
-		context->rule,
-		msg);
+        context->fileName,
+        beagle_get_lineno(context->scanner),
+        beagle_get_column(context->scanner),
+        context->rule,
+        msg);
     return;
 }
 
 
 static beagle::Node *beagle_pop( std::vector<beagle::Node*> &stack )
 {
-	if (stack.size() == 0) return NULL;
+    if (stack.size() == 0) return NULL;
     beagle::Node *node = stack[ stack.size() - 1 ];
     stack.pop_back();
     return node;
@@ -82,35 +84,64 @@ static beagle::Node *beagle_pop( std::vector<beagle::Node*> &stack )
 
 static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok, int n )
 {
-	beagle::Node *temp;
+    beagle::Node *temp;
 
-	if (stack.size() < n) return NULL;
+    if (stack.size() < n) return NULL;
 
-	if (tok > 0 )
-		temp = new beagle::Node(tok, NULL);
-	else
-	{
-		if (stack.size() <= n) return NULL;
-		temp = stack[ stack.size() - 1 - n ];
-	}
-	for (int i = stack.size() - n; i < stack.size(); ++i)
-	{
-		//std::cout << temp->getValue() << ": adding child " << p->getValue() << std::endl;;
-		temp->addChild( stack[i] );
-	}
-	for (int i = 0; i < n; ++i)
-		stack.pop_back();
+    if (tok > 0 )
+        temp = new beagle::Node(tok, NULL);
+    else
+    {
+        if (stack.size() <= n) return NULL;
+        temp = stack[ stack.size() - 1 - n ];
+    }
+    for (int i = stack.size() - n; i < stack.size(); ++i)
+    {
+        //std::cout << temp->getValue() << ": adding child " << p->getValue() << std::endl;;
+        temp->addChild( stack[i] );
+    }
+    for (int i = 0; i < n; ++i)
+        stack.pop_back();
 
-	if (tok > 0) stack.push_back(temp);
+    if (tok > 0) stack.push_back(temp);
+}
+
+
+static void beagle_printStack( std::vector<beagle::Node*> &stack, beagle::Parser *parser )
+{
+    std::cout << "Stack:" << std::endl;
+    for (int i = 0; i < stack.size(); ++i)
+        stack[i]->print(std::cout, parser, 1, false);
+}
+
+
+static void beagle_push(
+    parser_context_t *context,
+    int token,
+    const char *value )
+{
+    std::cout << "PUSH " << value << std::endl;
+    context->stack.push_back( new beagle::Node(token,value) );
+}
+
+
+static void beagle_push(
+    parser_context_t *context,
+    beagle::Node *node )
+{
+    std::cout << "PUSH " << node->getText() << std::endl;
+    context->stack.push_back(node);
 }
 
 
 #define scanner              parserContext->scanner
-#define PUSH(tok,value)      std::cout << "PUSH " << value << std::endl, parserContext->stack.push_back( new beagle::Node((tok),(value)) )
+#define PUSH(token,value)    beagle_push( parserContext, (token), (value) )
+#define NPUSH(node)          beagle_push( parserContext, (node) )
 #define POP()                beagle_pop(parserContext->stack)
 #define TOP()                (parserContext->stack[ parserContext->stack.size() - 1 ])
 #define COMBINE(tok,n)       beagle_combine(parserContext->stack, (tok), (n))
-#define RULE(x)				 parserContext->rule = (x)
+#define RULE(x)              parserContext->rule = (x)
+#define PSTACK()             beagle_printStack(parserContext->stack, parserContext->parser)
 
 }
 
@@ -182,7 +213,8 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
 %token < node > TOK_STATIC
 %token < node > TOK_SUPER
 %token < node > TOK_SWITCH
-%token < node > TOK_SYNCHRONIZED
+%token < node > TOK_READLOCK
+%token < node > TOK_WRITELOCK
 %token < node > TOK_THIS
 %token < node > TOK_THROW
 %token < node > TOK_THROWS
@@ -250,7 +282,6 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
 %token < node > TOK_CARETASN
 %token < node > TOK_SLASN
 %token < node > TOK_SRASN
-%token < node > TOK_LSRASN
 %token < node > TOK_MODASN
 %token < node > TOK_BAD_TOKEN
 %token < node > TOK_EOL
@@ -258,6 +289,9 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
 %token < node > TOK_VARARG
 %token < node > TOK_INDENT
 %token < node > TOK_DEDENT
+%token < node > TOK_IN
+%token < node > TOK_RANGE
+%token < node > TOK_PASS
 
 %token < node > TOK_TYPE_CLASS
 %token < node > TOK_TYPE_ARRAY
@@ -276,6 +310,16 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
 %token < node > TOK_IMPORT_ALL
 %token < node > TOK_STATIC_INIT
 %token < node > TOK_PARAMETER
+%token < node > TOK_BLOCK
+%token < node > TOK_CALL
+%token < node > TOK_FIELD_ACCESS
+%token < node > TOK_CAST
+%token < node > TOK_ARRAY_ACCESS
+%token < node > TOK_FOR_EACH
+%token < node > TOK_GROUP
+%token < node > TOK_ANNOTATION
+%token < node > TOK_NEW_ARRAY
+
 
 /*
  * each nonterminal is declared.  nonterminals correspond to internal nodes
@@ -291,26 +335,26 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
 %type < node > ClassBodyDeclarations ClassBodyDeclaration
 %type < node > ClassMemberDeclaration FieldDeclaration VariableDeclarators
 %type < node > VariableDeclarator VariableDeclaratorId VariableInitializer
-%type < node > MethodDeclaration MethodHeader
+%type < node > MethodDeclaration MethodHeader Range
 %type < node > FormalParameterList FormalParameter Throws ClassTypeList
 %type < node > MethodBody StaticInitializer ConstructorDeclaration
-%type < node > ConstructorBody
+%type < node > ConstructorBody ForEachStatement
 %type < node > ExplicitConstructorInvocation InterfaceDeclaration
 %type < node > ExtendsInterfaces InterfaceBody InterfaceMemberDeclarations
 %type < node > InterfaceMemberDeclaration ConstantDeclaration
 %type < node > AbstractMethodDeclaration ArrayInitializer
 %type < node > VariableInitializers Block BlockStatements BlockStatement
 %type < node > LocalVariableDeclarationStatement LocalVariableDeclaration
-%type < node > Statement StatementNoShortIf
-%type < node > StatementWithoutTrailingSubstatement EmptyStatement
+%type < node > Statement EmptyStatement
+%type < node > StatementWithoutTrailingSubstatement
 %type < node > ExpressionStatement StatementExpression IfThenStatement
-%type < node > IfThenElseStatement IfThenElseStatementNoShortIf
+%type < node > IfThenElseStatement IfThenInlineStatement
 %type < node > SwitchStatement SwitchBlock SwitchBlockStatementGroups
 %type < node > SwitchBlockStatementGroup SwitchLabels SwitchLabel
-%type < node > WhileStatement WhileStatementNoShortIf DoStatement
-%type < node > ForStatement ForStatementNoShortIf ForInit ForUpdate
+%type < node > WhileStatement DoStatement
+%type < node > ForStatement ForInit ForUpdate
 %type < node > StatementExpressionList BreakStatement ContinueStatement
-%type < node > ReturnStatement ThrowStatement SynchronizedStatement
+%type < node > ReturnStatement ThrowStatement LockStatement
 %type < node > TryStatement Catches CatchClause Finally Primary
 %type < node > PrimaryNoNewArray ClassInstanceCreationExpression
 %type < node > ArgumentList ArrayCreationExpression DimExprs DimExpr Dims
@@ -326,14 +370,14 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
 %type < node > LeftHandSide AssignmentOperator Expression ConstantExpression
 %type < node > PackageDeclarationOpt ImportDeclarationsOpt
 %type < node > ModifiersOpt SuperOpt InterfacesOpt ClassBodyDeclarationsOpt
-%type < node > ThrowsOpt FormalParameterListOpt IDENTOpt CatchesOpt
+%type < node > ThrowsOpt FormalParameterListOpt CatchesOpt
 %type < node > BlockStatementsOpt
 %type < node > ArgumentListOpt ExplicitConstructorInvocationOpt DimsOpt
 %type < node > ExtendsInterfacesOpt InterfaceMemberDeclarationsOpt
 %type < node > VariableInitializersOpt CMOpt SwitchBlockStatementGroupsOpt
-%type < node > SwitchLabelsOpt ForInitOpt ExpressionOpt ForUpdateOpt
+%type < node > ForInitOpt ExpressionOpt ForUpdateOpt
 %type < node > AnnotationDeclarations AnnotationDeclaration
-%type < node > BeginBlock EndBlock EndPart AnnotationDeclarationsOpt
+%type < node > BeginBlock EndBlock AnnotationDeclarationsOpt
 
 /*
  * the start symbol, Goal, may seem to be here for rhetorical purposes,
@@ -351,11 +395,17 @@ Goal:
 
 Literal:
     TOK_INTLITERAL
+    {   PUSH(TOK_INTLITERAL, $1);   }
     | TOK_FLOATLITERAL
+    {   PUSH(TOK_FLOATLITERAL, $1);   }
     | TOK_BOOLLITERAL
+    {   PUSH(TOK_BOOLLITERAL, $1);   }
     | TOK_STRINGLITERAL
+    {   PUSH(TOK_STRINGLITERAL, $1);   }
     | TOK_CHARLITERAL
+    {   PUSH(TOK_CHARLITERAL, $1);   }
     | TOK_NULLLITERAL
+    {   PUSH(TOK_NULLLITERAL, $1);   }
     ;
 
 Type:
@@ -414,9 +464,9 @@ ReferenceType:
 ClassOrInterfaceType:
     Name
     {
-		PUSH(TOK_NONE, "InterfaceTypeList");
-		COMBINE(TOK_TYPE_CLASS, 2);
-	}
+        PUSH(TOK_NONE, "InterfaceTypeList");
+        COMBINE(TOK_TYPE_CLASS, 2);
+    }
     | Name TOK_LT InterfaceTypeList TOK_GT
     {   COMBINE(TOK_TYPE_CLASS, 2);   }
     ;
@@ -432,16 +482,16 @@ InterfaceType:
 ArrayType:
     PrimitiveType TOK_LB TOK_RB
     {
-		COMBINE(TOK_TYPE_ARRAY, 1);
-	}
+        COMBINE(TOK_TYPE_ARRAY, 1);
+    }
     | Name TOK_LB TOK_RB
     {
-		COMBINE(TOK_TYPE_ARRAY, 1);
-	}
+        COMBINE(TOK_TYPE_ARRAY, 1);
+    }
     | ArrayType TOK_LB TOK_RB
     {
-		beagle::Node *node = TOP();
-		node->setCounter( node->getCounter() + 1 );
+        beagle::Node *node = TOP();
+        node->setCounter( node->getCounter() + 1 );
     }
     ;
 
@@ -465,48 +515,48 @@ QualifiedName:
 
 CompilationUnit:
     PackageDeclarationOpt ImportDeclarationsOpt TypeDeclaration
-	{   COMBINE(TOK_UNIT, 3);   }
+    {   COMBINE(TOK_UNIT, 3);   }
     ;
 
 PackageDeclarationOpt:
-	PackageDeclaration
-	| {   PUSH(TOK_NONE, "PackageDeclaration");   }
-	;
+    PackageDeclaration
+    | {   PUSH(TOK_NONE, "PackageDeclaration");   }
+    ;
 
 ImportDeclarationsOpt:
-	ImportDeclarations
-	| {   PUSH(TOK_NONE, "ImportDeclarations");   }
-	;
+    ImportDeclarations
+    | {   PUSH(TOK_NONE, "ImportDeclarations");   }
+    ;
 
 
 ImportDeclarations:
-	ImportDeclaration
-	{   COMBINE(TOK_LIST, 1);   }
-	| ImportDeclarations ImportDeclaration
-	{   COMBINE(0, 1);   }
-	;
+    ImportDeclaration
+    {   COMBINE(TOK_LIST, 1);   }
+    | ImportDeclarations ImportDeclaration
+    {   COMBINE(0, 1);   }
+    ;
 
 PackageDeclaration:
-	TOK_PACKAGE Name TOK_EOL
-	{   COMBINE(TOK_PACKAGE, 1);   }
+    TOK_PACKAGE Name TOK_EOL
+    {   COMBINE(TOK_PACKAGE, 1);   }
     ;
 
 ImportDeclaration:
-	SingleTypeImportDeclaration
-	| TypeImportOnDemandDeclaration
-	;
+    SingleTypeImportDeclaration
+    | TypeImportOnDemandDeclaration
+    ;
 
 SingleTypeImportDeclaration:
-	TOK_IMPORT Name TOK_EOL
-	{   COMBINE(TOK_IMPORT, 1);   }
-	;
+    TOK_IMPORT Name TOK_EOL
+    {   COMBINE(TOK_IMPORT, 1);   }
+    ;
 
 TypeImportOnDemandDeclaration:
-	TOK_IMPORT Name TOK_DOT TOK_MUL TOK_EOL
-	{
-		COMBINE(TOK_IMPORT_ALL, 1);
-	}
-	;
+    TOK_IMPORT Name TOK_DOT TOK_MUL TOK_EOL
+    {
+        COMBINE(TOK_IMPORT_ALL, 1);
+    }
+    ;
 
 TypeDeclaration:
     ClassDeclaration
@@ -520,43 +570,52 @@ AnnotationDeclarationsOpt:
 
 AnnotationDeclarations:
     AnnotationDeclaration
+    {   COMBINE(TOK_LIST, 1);   }
     | AnnotationDeclarations AnnotationDeclaration
+    {   COMBINE(0, 1);   }
     ;
 
 AnnotationDeclaration:
-    TOK_AT TOK_IDENT TOK_LP ArgumentListOpt TOK_RP TOK_EOL
-    | TOK_AT TOK_IDENT TOK_EOL
+    TOK_AT SimpleName TOK_LP ArgumentListOpt TOK_RP TOK_EOL
+    {   COMBINE(TOK_ANNOTATION, 2);   }
+    | TOK_AT SimpleName TOK_EOL
+    {
+		PUSH(TOK_NONE, "ArgumentList");
+		COMBINE(TOK_ANNOTATION, 2);
+	}
     ;
 
 Modifiers:
-	Modifier
-	{   COMBINE(TOK_MODIFIERS, 1);   }
+    Modifier
+    {   COMBINE(TOK_MODIFIERS, 1);   }
     | Modifiers Modifier
     {   COMBINE(0, 1);   }
     ;
 
 Modifier:
-	TOK_PUBLIC
-	{   PUSH(TOK_PUBLIC, $1);   }
-	| TOK_PROTECTED
-	{   PUSH(TOK_PROTECTED, $1);   }
-	| TOK_PRIVATE
-	{   PUSH(TOK_PRIVATE, $1);   }
-	| TOK_STATIC
-	{   PUSH(TOK_STATIC, $1);   }
-	| TOK_ABSTRACT
-	{   PUSH(TOK_ABSTRACT, $1);   }
-	| TOK_FINAL
-	{   PUSH(TOK_FINAL, $1);   }
-	| TOK_NATIVE
-	{   PUSH(TOK_NATIVE, $1);   }
-	| TOK_SYNCHRONIZED
-	{   PUSH(TOK_SYNCHRONIZED, $1);   }
-	| TOK_TRANSIENT
-	{   PUSH(TOK_TRANSIENT, $1);   }
-	| TOK_VOLATILE
-	{   PUSH(TOK_VOLATILE, $1);   }
-	;
+    TOK_PUBLIC
+    {   PUSH(TOK_PUBLIC, $1);   }
+    | TOK_PROTECTED
+    {   PUSH(TOK_PROTECTED, $1);   }
+    | TOK_PRIVATE
+    {   PUSH(TOK_PRIVATE, $1);   }
+    | TOK_STATIC
+    {   PUSH(TOK_STATIC, $1);   }
+    | TOK_ABSTRACT
+    {   PUSH(TOK_ABSTRACT, $1);   }
+    | TOK_FINAL
+    {   PUSH(TOK_FINAL, $1);   }
+    | TOK_NATIVE
+    {   PUSH(TOK_NATIVE, $1);   }
+    | TOK_READLOCK
+    {   PUSH(TOK_READLOCK, $1);   }
+	| TOK_WRITELOCK
+    {   PUSH(TOK_WRITELOCK, $1);   }
+    | TOK_TRANSIENT
+    {   PUSH(TOK_TRANSIENT, $1);   }
+    | TOK_VOLATILE
+    {   PUSH(TOK_VOLATILE, $1);   }
+    ;
 
 ClassDeclaration:
     AnnotationDeclarationsOpt ModifiersOpt TOK_CLASS SimpleName SuperOpt InterfacesOpt TOK_EOL ClassBody
@@ -564,51 +623,51 @@ ClassDeclaration:
     ;
 
 ModifiersOpt:
-	Modifiers
-	| {   PUSH(TOK_NONE, "ModifiersOpt");   }
-	;
+    Modifiers
+    | {   PUSH(TOK_NONE, "ModifiersOpt");   }
+    ;
 
 SuperOpt:
-	Super
-	| {   PUSH(TOK_NONE, "Super");   }
-	;
+    Super
+    | {   PUSH(TOK_NONE, "Super");   }
+    ;
 
 InterfacesOpt:
-	Interfaces
-	| {   PUSH(TOK_NONE, "Intf");   }
-	;
+    Interfaces
+    | {   PUSH(TOK_NONE, "Intf");   }
+    ;
 
 
 Super:
-	TOK_EXTENDS ClassType
+    TOK_EXTENDS ClassType
     ;
 
 Interfaces:
-	TOK_IMPLEMENTS InterfaceTypeList
-	;
+    TOK_IMPLEMENTS InterfaceTypeList
+    ;
 
 InterfaceTypeList:
-	InterfaceType
-	{    COMBINE(TOK_LIST, 1);   }
+    InterfaceType
+    {    COMBINE(TOK_LIST, 1);   }
     | InterfaceTypeList TOK_CM InterfaceType
     {    COMBINE(0, 1);    }
     ;
 
 ClassBody:
-	BeginBlock ClassBodyDeclarationsOpt EndBlock
-	;
+    BeginBlock ClassBodyDeclarationsOpt EndBlock
+    ;
 
 ClassBodyDeclarationsOpt:
-	ClassBodyDeclarations
-	| {   PUSH(TOK_NONE, "ClassBodyDeclarations");   }
-	;
+    ClassBodyDeclarations
+    | {   PUSH(TOK_NONE, "ClassBodyDeclarations");   }
+    ;
 
 ClassBodyDeclarations:
-	ClassBodyDeclaration
-	{   COMBINE(TOK_BODY, 1);   }
-	| ClassBodyDeclarations ClassBodyDeclaration
-	{   COMBINE(0, 1);   }
-	;
+    ClassBodyDeclaration
+    {   COMBINE(TOK_BODY, 1);   }
+    | ClassBodyDeclarations ClassBodyDeclaration
+    {   COMBINE(0, 1);   }
+    ;
 
 ClassBodyDeclaration:
     ClassMemberDeclaration
@@ -617,15 +676,15 @@ ClassBodyDeclaration:
     ;
 
 ClassMemberDeclaration:
-	FieldDeclaration
-	| MethodDeclaration
-	| AbstractMethodDeclaration
-	;
+    FieldDeclaration
+    | MethodDeclaration
+    | AbstractMethodDeclaration
+    ;
 
 FieldDeclaration:
-	AnnotationDeclarationsOpt ModifiersOpt Type VariableDeclarators TOK_EOL
-	{   COMBINE(TOK_FIELD, 4);   }
-	;
+    AnnotationDeclarationsOpt ModifiersOpt Type VariableDeclarators TOK_EOL
+    {   COMBINE(TOK_FIELD, 4);   }
+    ;
 
 VariableDeclarators:
     VariableDeclarator
@@ -635,19 +694,20 @@ VariableDeclarators:
     ;
 
 VariableDeclarator:
-	VariableDeclaratorId
-	{
-		PUSH(TOK_NONE, "VariableInitializer");
-		COMBINE(TOK_VARIABLE, 2);
-	}
-	| VariableDeclaratorId TOK_ASN VariableInitializer
-	;
+    VariableDeclaratorId
+    {
+        PUSH(TOK_NONE, "VariableInitializer");
+        COMBINE(TOK_VARIABLE, 2);
+    }
+    | VariableDeclaratorId TOK_ASN VariableInitializer
+    {   COMBINE(TOK_VARIABLE, 2);   }
+    ;
 
 VariableDeclaratorId:
-	TOK_IDENT
-	{   PUSH(TOK_IDENT, $1);   }
-	| VariableDeclaratorId TOK_LB TOK_RB
-	;
+    TOK_IDENT
+    {   PUSH(TOK_IDENT, $1);   }
+    | VariableDeclaratorId TOK_LB TOK_RB
+    ;
 
 VariableInitializer:
     Expression
@@ -655,52 +715,50 @@ VariableInitializer:
     ;
 
 MethodDeclaration:
-	MethodHeader TOK_EOL MethodBody
-	{
-		COMBINE(0, 1);
-	}
+    MethodHeader TOK_EOL MethodBody
+    {   COMBINE(0, 1);   }
     ;
 
 
 VoidType:
-	TOK_VOID
-	{   PUSH(TOK_VOID, $1);   }
-	;
+    TOK_VOID
+    {   PUSH(TOK_VOID, $1);   }
+    ;
 
 
 MethodHeader:
-	AnnotationDeclarationsOpt ModifiersOpt Type SimpleName TOK_LP FormalParameterListOpt TOK_RP ThrowsOpt
-	{   COMBINE(TOK_METHOD, 6);   }
-    |  AnnotationDeclarationsOpt ModifiersOpt VoidType SimpleName TOK_LP FormalParameterListOpt TOK_RP ThrowsOpt
+    AnnotationDeclarationsOpt ModifiersOpt Type SimpleName TOK_LP FormalParameterListOpt TOK_RP ThrowsOpt
+    {   COMBINE(TOK_METHOD, 6);   }
+    | AnnotationDeclarationsOpt ModifiersOpt VoidType SimpleName TOK_LP FormalParameterListOpt TOK_RP ThrowsOpt
     {   COMBINE(TOK_METHOD, 6);   }
     ;
 
 
 ThrowsOpt:
-	Throws
-	| {   PUSH(TOK_NONE, "Throws");   }
-	;
+    Throws
+    | {   PUSH(TOK_NONE, "Throws");   }
+    ;
 
 
 FormalParameterListOpt:
-	FormalParameterList
-	| {   PUSH(TOK_NONE, "FormalParameterList");   }
+    FormalParameterList
+    | {   PUSH(TOK_NONE, "FormalParameterList");   }
 
 FormalParameterList:
-	FormalParameter
-	{  COMBINE(TOK_LIST, 1);   }
-	| FormalParameterList TOK_CM FormalParameter
-	{  COMBINE(0, 1);   }
-	;
+    FormalParameter
+    {  COMBINE(TOK_LIST, 1);   }
+    | FormalParameterList TOK_CM FormalParameter
+    {  COMBINE(0, 1);   }
+    ;
 
 FormalParameter:
     Type VariableDeclaratorId
     {  COMBINE(TOK_PARAMETER, 2);   }
     | TOK_VARARG Type VariableDeclaratorId
     {
-		COMBINE(TOK_PARAMETER, 2);
-		TOP()->setCounter( TOP()->getCounter() + 1 );
-	}
+        COMBINE(TOK_PARAMETER, 2);
+        TOP()->setCounter( TOP()->getCounter() + 1 );
+    }
     ;
 
 
@@ -712,12 +770,13 @@ ClassTypeList: ClassType
         | ClassTypeList TOK_CM ClassType
         ;
 
-MethodBody: Block
-        ;
+MethodBody:
+    Block
+    ;
 
 StaticInitializer:
-	TOK_STATIC Block
-	{   COMBINE(TOK_STATIC_INIT, 1);   }
+    TOK_STATIC Block
+    {   COMBINE(TOK_STATIC_INIT, 1);   }
     ;
 
 ConstructorDeclaration:
@@ -726,78 +785,81 @@ ConstructorDeclaration:
     ;
 
 ExplicitConstructorInvocationOpt:
-	ExplicitConstructorInvocation
-	| {   PUSH(TOK_NONE, "ExplicitConstructorInvocation");   }
-	;
+    ExplicitConstructorInvocation
+    | {   PUSH(TOK_NONE, "ExplicitConstructorInvocation");   }
+    ;
 
 BlockStatementsOpt:
     BlockStatements
     | {   PUSH(TOK_NONE, "BlockStatements");   }
     ;
 
-ArgumentListOpt:  ArgumentList | { $$ = NULL; } ;
+ArgumentListOpt:
+    ArgumentList
+    | {   PUSH(TOK_NONE, "ArgumentList");   }
+    ;
 
 ConstructorBody:
-    BeginBlock ExplicitConstructorInvocationOpt EndBlock
-    {
-    /* BeginBlock ExplicitConstructorInvocationOpt BlockStatementsOpt EndBlock */
-    PUSH(TOK_NONE, "ConstructorBody");   }
+    BeginBlock ExplicitConstructorInvocationOpt BlockStatementsOpt EndBlock
+    {   COMBINE(TOK_BODY, 2);   }
     ;
 
 ExplicitConstructorInvocation:
     TOK_THIS TOK_LP ArgumentListOpt TOK_RP TOK_EOL
+    {   TOP()->setType(TOK_THIS);   }
     | TOK_SUPER TOK_LP ArgumentListOpt TOK_RP TOK_EOL
+    {   TOP()->setType(TOK_SUPER);   }
     ;
 
 ExtendsInterfacesOpt:
-	ExtendsInterfaces
-	| {   PUSH(TOK_NONE, "ExtendsInterfaces");   }
-	;
+    ExtendsInterfaces
+    | {   PUSH(TOK_NONE, "ExtendsInterfaces");   }
+    ;
 
 InterfaceDeclaration:
-	AnnotationDeclarationsOpt ModifiersOpt TOK_INTERFACE SimpleName ExtendsInterfacesOpt TOK_EOL InterfaceBody
-	{   COMBINE(TOK_INTERFACE, 5);   }
-	;
+    AnnotationDeclarationsOpt ModifiersOpt TOK_INTERFACE SimpleName ExtendsInterfacesOpt TOK_EOL InterfaceBody
+    {   COMBINE(TOK_INTERFACE, 5);   }
+    ;
 
 ExtendsInterfaces:
-	TOK_EXTENDS InterfaceType
-	{    COMBINE(TOK_LIST, 1);   }
-	| ExtendsInterfaces TOK_CM InterfaceType
-	{    COMBINE(0, 1);   }
-	;
+    TOK_EXTENDS InterfaceType
+    {    COMBINE(TOK_LIST, 1);   }
+    | ExtendsInterfaces TOK_CM InterfaceType
+    {    COMBINE(0, 1);   }
+    ;
 
 InterfaceBody:
-	BeginBlock InterfaceMemberDeclarationsOpt EndBlock
-	;
+    BeginBlock InterfaceMemberDeclarationsOpt EndBlock
+    ;
 
 InterfaceMemberDeclarationsOpt:
-	InterfaceMemberDeclarations
-	| {   PUSH(TOK_NONE, "InterfaceMemberDeclarations");   }
-	;
+    InterfaceMemberDeclarations
+    | {   PUSH(TOK_NONE, "InterfaceMemberDeclarations");   }
+    ;
 
 InterfaceMemberDeclarations:
-	InterfaceMemberDeclaration
-	{   COMBINE(TOK_BODY, 1);   }
-	| InterfaceMemberDeclarations InterfaceMemberDeclaration
-	{   COMBINE(0, 1);   }
-	;
+    InterfaceMemberDeclaration
+    {   COMBINE(TOK_BODY, 1);   }
+    | InterfaceMemberDeclarations InterfaceMemberDeclaration
+    {   COMBINE(0, 1);   }
+    ;
 
 InterfaceMemberDeclaration:
-	ConstantDeclaration
-	| AbstractMethodDeclaration
+    ConstantDeclaration
+    | AbstractMethodDeclaration
     ;
 
 ConstantDeclaration:
-	FieldDeclaration
-	;
+    FieldDeclaration
+    ;
 
 AbstractMethodDeclaration:
-	MethodHeader TOK_EOL
-	{
-		PUSH(TOK_NONE, "MethodBody");
-		COMBINE(0, 1);
-	}
-	;
+    MethodHeader TOK_EOL
+    {
+        PUSH(TOK_NONE, "MethodBody");
+        COMBINE(0, 1);
+    }
+    ;
 
 VariableInitializersOpt: VariableInitializers | { $$ = NULL; } ;
 
@@ -816,344 +878,649 @@ Block:
 
 BlockStatements:
     BlockStatement
+    {   COMBINE(TOK_BLOCK, 1);   }
     | BlockStatements BlockStatement
+    {   COMBINE(0, 1);   }
     ;
 
-BlockStatement:   LocalVariableDeclarationStatement
-        | Statement
-        ;
+BlockStatement:
+    LocalVariableDeclarationStatement
+    | Statement
+    ;
 
-LocalVariableDeclarationStatement: LocalVariableDeclaration TOK_EOL
-        ;
+LocalVariableDeclarationStatement:
+    LocalVariableDeclaration TOK_EOL
+    ;
 
-LocalVariableDeclaration: Type VariableDeclarators
-        ;
+LocalVariableDeclaration:
+    Type VariableDeclarators
+    {   COMBINE(TOK_VARIABLE, 2);   }
+    ;
 
-Statement:    StatementWithoutTrailingSubstatement
-        | IfThenStatement
-        | IfThenElseStatement
-        | WhileStatement
-        | ForStatement
-        ;
+Statement:
+	StatementWithoutTrailingSubstatement
+	| IfThenStatement
+	| IfThenInlineStatement
+	| IfThenElseStatement
+	| WhileStatement
+	| ForStatement
+	| ForEachStatement
+	;
 
-StatementNoShortIf: StatementWithoutTrailingSubstatement
-        | IfThenElseStatementNoShortIf
-        | WhileStatementNoShortIf
-        | ForStatementNoShortIf
-        ;
-
-StatementWithoutTrailingSubstatement: Block
-        | EmptyStatement
-        | ExpressionStatement
-        | SwitchStatement
-        | DoStatement
-        | BreakStatement
-        | ContinueStatement
-        | ReturnStatement
-        | SynchronizedStatement
-        | ThrowStatement
-        | TryStatement
-        ;
+StatementWithoutTrailingSubstatement:
+	Block
+	| ExpressionStatement
+	| SwitchStatement
+	| DoStatement
+	| BreakStatement
+	| ContinueStatement
+	| ReturnStatement
+	| LockStatement
+	| ThrowStatement
+	| TryStatement
+	| EmptyStatement
+	;
 
 EmptyStatement:
-    TOK_EOL
+	TOK_PASS TOK_EOL
+	{   PUSH(TOK_PASS, $1);   }
+	;
+
+ExpressionStatement:
+    StatementExpression TOK_EOL
     ;
 
-
-ExpressionStatement: StatementExpression TOK_EOL
-        ;
-
-StatementExpression: Assignment
-        | PreIncrementExpression
-        | PreDecrementExpression
-        | PostIncrementExpression
-        | PostDecrementExpression
-        | MethodInvocation
-        | ClassInstanceCreationExpression
-        ;
+StatementExpression:
+    Assignment
+    | PreIncrementExpression
+    | PreDecrementExpression
+    | PostIncrementExpression
+    | PostDecrementExpression
+    | MethodInvocation
+    | ClassInstanceCreationExpression
+    ;
 
 IfThenStatement:
-    TOK_IF TOK_LP Expression TOK_RP EndPart Statement
+    TOK_IF TOK_LP Expression TOK_RP TOK_EOL Block
+    {
+		PUSH(TOK_NONE, "Block");
+		COMBINE(TOK_IF, 3);
+	}
+    ;
+
+IfThenInlineStatement:
+    TOK_IF TOK_LP Expression TOK_RP StatementExpression TOK_EOL
+    {
+		COMBINE(TOK_BLOCK, 1);
+		PUSH(TOK_NONE, "Block");
+		COMBINE(TOK_IF, 3);
+	}
     ;
 
 IfThenElseStatement:
-    TOK_IF TOK_LP Expression TOK_RP EndPart StatementNoShortIf TOK_ELSE EndPart Statement
-    ;
-
-IfThenElseStatementNoShortIf:
-    TOK_IF TOK_LP Expression TOK_RP EndPart StatementNoShortIf TOK_ELSE EndPart StatementNoShortIf
+    TOK_IF TOK_LP Expression TOK_RP TOK_EOL Block TOK_ELSE TOK_EOL Block
+    {   COMBINE(TOK_IF, 3);   }
     ;
 
 SwitchStatement:
-    TOK_SWITCH TOK_LP Expression TOK_RP EndPart SwitchBlock
+    TOK_SWITCH TOK_LP Expression TOK_RP TOK_EOL SwitchBlock
+    {   COMBINE(TOK_SWITCH, 2);   }
     ;
 
-SwitchBlockStatementGroupsOpt: SwitchBlockStatementGroups | { $$ = NULL; } ;
-
-SwitchLabelsOpt: SwitchLabels | { $$ = NULL; } ;
-
-SwitchBlock:      BeginBlock SwitchBlockStatementGroupsOpt SwitchLabelsOpt EndBlock
-        ;
-
-SwitchBlockStatementGroups: SwitchBlockStatementGroup
-        | SwitchBlockStatementGroups SwitchBlockStatementGroup
-        ;
-
-SwitchBlockStatementGroup: SwitchLabels BlockStatements
-        ;
-
-SwitchLabels:     SwitchLabel
-        | SwitchLabels SwitchLabel
-        ;
-
-SwitchLabel:      TOK_CASE ConstantExpression TOK_COLON
-        | TOK_DEFAULT TOK_COLON
-        ;
-
-WhileStatement:   TOK_WHILE TOK_LP Expression TOK_RP Statement
-        ;
-
-WhileStatementNoShortIf:  TOK_WHILE TOK_LP Expression TOK_RP StatementNoShortIf
-        ;
-
-DoStatement:      TOK_DO Statement TOK_WHILE TOK_LP Expression TOK_RP TOK_EOL
-        ;
-
-ForInitOpt: ForInit | { $$ = NULL; } ;
-
-ExpressionOpt: Expression | { $$ = NULL; } ;
-
-ForUpdateOpt: ForUpdate | { $$ = NULL; } ;
-
-ForStatement:     TOK_FOR TOK_LP ForInitOpt TOK_SM ExpressionOpt TOK_SM ForUpdateOpt TOK_RP
-            Statement
-        ;
-
-ForStatementNoShortIf:    TOK_FOR TOK_LP ForInitOpt TOK_SM ExpressionOpt TOK_SM ForUpdateOpt TOK_RP
-            StatementNoShortIf
-        ;
-
-
-ForInit:      StatementExpressionList
-        | LocalVariableDeclaration
-        ;
-
-ForUpdate:    StatementExpressionList
-        ;
-
-StatementExpressionList: StatementExpression
-        | StatementExpressionList TOK_CM StatementExpression
-        ;
-
-IDENTOpt: TOK_IDENT | { $$ = NULL; } ;
-
-BreakStatement:   TOK_BREAK IDENTOpt TOK_EOL
-        ;
-
-ContinueStatement: TOK_CONTINUE IDENTOpt TOK_EOL
-        ;
-
-ReturnStatement:  TOK_RETURN ExpressionOpt TOK_EOL
-        | TOK_SUSPEND ExpressionOpt TOK_EOL
-        ;
-
-
-ThrowStatement:  TOK_THROW Expression TOK_EOL
-        ;
-
-SynchronizedStatement:  TOK_SYNCHRONIZED TOK_LP Expression TOK_RP Block
-        ;
-
-CatchesOpt: Catches | { $$ = NULL; } ;
-
-TryStatement:     TOK_TRY Block Catches
-        | TOK_TRY Block CatchesOpt Finally
-        ;
-Catches:      CatchClause
-        | Catches CatchClause
-        ;
-
-CatchClause:      TOK_CATCH TOK_LP FormalParameter TOK_RP Block
-
-        ;
-
-Finally:      TOK_FINALLY Block
-        ;
-
-Primary:      PrimaryNoNewArray
-        | ArrayCreationExpression
-        ;
-
-PrimaryNoNewArray: Literal
-        | TOK_THIS
-        | TOK_LP Expression TOK_RP
-        | ClassInstanceCreationExpression
-        | FieldAccess
-        | MethodInvocation
-        | ArrayAccess
-        ;
-
-ClassInstanceCreationExpression: TOK_NEW ClassType TOK_LP ArgumentListOpt TOK_RP
-        ;
-
-ArgumentList:     Expression
-        | ArgumentList TOK_CM Expression
-        ;
-
-DimsOpt: Dims | { $$ = NULL; } ;
-
-ArrayCreationExpression: TOK_NEW PrimitiveType DimExprs DimsOpt
-        | TOK_NEW ClassOrInterfaceType DimExprs DimsOpt
-        ;
-
-DimExprs:     DimExpr
-        | DimExprs DimExpr
-        ;
-
-DimExpr:      TOK_LB Expression TOK_RB
-        ;
-
-Dims:         TOK_LB TOK_RB
-        | Dims TOK_LB TOK_RB
-        ;
-
-FieldAccess:      Primary TOK_DOT TOK_IDENT
-        | TOK_SUPER TOK_DOT TOK_IDENT
-        ;
-
-MethodInvocation: Name TOK_LP ArgumentListOpt TOK_RP
-        | Primary TOK_DOT TOK_IDENT TOK_LP ArgumentListOpt TOK_RP
-        | TOK_SUPER TOK_DOT TOK_IDENT TOK_LP ArgumentListOpt TOK_RP
-        | Name BeginBlock ArgumentListOpt EndBlock
-        | Primary TOK_DOT TOK_IDENT BeginBlock ArgumentListOpt EndBlock
-        | TOK_SUPER TOK_DOT TOK_IDENT BeginBlock ArgumentListOpt EndBlock
-        ;
-
-ArrayAccess:      Name TOK_LB Expression TOK_RB
-        | PrimaryNoNewArray TOK_LB Expression TOK_RB
-        ;
-
-PostFixExpression: Primary
-        | Name
-        | PostIncrementExpression
-        | PostDecrementExpression
-        ;
-
-PostIncrementExpression: PostFixExpression TOK_INC
-        ;
-
-PostDecrementExpression: PostFixExpression TOK_DEC
-        ;
-
-UnaryExpression:  PreIncrementExpression
-        | PreDecrementExpression
-        | TOK_PLUS UnaryExpression
-        | TOK_MINUS UnaryExpression
-        | UnaryExpressionNotPlusMinus
-        ;
-
-PreIncrementExpression: TOK_INC UnaryExpression
-        ;
-
-PreDecrementExpression: TOK_DEC UnaryExpression
-        ;
-
-UnaryExpressionNotPlusMinus: PostFixExpression
-        | TOK_TILDE UnaryExpression
-        | TOK_BANG UnaryExpression
-        | CastExpression
-        ;
-
-CastExpression:   TOK_LP PrimitiveType DimsOpt TOK_RP UnaryExpression
-        | TOK_LP Expression TOK_RP UnaryExpressionNotPlusMinus
-        | TOK_LP Name Dims TOK_RP UnaryExpressionNotPlusMinus
-        ;
-
-MultiplicativeExpression: UnaryExpression
-        | MultiplicativeExpression TOK_MUL UnaryExpression
-        | MultiplicativeExpression TOK_DIV UnaryExpression
-        | MultiplicativeExpression TOK_MOD UnaryExpression
-        ;
-
-AdditiveExpression: MultiplicativeExpression
-        | AdditiveExpression TOK_PLUS MultiplicativeExpression
-        | AdditiveExpression TOK_MINUS MultiplicativeExpression
-        ;
-
-ShiftExpression:  AdditiveExpression
-        | ShiftExpression TOK_SHL AdditiveExpression
-        | ShiftExpression TOK_SHR AdditiveExpression
-        ;
-
-RelationalExpression: ShiftExpression
-        | RelationalExpression TOK_LT ShiftExpression
-        | RelationalExpression TOK_GT ShiftExpression
-        | RelationalExpression TOK_LE ShiftExpression
-        | RelationalExpression TOK_GE ShiftExpression
-        | RelationalExpression TOK_INSTANCEOF ReferenceType
-        ;
-
-EqualityExpression: RelationalExpression
-        | EqualityExpression TOK_EQ RelationalExpression
-        | EqualityExpression TOK_NE RelationalExpression
-        ;
-
-AndExpression: EqualityExpression
-        | AndExpression TOK_AND EqualityExpression
-        ;
-
-ExclusiveOrExpression: AndExpression
-        | ExclusiveOrExpression TOK_CARET AndExpression
-        ;
-
-InclusiveOrExpression: ExclusiveOrExpression
-        | InclusiveOrExpression TOK_OR ExclusiveOrExpression
-        ;
-
-ConditionalAndExpression: InclusiveOrExpression
-        | ConditionalAndExpression TOK_ANDAND InclusiveOrExpression
-        ;
-
-ConditionalOrExpression: ConditionalAndExpression
-        | ConditionalOrExpression TOK_OROR ConditionalAndExpression
-        ;
-
-ConditionalExpression: ConditionalOrExpression
-        | ConditionalOrExpression TOK_QUEST Expression
-            TOK_COLON ConditionalExpression
-        ;
-
-AssignmentExpression: ConditionalExpression
-        | Assignment
-        ;
-
-Assignment:   LeftHandSide AssignmentOperator AssignmentExpression
-        ;
-
-LeftHandSide:     Name
-        | FieldAccess
-        | ArrayAccess
-        ;
-
-AssignmentOperator: TOK_ASN
-        | TOK_MUASN
-        | TOK_DIASN
-        | TOK_MODASN
-        | TOK_PLASN
-        | TOK_MIASN
-        | TOK_SLASN
-        | TOK_SRASN
-        | TOK_LSRASN
-        | TOK_ANDASN
-        | TOK_CARETASN
-        | TOK_ORASN
-        ;
-
-Expression:   AssignmentExpression
-        ;
-
-ConstantExpression: Expression
-        ;
+SwitchBlockStatementGroupsOpt:
+	SwitchBlockStatementGroups
+	| {   PUSH(TOK_NONE, "SwitchBlockStatementGroups");   }
+	;
+
+SwitchBlock:
+	BeginBlock SwitchBlockStatementGroupsOpt EndBlock
+    ;
+
+SwitchBlockStatementGroups:
+	SwitchBlockStatementGroup
+	{   COMBINE(TOK_LIST, 1);   }
+    | SwitchBlockStatementGroups SwitchBlockStatementGroup
+    {   COMBINE(0, 1);   }
+    ;
+
+SwitchBlockStatementGroup:
+	SwitchLabels Block
+	{   COMBINE(TOK_GROUP, 2);   }
+	;
+
+SwitchLabels:
+	SwitchLabel
+	{   COMBINE(TOK_LIST, 1);   }
+    | SwitchLabels SwitchLabel
+    {   COMBINE(0, 1);   }
+    ;
+
+SwitchLabel:
+	TOK_CASE ConstantExpression TOK_COLON TOK_EOL
+	{   COMBINE(TOK_CASE, 1);   }
+    | TOK_DEFAULT TOK_COLON TOK_EOL
+    {
+		PUSH(TOK_DEFAULT, $1);
+		COMBINE(TOK_CASE, 1);
+	}
+    ;
+
+WhileStatement:
+	TOK_WHILE TOK_LP Expression TOK_RP TOK_EOL Block
+	{   COMBINE(TOK_WHILE, 2);   }
+    ;
+
+
+DoStatement:
+	TOK_DO TOK_EOL Block TOK_WHILE TOK_LP Expression TOK_RP TOK_EOL
+	{   COMBINE(TOK_DO, 2);   }
+    ;
+
+ForInitOpt:
+	ForInit
+	| {   PUSH(TOK_NONE, "ForInit");   }
+	;
+
+ExpressionOpt:
+	Expression
+	| {   PUSH(TOK_NONE, "Expression");   }
+	;
+
+ForUpdateOpt:
+	ForUpdate
+	| {   PUSH(TOK_NONE, "ForUpdate");   }
+	;
+
+ForStatement:
+	TOK_FOR TOK_LP ForInitOpt TOK_SM ExpressionOpt TOK_SM ForUpdateOpt TOK_RP TOK_EOL Block
+	{   COMBINE(TOK_FOR, 4);   }
+	;
+
+ForEachStatement:
+	TOK_FOR TOK_LP Type SimpleName TOK_IN Expression TOK_RP TOK_EOL Block
+	{   COMBINE(TOK_FOR_EACH, 4);   }
+	| TOK_FOR TOK_LP Type SimpleName TOK_IN Range TOK_RP TOK_EOL Block
+	{   COMBINE(TOK_FOR_EACH, 4);   }
+	;
+
+Range:
+	TOK_RANGE TOK_LP Expression TOK_CM Expression TOK_RP
+	{   COMBINE(TOK_RANGE, 2);   }
+	;
+
+ForInit:
+	StatementExpressionList
+	| LocalVariableDeclaration
+	;
+
+ForUpdate:
+	StatementExpressionList
+	;
+
+StatementExpressionList:
+	StatementExpression
+	{   COMBINE(TOK_LIST, 1);   }
+    | StatementExpressionList TOK_CM StatementExpression
+    {   COMBINE(0, 1);   }
+    ;
+
+BreakStatement:
+	TOK_BREAK TOK_INTLITERAL TOK_EOL
+	{
+		PUSH(TOK_BREAK, $2);
+		COMBINE(TOK_BREAK, 1);
+	}
+	| TOK_BREAK TOK_EOL
+	{
+		PUSH(TOK_INTLITERAL, "1");
+		COMBINE(TOK_BREAK, 1);
+	}
+    ;
+
+ContinueStatement:
+	TOK_CONTINUE TOK_INTLITERAL TOK_EOL
+	{
+		PUSH(TOK_BREAK, $2);
+		COMBINE(TOK_CONTINUE, 1);
+	}
+	| TOK_CONTINUE TOK_EOL
+	{
+		PUSH(TOK_INTLITERAL, "1");
+		COMBINE(TOK_CONTINUE, 1);
+	}
+    ;
+
+ReturnStatement:
+	TOK_RETURN ExpressionOpt TOK_EOL
+	{   COMBINE(TOK_RETURN, 1);   }
+	;
+
+
+ThrowStatement:
+	TOK_THROW Expression TOK_EOL
+	{   COMBINE(TOK_THROW, 1);   }
+	;
+
+LockStatement:
+	TOK_READLOCK TOK_LP Expression TOK_RP TOK_EOL Block
+	{   COMBINE(TOK_READLOCK, 2);   }
+	| TOK_WRITELOCK TOK_LP Expression TOK_RP TOK_EOL Block
+	{   COMBINE(TOK_READLOCK, 2);   }
+	;
+
+CatchesOpt:
+	Catches
+	| {   PUSH(TOK_NONE, "Catches");   }
+	;
+
+TryStatement:
+	TOK_TRY TOK_EOL Block Catches
+	{
+		PUSH(TOK_NONE, "finally");
+		COMBINE(TOK_TRY, 3);
+	}
+    | TOK_TRY TOK_EOL Block CatchesOpt Finally
+    {   COMBINE(TOK_TRY, 3);   }
+    ;
+
+Catches:
+	CatchClause
+	{   COMBINE(TOK_LIST, 1);   }
+    | Catches CatchClause
+    {   COMBINE(0, 1);   }
+    ;
+
+CatchClause:
+	TOK_CATCH TOK_LP FormalParameter TOK_RP TOK_EOL Block
+	{   COMBINE(TOK_CATCH, 2);   }
+    ;
+
+Finally:
+	TOK_FINALLY TOK_EOL Block
+	{   TOP()->setType(TOK_FINALLY);   }
+    ;
+
+Primary:
+	PrimaryNoNewArray
+    | ArrayCreationExpression
+    ;
+
+PrimaryNoNewArray:
+	Literal
+	| TOK_THIS
+	{   PUSH(TOK_THIS, $1);   }
+	| TOK_LP Expression TOK_RP
+	| ClassInstanceCreationExpression
+	| FieldAccess
+	| MethodInvocation
+	| ArrayAccess
+	;
+
+ClassInstanceCreationExpression:
+	TOK_NEW ClassType TOK_LP ArgumentListOpt TOK_RP
+	{   COMBINE(TOK_NEW, 2);   }
+    ;
+
+ArgumentList:
+    Expression
+    {   COMBINE(TOK_LIST, 1);   }
+    | ArgumentList TOK_CM Expression
+    {   COMBINE(0, 1);   }
+    ;
+
+DimsOpt:
+	Dims
+	| {   PUSH(TOK_NONE, "Dims");   }
+	;
+
+ArrayCreationExpression:
+    TOK_NEW PrimitiveType DimExprs
+    {
+        /*
+         * Note: unlike Java, the current specification of the language
+         *       don't support assymetric arrays (i.e. arrays which some
+         *       dimensions have different sizes). Example:
+         *
+         *     int[][] num = new int[2][];
+		 *     num[0] = new int[1];
+		 *     num[1] = new int[5];
+         *
+         * To enable this feature, the grammar should include/modify the
+         * following rules:
+         *
+         *     ArrayCreationExpression:
+         *         OK_NEW PrimitiveType DimExprs DimsOpt
+         *         ;
+         *
+         *     DimsOpt:
+         *         Dims
+         *         |
+         *         ;
+         *
+         *     Dims:
+         *         TOK_LB TOK_RB
+         *         | Dims TOK_LB TOK_RB
+         *         ;
+         */
+
+        // insert 'DimsOpt' node into 'DimExprs'
+        //COMBINE(0, 1);
+
+        COMBINE(TOK_NEW_ARRAY, 2);
+    }
+    | TOK_NEW ClassOrInterfaceType DimExprs DimsOpt
+    {   COMBINE(TOK_NEW_ARRAY, 3);   }
+    ;
+
+DimExprs:
+    DimExpr
+    {   COMBINE(TOK_LIST, 1);   }
+    | DimExprs DimExpr
+    {   COMBINE(0, 1);   }
+    ;
+
+DimExpr:
+	TOK_LB Expression TOK_RB
+	;
+
+
+Dims:
+	TOK_LB TOK_RB
+	{
+		PUSH(TOK_TYPE_ARRAY, "");
+		TOP()->setCounter(1);
+	}
+    | Dims TOK_LB TOK_RB
+    {
+		TOP()->setCounter( TOP()->getCounter() + 1 );
+	}
+
+FieldAccess:
+	Primary TOK_DOT SimpleName
+	{   COMBINE(TOK_FIELD_ACCESS, 2);   }
+    | TOK_SUPER TOK_DOT SimpleName
+    {
+		PUSH(TOK_SUPER, $1);
+		COMBINE(TOK_FIELD_ACCESS, 2);
+	}
+    ;
+
+MethodInvocation:
+	Name TOK_LP ArgumentListOpt TOK_RP
+	{
+		beagle::Node *second, *third;
+
+		third = POP();
+		second = POP();
+		PUSH(TOK_NONE, "Primary");
+		NPUSH(second);
+		NPUSH(third);
+
+		COMBINE(TOK_CALL, 3);
+	}
+	| Primary TOK_DOT SimpleName TOK_LP ArgumentListOpt TOK_RP
+	{   COMBINE(TOK_CALL, 3);   }
+	| TOK_SUPER TOK_DOT SimpleName TOK_LP ArgumentListOpt TOK_RP
+	{
+
+		beagle::Node *second, *third;
+
+		third = POP();
+		second = POP();
+		PUSH(TOK_SUPER, "super");
+		NPUSH(second);
+		NPUSH(third);
+
+		COMBINE(TOK_CALL, 3);
+	/*
+	| Name BeginBlock ArgumentListOpt EndBlock
+	| Primary TOK_DOT SimpleName BeginBlock ArgumentListOpt EndBlock
+	| TOK_SUPER TOK_DOT TOK_IDENT BeginBlock ArgumentListOpt EndBlock
+	*/
+
+	}
+	;
+
+ArrayAccess:
+	Name TOK_LB Expression TOK_RB
+	{   COMBINE(TOK_ARRAY_ACCESS, 2);   }
+	| PrimaryNoNewArray TOK_LB Expression TOK_RB
+	{   COMBINE(TOK_ARRAY_ACCESS, 2);   }
+	;
+
+PostFixExpression:
+	Primary
+	| Name
+	| PostIncrementExpression
+	| PostDecrementExpression
+	;
+
+PostIncrementExpression:
+	PostFixExpression TOK_INC
+	{   COMBINE(TOK_INC, 1);   }
+    ;
+
+PostDecrementExpression:
+	PostFixExpression TOK_DEC
+	{   COMBINE(TOK_DEC, 1);   }
+    ;
+
+UnaryExpression:
+    PreIncrementExpression
+    | PreDecrementExpression
+    | TOK_PLUS UnaryExpression
+    {   COMBINE(TOK_PLUS, 1);   }
+    | TOK_MINUS UnaryExpression
+    {   COMBINE(TOK_MINUS, 1);   }
+    | UnaryExpressionNotPlusMinus
+    ;
+
+PreIncrementExpression:
+    TOK_INC UnaryExpression
+    {   COMBINE(TOK_INC, 1);   }
+    ;
+
+PreDecrementExpression:
+    TOK_DEC UnaryExpression
+    {   COMBINE(TOK_DEC, 1);   }
+    ;
+
+UnaryExpressionNotPlusMinus:
+	PostFixExpression
+    | TOK_TILDE UnaryExpression
+    {   COMBINE(TOK_TILDE, 1);   }
+    | TOK_BANG UnaryExpression
+    {   COMBINE(TOK_BANG, 1);   }
+    | CastExpression
+    ;
+
+
+CastExpression:
+	TOK_LP PrimitiveType DimsOpt TOK_RP UnaryExpression
+	{
+		beagle::Node *first, *second, *third;
+
+		third = POP();
+		second = POP();
+		first = POP();
+
+		if (second->getType() == TOK_NONE)
+		{
+			delete second;
+			second = first;
+		}
+		else
+			second->addChild(first);
+		NPUSH(second);
+		NPUSH(third);
+
+		COMBINE(TOK_CAST, 2);
+	}
+	| TOK_LP Expression TOK_RP UnaryExpressionNotPlusMinus
+	{   COMBINE(TOK_CAST, 2);   }
+	| TOK_LP Name Dims TOK_RP UnaryExpressionNotPlusMinus
+	{
+		beagle::Node *first, *second, *third;
+
+		third = POP();
+		second = POP();
+		first = POP();
+
+		second->addChild(first);
+		NPUSH(second);
+		NPUSH(third);
+
+		COMBINE(TOK_CAST, 2);
+	}
+	;
+
+MultiplicativeExpression:
+	UnaryExpression
+	| MultiplicativeExpression TOK_MUL UnaryExpression
+	{   COMBINE(TOK_MUL, 2);   }
+	| MultiplicativeExpression TOK_DIV UnaryExpression
+	{   COMBINE(TOK_DIV, 2);   }
+	| MultiplicativeExpression TOK_MOD UnaryExpression
+	{   COMBINE(TOK_MOD, 2);   }
+	;
+
+AdditiveExpression:
+	MultiplicativeExpression
+	| AdditiveExpression TOK_PLUS MultiplicativeExpression
+	{   COMBINE(TOK_PLUS, 2);   }
+	| AdditiveExpression TOK_MINUS MultiplicativeExpression
+	{   COMBINE(TOK_MINUS, 2);   }
+	;
+
+ShiftExpression:
+	AdditiveExpression
+    | ShiftExpression TOK_SHL AdditiveExpression
+    {   COMBINE(TOK_SHL, 2);   }
+	| ShiftExpression TOK_SHR AdditiveExpression
+	{   COMBINE(TOK_SHR, 2);   }
+	;
+
+RelationalExpression:
+	ShiftExpression
+	| RelationalExpression TOK_LT ShiftExpression
+	{   COMBINE(TOK_LT, 2);   }
+	| RelationalExpression TOK_GT ShiftExpression
+	{   COMBINE(TOK_GT, 2);   }
+	| RelationalExpression TOK_LE ShiftExpression
+	{   COMBINE(TOK_LE, 2);   }
+	| RelationalExpression TOK_GE ShiftExpression
+	{   COMBINE(TOK_GE, 2);   }
+	| RelationalExpression TOK_INSTANCEOF ReferenceType
+	{   COMBINE(TOK_INSTANCEOF, 2);   }
+	;
+
+EqualityExpression:
+	RelationalExpression
+	| EqualityExpression TOK_EQ RelationalExpression
+	{   COMBINE(TOK_EQ, 2);   }
+	| EqualityExpression TOK_NE RelationalExpression
+	{   COMBINE(TOK_NE, 2);   }
+	;
+
+AndExpression:
+	EqualityExpression
+	| AndExpression TOK_AND EqualityExpression
+	{   COMBINE(TOK_AND, 2);   }
+	;
+
+ExclusiveOrExpression:
+	AndExpression
+	| ExclusiveOrExpression TOK_CARET AndExpression
+	{   COMBINE(TOK_CARET, 2);   }
+	;
+
+InclusiveOrExpression:
+	ExclusiveOrExpression
+	| InclusiveOrExpression TOK_OR ExclusiveOrExpression
+	{   COMBINE(TOK_OR, 2);   }
+	;
+
+ConditionalAndExpression:
+	InclusiveOrExpression
+	| ConditionalAndExpression TOK_ANDAND InclusiveOrExpression
+	{   COMBINE(TOK_ANDAND, 2);   }
+	;
+
+ConditionalOrExpression:
+	ConditionalAndExpression
+	| ConditionalOrExpression TOK_OROR ConditionalAndExpression
+	{   COMBINE(TOK_OROR, 2);   }
+	;
+
+ConditionalExpression:
+	ConditionalOrExpression
+	| ConditionalOrExpression TOK_QUEST Expression TOK_COLON ConditionalExpression
+	{   COMBINE(TOK_QUEST, 2);   }
+	;
+
+AssignmentExpression:
+    ConditionalExpression
+    | Assignment
+    ;
+
+Assignment:
+    LeftHandSide AssignmentOperator AssignmentExpression
+    {
+
+        /*
+         * Change the expression notation from infixed to prefixed
+         */
+
+        beagle::Node *left, *right, *oper;
+
+        right = POP();
+        oper = POP();
+        left = POP();
+
+        oper->addChild(left);
+        oper->addChild(right);
+        NPUSH(oper);
+    }
+    ;
+
+LeftHandSide:
+    Name
+    | FieldAccess
+    | ArrayAccess
+    ;
+
+AssignmentOperator:
+    TOK_ASN
+    {   PUSH(TOK_ASN, $1);   }
+    | TOK_MUASN
+    {   PUSH(TOK_MUASN, $1);   }
+    | TOK_DIASN
+    {   PUSH(TOK_DIASN, $1);   }
+    | TOK_MODASN
+    {   PUSH(TOK_MODASN, $1);   }
+    | TOK_PLASN
+    {   PUSH(TOK_PLASN, $1);   }
+    | TOK_MIASN
+    {   PUSH(TOK_MIASN, $1);   }
+    | TOK_SLASN
+    {   PUSH(TOK_SLASN, $1);   }
+    | TOK_SRASN
+    {   PUSH(TOK_SRASN, $1);   }
+    | TOK_ANDASN
+    {   PUSH(TOK_ANDASN, $1);   }
+    | TOK_CARETASN
+    {   PUSH(TOK_CARETASN, $1);   }
+    | TOK_ORASN
+    {   PUSH(TOK_ORASN, $1);   }
+    ;
+
+Expression:
+    AssignmentExpression
+    ;
+
+ConstantExpression:
+	Expression
+    ;
 
 BeginBlock:
     TOK_INDENT
@@ -1161,10 +1528,6 @@ BeginBlock:
 
 EndBlock:
     TOK_DEDENT
-    ;
-
-EndPart:
-    TOK_EOL
     ;
 
 
