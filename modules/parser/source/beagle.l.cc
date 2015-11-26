@@ -2319,7 +2319,7 @@ YY_RULE_SETUP
 case 122:
 YY_RULE_SETUP
 #line 350 "/media/dados/projetos/beagle/modules/parser/source/beagle.l"
-{ EMIT(TOK_IDENT); }
+{ EMIT(TOK_NAME); }
 	YY_BREAK
 case 123:
 YY_RULE_SETUP

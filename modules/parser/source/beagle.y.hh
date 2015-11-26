@@ -133,7 +133,7 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_VOID = 299,
     TOK_VOLATILE = 300,
     TOK_WHILE = 301,
-    TOK_IDENT = 302,
+    TOK_NAME = 302,
     TOK_CONTINUE = 303,
     TOK_TRANSIENT = 304,
     TOK_TRY = 305,
@@ -207,30 +207,36 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_TYPE_CLASS = 373,
     TOK_TYPE_ARRAY = 374,
     TOK_INTERFACES = 375,
-    TOK_NONE = 376,
+    TOK_NULL = 376,
     TOK_BODY = 377,
     TOK_FIELD = 378,
     TOK_METHOD = 379,
     TOK_CONSTRUCTOR = 380,
     TOK_LIST = 381,
-    TOK_VARIABLE = 382,
-    TOK_MODIFIERS = 383,
-    TOK_UNIT = 384,
-    TOK_TYPE = 385,
-    TOK_MEMBER = 386,
-    TOK_IMPORT_ALL = 387,
-    TOK_STATIC_INIT = 388,
-    TOK_PARAMETER = 389,
-    TOK_BLOCK = 390,
-    TOK_CALL = 391,
-    TOK_FIELD_ACCESS = 392,
-    TOK_CAST = 393,
-    TOK_ARRAY_ACCESS = 394,
-    TOK_FOR_EACH = 395,
-    TOK_GROUP = 396,
-    TOK_ANNOTATION = 397,
-    TOK_NEW_ARRAY = 398,
-    TOK_ARRAY = 399
+    TOK_IMPORTS = 382,
+    TOK_VARIABLE = 383,
+    TOK_VARIABLES = 384,
+    TOK_MODIFIERS = 385,
+    TOK_UNIT = 386,
+    TOK_TYPE = 387,
+    TOK_TYPES = 388,
+    TOK_MEMBER = 389,
+    TOK_IMPORT_ALL = 390,
+    TOK_STATIC_INIT = 391,
+    TOK_PARAMETER = 392,
+    TOK_PARAMETERS = 393,
+    TOK_BLOCK = 394,
+    TOK_CALL = 395,
+    TOK_ACCESS_FIELD = 396,
+    TOK_CAST = 397,
+    TOK_ACCESS_ARRAY = 398,
+    TOK_FOR_EACH = 399,
+    TOK_GROUP = 400,
+    TOK_ANNOTATION = 401,
+    TOK_NEW_ARRAY = 402,
+    TOK_ARRAY = 403,
+    TOK_ANNOTATIONS = 404,
+    TOK_ARGUMENTS = 405
   };
 #endif
 
@@ -243,7 +249,7 @@ union YYSTYPE
 
     char* node;
 
-#line 247 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 253 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

@@ -7,12 +7,13 @@
 
 namespace beagle {
 
-
+template<typename T>
 class TreeVisitor
 {
 	public:
 		TreeVisitor(
-			Node &root ) : root(root)
+			Node &root,
+            T context ) : root(root)
 		{
 			// nothing to do
 		}
@@ -21,6 +22,11 @@ class TreeVisitor
 		{
 			// nothing to do
 		}
+
+        T getContext()
+        {
+            return context;
+        }
 
 		void visit()
 		{
@@ -51,11 +57,12 @@ class TreeVisitor
 			Node &node ) = 0;
 
 		virtual void visitAnnotationDeclaration(
-			Node &target,
-			Node &annotation ) = 0;
+			Node &parent,
+			Node &node ) = 0;
 
 	private:
 		Node &root;
+        T context;
 };
 
 

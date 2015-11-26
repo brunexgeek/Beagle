@@ -347,7 +347,7 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 {DECIMAL_FP_LITERAL}            { EMIT(TOK_FLOATLITERAL); }
 {CHARACTER_LITERAL}             { EMIT(TOK_CHARLITERAL); }
 {STRING_LITERAL}                { EMIT(TOK_STRINGLITERAL); }
-{IDENTIFIER}                    { EMIT(TOK_IDENT); }
+{IDENTIFIER}                    { EMIT(TOK_NAME); }
 
 .                               { EMIT(TOK_BAD_TOKEN); }
 

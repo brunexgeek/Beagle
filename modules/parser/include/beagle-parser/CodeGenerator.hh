@@ -3,24 +3,23 @@
 
 
 #include <beagle-parser/TreeVisitor.hh>
+#include <beagle-parser/CodePrinter.hh>
+#include <beagle-parser/StructPrinter.hh>
 
 
 namespace beagle {
 
 
-class CodeGenerator : public TreeVisitor
+class CodeGenerator : public TreeVisitor<int>
 {
 	public:
 		CodeGenerator(
-			Node &root ) : TreeVisitor(root)
-		{
-			// nothing to do
-		}
+			Node &root,
+            int context );
 
-		~CodeGenerator()
-		{
-			// nothing to do
-		}
+		virtual ~CodeGenerator();
+
+        std::stringstream &getStream();
 
 		void visitCompulationUnit(
 			Node &node );
@@ -35,8 +34,14 @@ class CodeGenerator : public TreeVisitor
 			Node &node );
 
 		void visitAnnotationDeclaration(
-			Node &target,
-			Node &annotation );
+			Node &parent,
+			Node &node );
+
+    private:
+        CodePrinter printer;
+        StructPrinter structPrinter;
+
+        void printCommomTypeStructures();
 };
 
 
