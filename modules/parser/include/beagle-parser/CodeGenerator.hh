@@ -30,7 +30,7 @@ class CodeGenerator : public TreeVisitor<int>
 		void visitImportDeclaration(
 			Node &node );
 
-		void visitClassDeclaration(
+		void visitTypeDeclaration(
 			Node &node );
 
 		void visitAnnotationDeclaration(
@@ -42,6 +42,45 @@ class CodeGenerator : public TreeVisitor<int>
         StructPrinter structPrinter;
 
         void printCommomTypeStructures();
+
+        void printClassStructures(
+			Node &node );
+
+		void appendName(
+			std::stringstream &ss,
+			const std::string &name );
+
+		std::string createName(
+			int count,
+			const std::string &... );
+
+		void getName(
+			std::stringstream &ss,
+			Node &ident );
+
+		std::string getName(
+			Node &ident );
+
+		std::string getMethodName(
+			Node &package,
+			Node &type,
+			Node &method );
+
+		std::string getStructName(
+			const std::string &prefix,
+			Node &package,
+			Node &type );
+
+		void printClassStructures(
+			Node &package,
+			Node &type );
+
+        bool hasModifier(
+            Node &node,
+            int modifier );
+
+        std::string getNativeType(
+            Node &type );
 };
 
 

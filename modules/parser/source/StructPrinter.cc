@@ -45,8 +45,8 @@ void StructPrinter::close()
 
 void StructPrinter::addPrimitive(
     int modifiers,
-    const std::string & type,
-    const std::string & name )
+    const std::string &type,
+    const std::string &name )
 {
     indent();
     if ((modifiers & CONST) > 0)

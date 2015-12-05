@@ -62,15 +62,23 @@ void Parser::tokens()
 
 Node *Parser::parse()
 {
+	Node *root = NULL;
+
 	parser_context_t context;
 	context.scanner = scanner;
 	context.fileName = fileName;
 	context.rule = NULL;
 	context.parser = this;
+
 	if (beagle_parse(&context) == 0)
-		return context.stack[ context.stack.size() - 1 ];
+		root = context.stack[ context.stack.size() - 1 ];
 	else
 		return NULL;
+
+	// expand field declarations
+	root = expandFields(root);
+
+	return root;
 }
 
 bool Parser::readFile( )
@@ -80,6 +88,8 @@ bool Parser::readFile( )
 
 	while (std::getline(*in, line))
 	{
+		// Notice: '\2' is a "begin of line" marker required by
+		//         lexer to match some patterns
 		ss << '\2';
 		ss << line;
 		ss << std::endl;
@@ -92,6 +102,53 @@ bool Parser::readFile( )
 const char *Parser::name( int tok )
 {
 	return beagle_getTokenName(tok);
+}
+
+
+Node *Parser::expandFields( Node *root )
+{
+	if (root == NULL) return NULL;
+
+	Node &body = (*root)[2][5];
+	if (body.getType() == TOK_NULL) return root;
+
+	for (int m = 0; m < body.getChildCount(); ++m)
+	{
+		Node &member = body[m];
+
+		if (member.getType() != TOK_FIELD ||
+		    member[3].getType() != TOK_VARIABLES) continue;
+
+		// expand fields with more than one variable
+		for (; member[3].getChildCount() > 1;)
+		{
+			// create a new field with the same parameters
+			Node *field = new Node(TOK_FIELD, "");
+			field->addChild( *new Node(member[0]) );
+			field->addChild( *new Node(member[1]) );
+			field->addChild( *new Node(member[2]) );
+			// move the variable from current field to new one
+			Node *variables = new Node(TOK_VARIABLES, "");
+			variables->addChild( member[3][0] );
+			member[3].removeChild(0);
+			field->addChild(*variables);
+			// add the new field into type body
+			body.addChild(*field);
+		}
+
+		// Notice: at this point the current field have one
+		//         variable left, so we let the next code block
+		//         handle it.
+
+		// expand fields with one variable
+		Node &variable = member[3][0];
+		member.setChild(3, variable[0]);
+		member.addChild(variable[1]);
+		variable.removeChild();
+		delete &variable;
+	}
+
+	return root;
 }
 
 } // namespace beagle

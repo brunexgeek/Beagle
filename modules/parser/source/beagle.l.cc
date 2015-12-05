@@ -1844,12 +1844,12 @@ YY_RULE_SETUP
 case 27:
 YY_RULE_SETUP
 #line 248 "/media/dados/projetos/beagle/modules/parser/source/beagle.l"
-{ EMIT(TOK_INT); }
+{ EMIT(TOK_INT32); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 249 "/media/dados/projetos/beagle/modules/parser/source/beagle.l"
-{ EMIT(TOK_LONG); }
+{ EMIT(TOK_INT64); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP

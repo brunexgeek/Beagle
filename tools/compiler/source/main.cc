@@ -27,11 +27,11 @@ int main( int argc, char **argv )
 		// print the AST
 		root->print(std::cout, &parser);
 		// generate the C source code and write it into the output file
-		beagle::CodeGenerator codegen(*root, 5);
+		/*beagle::CodeGenerator codegen(*root, 5);
 		codegen.visit();
 		std::ofstream out("output.c");
 		out << codegen.getStream().str();
-		out.close();
+		out.close();*/
 	}
 	else
 	{

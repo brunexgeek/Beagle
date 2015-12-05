@@ -28,10 +28,15 @@ class TreeVisitor
             return context;
         }
 
+        Node &getRoot() const
+        {
+            return root;
+        }
+
 		void visit()
 		{
 			visitCompulationUnit(root);
-			visitPackageDeclaration( root.getChild(0) );
+			/*visitPackageDeclaration( root.getChild(0) );
 			visitImportDeclaration( root.getChild(1) );
 
 			// visit declared class or interface
@@ -41,7 +46,7 @@ class TreeVisitor
 			// iterate the class annotation list
 			Node &clazzAnnot = clazz.getChild(0);
 			for (int i = 0; i < clazzAnnot.getChildCount(); ++i)
-				visitAnnotationDeclaration(clazz, clazzAnnot.getChild(i));
+				visitAnnotationDeclaration(clazz, clazzAnnot.getChild(i));*/
 		}
 
 		virtual void visitCompulationUnit(
@@ -50,10 +55,7 @@ class TreeVisitor
 		virtual void visitPackageDeclaration(
 			Node &node ) = 0;
 
-		virtual void visitImportDeclaration(
-			Node &node ) = 0;
-
-		virtual void visitClassDeclaration(
+		virtual void visitTypeDeclaration(
 			Node &node ) = 0;
 
 		virtual void visitAnnotationDeclaration(

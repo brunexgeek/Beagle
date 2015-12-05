@@ -98,7 +98,7 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
     for (int i = stack.size() - n; i < stack.size(); ++i)
     {
         //std::cout << temp->getValue() << ": adding child " << p->getValue() << std::endl;;
-        temp->addChild( stack[i] );
+        temp->addChild( *stack[i] );
     }
     for (int i = 0; i < n; ++i)
         stack.pop_back();
@@ -131,6 +131,14 @@ static void beagle_push(
 {
     std::cout << "PUSH " << node->getText() << std::endl;
     context->stack.push_back(node);
+}
+
+
+static void beagle_push(
+    parser_context_t *context,
+    beagle::Node &node )
+{
+	beagle_push(context, &node);
 }
 
 
@@ -445,12 +453,8 @@ IntegralType:
     {    PUSH(TOK_INT32, $1);    }
     | TOK_INT64
     {    PUSH(TOK_INT64, $1);    }
-    | TOK_INT
-    {    PUSH(TOK_INT32, $1);    }
-    | TOK_LONG
-    {    PUSH(TOK_INT64, $1);    }
     | TOK_CHAR
-    {    PUSH(TOK_INT8, $1);    }
+    {    PUSH(TOK_UINT16, $1);    }
     ;
 
 FloatingPointType:
@@ -471,8 +475,6 @@ ClassOrInterfaceType:
         PUSH(TOK_NULL, "InterfaceTypeList");
         COMBINE(TOK_TYPE_CLASS, 2);
     }
-    | Name TOK_LT InterfaceTypeList TOK_GT
-    {   COMBINE(TOK_TYPE_CLASS, 2);   }
     ;
 
 ClassType:
@@ -1358,7 +1360,7 @@ CastExpression:
 			second = first;
 		}
 		else
-			second->addChild(first);
+			second->addChild(*first);
 		NPUSH(second);
 		NPUSH(third);
 
@@ -1374,7 +1376,7 @@ CastExpression:
 		second = POP();
 		first = POP();
 
-		second->addChild(first);
+		second->addChild(*first);
 		NPUSH(second);
 		NPUSH(third);
 
@@ -1485,8 +1487,8 @@ Assignment:
         oper = POP();
         left = POP();
 
-        oper->addChild(left);
-        oper->addChild(right);
+        oper->addChild(*left);
+        oper->addChild(*right);
         NPUSH(oper);
     }
     ;

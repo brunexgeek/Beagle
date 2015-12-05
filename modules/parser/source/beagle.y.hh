@@ -245,7 +245,7 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 167 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
+#line 175 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
 
     char* node;
 

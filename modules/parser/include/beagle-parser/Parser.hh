@@ -36,6 +36,10 @@ namespace beagle
             const char *fileName;
 
 			bool readFile( );
+
+            Node *expandFields( Node *root );
+
+            Node *expandVariable( Node *varDecl );
 	};
 
 }; // namespace beagle
