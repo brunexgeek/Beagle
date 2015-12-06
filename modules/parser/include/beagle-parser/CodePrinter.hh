@@ -55,11 +55,8 @@ class CodePrinter
         void comment(
             const std::string &text );
 
-        void openSentinel(
-            const std::string &name );
-
-        void closeSentinel(
-            const std::string &name );
+        void section(
+            const std::string &text );
 
     private:
         std::stringstream buffer;

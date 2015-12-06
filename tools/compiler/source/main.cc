@@ -25,13 +25,17 @@ int main( int argc, char **argv )
 			return 1;
 		}
 		// print the AST
-		root->print(std::cout, &parser);
-		// generate the C source code and write it into the output file
-		/*beagle::CodeGenerator codegen(*root, 5);
-		codegen.visit();
+		root->print(std::cout, beagle::Parser::name);
+
+        // generate the C source code and write it into the output file
+		beagle::CodeGenerator codegen(*root, 5);
+		codegen.writeHeader();
+        codegen.visit();
+        codegen.writeFooter();
+
 		std::ofstream out("output.c");
 		out << codegen.getStream().str();
-		out.close();*/
+		out.close();
 	}
 	else
 	{

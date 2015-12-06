@@ -7,6 +7,7 @@
 
 namespace beagle {
 
+
 template<typename T>
 class TreeVisitor
 {
@@ -57,6 +58,22 @@ class TreeVisitor
 
 		virtual void visitTypeDeclaration(
 			Node &node ) = 0;
+
+        virtual void visitMethod(
+            Node &parent,
+            Node &method ) = 0;
+
+        virtual void visitParameterList(
+            Node &parent,
+            Node &params ) = 0;
+
+        virtual void visitParameter(
+            Node &parent,
+            Node &parameter ) = 0;
+
+        virtual void visitMethodBody(
+            Node &method,
+            Node &body ) = 0;
 
 		virtual void visitAnnotationDeclaration(
 			Node &parent,

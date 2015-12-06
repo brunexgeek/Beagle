@@ -63,6 +63,7 @@ void Parser::tokens()
 Node *Parser::parse()
 {
 	Node *root = NULL;
+    SymbolTable table;
 
 	parser_context_t context;
 	context.scanner = scanner;
@@ -75,13 +76,18 @@ Node *Parser::parse()
 	else
 		return NULL;
 
+    // TODO: load types from import modules
+    table.addType("beagle.Integer");
+
 	// expand field declarations
-	root = expandFields(root);
+	expandFields(*root);
+    // replace names by fully qualified names
+    expandNames(*root, table);
 
 	return root;
 }
 
-bool Parser::readFile( )
+void Parser::readFile( )
 {
 	std::stringstream ss;
 	std::string line;
@@ -105,19 +111,42 @@ const char *Parser::name( int tok )
 }
 
 
-Node *Parser::expandFields( Node *root )
+void Parser::expandNames(
+    Node &root,
+    SymbolTable &symbols )
 {
-	if (root == NULL) return NULL;
+    return;
+    for (int i = 0, n = root.getChildCount(); i < n; ++i)
+    {
+        Node &item = root[i];
 
-	Node &body = (*root)[2][5];
-	if (body.getType() == TOK_NULL) return root;
+        switch (item.type)
+        {
+            case TOK_TYPE_CLASS:
+                // TODO: check qualified names
+                if (item[0].getChildCount() == 0)
+                    std::cout << item[0].text << " from " << symbols.resolveType(item[0].text) << std::endl;
+                break;
+            case TOK_NAME:
+                break;
+            default:
+                expandNames(item, symbols);
+        }
+    }
+}
+
+
+void Parser::expandFields( Node &root )
+{
+	Node &body = root[2][5];
+	if (body.type == TOK_NULL) return;
 
 	for (int m = 0; m < body.getChildCount(); ++m)
 	{
 		Node &member = body[m];
 
-		if (member.getType() != TOK_FIELD ||
-		    member[3].getType() != TOK_VARIABLES) continue;
+		if (member.type != TOK_FIELD ||
+		    member[3].type != TOK_VARIABLES) continue;
 
 		// expand fields with more than one variable
 		for (; member[3].getChildCount() > 1;)
@@ -147,8 +176,6 @@ Node *Parser::expandFields( Node *root )
 		variable.removeChild();
 		delete &variable;
 	}
-
-	return root;
 }
 
 } // namespace beagle

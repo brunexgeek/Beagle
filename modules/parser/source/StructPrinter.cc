@@ -24,9 +24,11 @@ void StructPrinter::open(
     const std::string &name )
 {
     indent();
-    if ((modifiers & PRIVATE) > 0)
-        getStream() << "static ";
-    getStream() << "struct " << name << " {" << std::endl;
+    /*if ((modifiers & PRIVATE) > 0)
+        getStream() << "static ";*/
+    getStream() << "struct " << name << "\n";
+    indent();
+    getStream() << "{\n";
     incIndent();
 }
 
@@ -40,7 +42,7 @@ void StructPrinter::close()
 {
     decIndent();
     indent();
-    getStream() << "};" << std::endl << std::endl;
+    getStream() << "};\n\n";
 }
 
 void StructPrinter::addPrimitive(

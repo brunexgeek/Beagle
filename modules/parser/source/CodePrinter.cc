@@ -1,4 +1,5 @@
 #include <beagle-parser/CodePrinter.hh>
+#include <locale>
 
 
 namespace beagle {
@@ -64,7 +65,7 @@ void CodePrinter::indent()
     }
 }
 
-std::stringstream &CodePrinter::getStream()
+inline std::stringstream &CodePrinter::getStream()
 {
     if (parent != NULL)
         return parent->getStream();
@@ -80,11 +81,11 @@ void CodePrinter::writeName(
     getStream() << prefix;
     while (true)
     {
-        getStream() << name.getText();
+        getStream() << name.text;
         if (name.getChildCount() != 0)
         {
             getStream() << '_';
-            name = name.getChild(0);
+            name = name[0];
         }
         else
             break;
@@ -95,40 +96,55 @@ void CodePrinter::writeName(
 void CodePrinter::comment(
     const std::string &text )
 {
+    std::ostream &out = getStream();
+
     indent();
-    getStream() << "/* ";
-    for (int i = 0, s = 0; i < text.length(); ++i, ++s)
+    out << "/* ";
+    for (int i = 0, s = 0; i < (int) text.length(); ++i, ++s)
     {
         if (text[i] == '\n' || (s >= 70 && text[i] == ' '))
         {
-            getStream() << std::endl << "  ";
+            out << std::endl << "  ";
             indent();
             s = 0;
             continue;
         }
-        getStream() << text[i];
+        out << text[i];
     }
-    getStream() <<  " */" << std::endl;
-}
-
-void CodePrinter::openSentinel(
-    const std::string &name )
-{
-    // TODO: change 'name' to upper case
-
-    getStream() << "#ifndef " << name << std::endl;
-    getStream() << "#define " << name << std::endl;
-    getStream() << std::endl << std::endl;
+    out <<  " */" << std::endl;
 }
 
 
-void CodePrinter::closeSentinel(
-    const std::string &name )
+void CodePrinter::section(
+    const std::string &text )
 {
-    // TODO: change 'name' to upper case
+    std::ostream &out = getStream();
+    int maxLength = 0;
+    std::stringstream ss;
 
-    getStream() << "#endif // " << name << std::endl;
-    getStream() << std::endl << std::endl;
+    // compute the greater line length
+    for (int i = 0, s = 0; i < (int) text.length(); ++i, ++s)
+    {
+        char c = text[i];
+
+        if (c == '\n' || (s >= 70 && c == ' '))
+        {
+            if (s > maxLength) maxLength = s;
+            s = 0;
+            ss << "\n * ";
+        }
+        else
+            ss << c;
+    }
+
+    if (maxLength == 0) maxLength = (int) text.length();
+
+    indent();
+    out << "\n/***";
+    for (int i = 0; i < maxLength; ++i) out << '*';
+    out << "\n * " << ss.str() << "\n **";
+    for (int i = 0; i < maxLength; ++i) out << '*';
+    out <<  "*/\n\n";
 }
 
 

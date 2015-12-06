@@ -55,15 +55,19 @@ Node::~Node()
 }
 
 
-void Node::print( std::ostream &out, Parser *parser, int level, bool recursive )
+void Node::print(
+    std::ostream &out,
+    const char *(getTokenName)(int),
+    int level,
+    bool recursive )
 {
     for (int i = 0; i < level; ++i)
         out << "   ";
 
-    if (parser == NULL)
+    if (getTokenName == NULL)
         out << "["<< std::setw(3) << type << "] ";
     else
-        out << "["<< parser->name(type) << "] ";
+        out << "["<< getTokenName(type) << "] ";
 
     if (!text.empty())
         std::cout << "'" << text << "' ";
@@ -74,8 +78,8 @@ void Node::print( std::ostream &out, Parser *parser, int level, bool recursive )
 
     if (!recursive) return;
 
-    for (int i = 0; i < children.size(); ++i)
-        children[i]->print(out, parser, level + 1);
+    for (int i = 0; i < (int) children.size(); ++i)
+        children[i]->print(out, getTokenName, level + 1);
 }
 
 }

@@ -86,16 +86,16 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
 {
     beagle::Node *temp;
 
-    if (stack.size() < n) return NULL;
+    if ((int) stack.size() < n) return NULL;
 
     if (tok > 0 )
         temp = new beagle::Node(tok, NULL);
     else
     {
-        if (stack.size() <= n) return NULL;
+        if ((int) stack.size() <= n) return NULL;
         temp = stack[ stack.size() - 1 - n ];
     }
-    for (int i = stack.size() - n; i < stack.size(); ++i)
+    for (size_t i = stack.size() - n; i < (int) stack.size(); ++i)
     {
         //std::cout << temp->getValue() << ": adding child " << p->getValue() << std::endl;;
         temp->addChild( *stack[i] );
@@ -104,14 +104,15 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
         stack.pop_back();
 
     if (tok > 0) stack.push_back(temp);
+    return temp;
 }
 
 
 static void beagle_printStack( std::vector<beagle::Node*> &stack, beagle::Parser *parser )
 {
     std::cout << "Stack:" << std::endl;
-    for (int i = 0; i < stack.size(); ++i)
-        stack[i]->print(std::cout, parser, 1, false);
+    for (int i = 0; i < (int) stack.size(); ++i)
+        stack[i]->print(std::cout, beagle::Parser::name, 1, false);
 }
 
 
@@ -120,7 +121,7 @@ static void beagle_push(
     int token,
     const char *value )
 {
-    std::cout << "PUSH " << value << std::endl;
+    //std::cout << "PUSH " << value << std::endl;
     context->stack.push_back( new beagle::Node(token,value) );
 }
 
@@ -129,7 +130,6 @@ static void beagle_push(
     parser_context_t *context,
     beagle::Node *node )
 {
-    std::cout << "PUSH " << node->getText() << std::endl;
     context->stack.push_back(node);
 }
 
@@ -207,7 +207,6 @@ static void beagle_push(
 %token < node > TOK_IMPLEMENTS
 %token < node > TOK_IMPORT
 %token < node > TOK_INSTANCEOF
-%token < node > TOK_INT
 %token < node > TOK_INTERFACE
 %token < node > TOK_LONG
 %token < node > TOK_NATIVE
@@ -383,7 +382,7 @@ static void beagle_push(
 %type < node > ConditionalAndExpression ConditionalOrExpression
 %type < node > ConditionalExpression AssignmentExpression Assignment
 %type < node > LeftHandSide AssignmentOperator Expression ConstantExpression
-%type < node > PackageDeclarationOpt ImportDeclarationsOpt
+%type < node > ImportDeclarationsOpt
 %type < node > ModifiersOpt SuperOpt InterfacesOpt ClassBodyDeclarationsOpt
 %type < node > ThrowsOpt FormalParameterListOpt CatchesOpt
 %type < node > BlockStatementsOpt
@@ -401,7 +400,7 @@ static void beagle_push(
 
 
 CompilationUnit:
-    PackageDeclarationOpt ImportDeclarationsOpt TypeDeclaration
+    PackageDeclaration ImportDeclarationsOpt TypeDeclaration
     {   COMBINE(TOK_UNIT, 3);   }
     ;
 
@@ -472,7 +471,7 @@ ReferenceType:
 ClassOrInterfaceType:
     Name
     {
-        PUSH(TOK_NULL, "InterfaceTypeList");
+        PUSH(TOK_NULL, NULL /* "InterfaceTypeList" */ );
         COMBINE(TOK_TYPE_CLASS, 2);
     }
     ;
@@ -497,7 +496,7 @@ ArrayType:
     | ArrayType TOK_LB TOK_RB
     {
         beagle::Node *node = TOP();
-        node->setCounter( node->getCounter() + 1 );
+        ++node->counter;
     }
     ;
 
@@ -514,19 +513,24 @@ SimpleName:
 QualifiedName:
     Name TOK_DOT TOK_NAME
     {
-        PUSH(TOK_NAME, $3);
-        COMBINE(0, 1);
+        //PUSH(TOK_NAME, $3);
+        //COMBINE(0, 1);
+        beagle::Node *name = TOP();
+        name->text += '.';
+        name->text += $3;
     }
     ;
 
+ /*
 PackageDeclarationOpt:
     PackageDeclaration
-    | {   PUSH(TOK_NULL, "PackageDeclaration");   }
+    | {   PUSH(TOK_NULL, "PackageDeclaration" );   }
     ;
+ */
 
 ImportDeclarationsOpt:
     ImportDeclarations
-    | {   PUSH(TOK_NULL, "ImportDeclarations");   }
+    | {   PUSH(TOK_NULL, NULL /* "ImportDeclarations" */ );   }
     ;
 
 
@@ -539,7 +543,6 @@ ImportDeclarations:
 
 PackageDeclaration:
     TOK_PACKAGE Name TOK_EOL
-    {   COMBINE(TOK_PACKAGE, 1);   }
     ;
 
 ImportDeclaration:
@@ -566,7 +569,7 @@ TypeDeclaration:
 
 AnnotationDeclarationsOpt:
     AnnotationDeclarations
-    | {   PUSH(TOK_NULL, "AnnotationDeclarations");   }
+    | {   PUSH(TOK_NULL, NULL /* "AnnotationDeclarations" */ );   }
     ;
 
 AnnotationDeclarations:
@@ -581,7 +584,7 @@ AnnotationDeclaration:
     {   COMBINE(TOK_ANNOTATION, 2);   }
     | TOK_AT SimpleName TOK_EOL
     {
-		PUSH(TOK_NULL, "ArgumentList");
+		PUSH(TOK_NULL, NULL /* "ArgumentList" */ );
 		COMBINE(TOK_ANNOTATION, 2);
 	}
     ;
@@ -625,17 +628,17 @@ ClassDeclaration:
 
 ModifiersOpt:
     Modifiers
-    | {   PUSH(TOK_NULL, "Modifiers");   }
+    | {   PUSH(TOK_NULL, NULL /* "Modifiers" */ );   }
     ;
 
 SuperOpt:
     Super
-    | {   PUSH(TOK_NULL, "Super");   }
+    | {   PUSH(TOK_NULL, NULL /* "Super" */ );   }
     ;
 
 InterfacesOpt:
     Interfaces
-    | {   PUSH(TOK_NULL, "Interfaces");   }
+    | {   PUSH(TOK_NULL, NULL /* "Interfaces" */ );   }
     ;
 
 
@@ -660,7 +663,7 @@ ClassBody:
 
 ClassBodyDeclarationsOpt:
     ClassBodyDeclarations
-    | {   PUSH(TOK_NULL, "ClassBodyDeclarations");   }
+    | {   PUSH(TOK_NULL, NULL /* "ClassBodyDeclarations" */ );   }
     ;
 
 ClassBodyDeclarations:
@@ -697,7 +700,7 @@ VariableDeclarators:
 VariableDeclarator:
     VariableDeclaratorId
     {
-        PUSH(TOK_NULL, "VariableInitializer");
+        PUSH(TOK_NULL, NULL /* "VariableInitializer" */ );
         COMBINE(TOK_VARIABLE, 2);
     }
     | VariableDeclaratorId TOK_ASN VariableInitializer
@@ -737,13 +740,13 @@ MethodHeader:
 
 ThrowsOpt:
     Throws
-    | {   PUSH(TOK_NULL, "Throws");   }
+    | {   PUSH(TOK_NULL, NULL /* "Throws" */ );   }
     ;
 
 
 FormalParameterListOpt:
     FormalParameterList
-    | {   PUSH(TOK_NULL, "FormalParameterList");   }
+    | {   PUSH(TOK_NULL, NULL /* "FormalParameterList" */ );   }
 
 FormalParameterList:
     FormalParameter
@@ -758,7 +761,7 @@ FormalParameter:
     | TOK_VARARG Type VariableDeclaratorId
     {
         COMBINE(TOK_PARAMETER, 2);
-        TOP()->setCounter( TOP()->getCounter() + 1 );
+        ++TOP()->counter;
     }
     ;
 
@@ -791,17 +794,17 @@ ConstructorDeclaration:
 
 ExplicitConstructorInvocationOpt:
     ExplicitConstructorInvocation
-    | {   PUSH(TOK_NULL, "ExplicitConstructorInvocation");   }
+    | {   PUSH(TOK_NULL, NULL /* "ExplicitConstructorInvocation" */ );   }
     ;
 
 BlockStatementsOpt:
     BlockStatements
-    | {   PUSH(TOK_NULL, "BlockStatements");   }
+    | {   PUSH(TOK_NULL, NULL /* "BlockStatements" */ );   }
     ;
 
 ArgumentListOpt:
     ArgumentList
-    | {   PUSH(TOK_NULL, "ArgumentList");   }
+    | {   PUSH(TOK_NULL, NULL /* "ArgumentList" */ );   }
     ;
 
 ConstructorBody:
@@ -811,14 +814,14 @@ ConstructorBody:
 
 ExplicitConstructorInvocation:
     TOK_THIS TOK_LP ArgumentListOpt TOK_RP TOK_EOL
-    {   TOP()->setType(TOK_THIS);   }
+    {   TOP()->type = TOK_THIS;   }
     | TOK_SUPER TOK_LP ArgumentListOpt TOK_RP TOK_EOL
-    {   TOP()->setType(TOK_SUPER);   }
+    {   TOP()->type = TOK_SUPER;   }
     ;
 
 ExtendsInterfacesOpt:
     ExtendsInterfaces
-    | {   PUSH(TOK_NULL, "ExtendsInterfaces");   }
+    | {   PUSH(TOK_NULL, NULL /* "ExtendsInterfaces" */ );   }
     ;
 
 InterfaceDeclaration:
@@ -839,7 +842,7 @@ InterfaceBody:
 
 InterfaceMemberDeclarationsOpt:
     InterfaceMemberDeclarations
-    | {   PUSH(TOK_NULL, "InterfaceMemberDeclarations");   }
+    | {   PUSH(TOK_NULL, NULL /* "InterfaceMemberDeclarations" */ );   }
     ;
 
 InterfaceMemberDeclarations:
@@ -861,7 +864,7 @@ ConstantDeclaration:
 AbstractMethodDeclaration:
     MethodHeader TOK_EOL
     {
-        PUSH(TOK_NULL, "MethodBody");
+        PUSH(TOK_NULL, NULL /* "MethodBody" */ );
         COMBINE(0, 1);
     }
     ;
@@ -872,7 +875,7 @@ ArrayInitializer:
 
 VariableInitializersOpt:
 	VariableInitializers
-	| {   PUSH(TOK_NULL, "VariableInitializers"); }
+	| {   PUSH(TOK_NULL, NULL /* "VariableInitializers" */ ); }
 	;
 
 VariableInitializers:
@@ -953,7 +956,7 @@ StatementExpression:
 IfThenStatement:
     TOK_IF TOK_LP Expression TOK_RP TOK_EOL Block
     {
-		PUSH(TOK_NULL, "Block");
+		PUSH(TOK_NULL, NULL /* "Block" */ );
 		COMBINE(TOK_IF, 3);
 	}
     ;
@@ -962,7 +965,7 @@ IfThenInlineStatement:
     TOK_IF TOK_LP Expression TOK_RP StatementExpression TOK_EOL
     {
 		COMBINE(TOK_BLOCK, 1);
-		PUSH(TOK_NULL, "Block");
+		PUSH(TOK_NULL, NULL /* "Block" */ );
 		COMBINE(TOK_IF, 3);
 	}
     ;
@@ -979,7 +982,7 @@ SwitchStatement:
 
 SwitchBlockStatementGroupsOpt:
 	SwitchBlockStatementGroups
-	| {   PUSH(TOK_NULL, "SwitchBlockStatementGroups");   }
+	| {   PUSH(TOK_NULL, NULL /* "SwitchBlockStatementGroups" */ );   }
 	;
 
 SwitchBlock:
@@ -1028,17 +1031,17 @@ DoStatement:
 
 ForInitOpt:
 	ForInit
-	| {   PUSH(TOK_NULL, "ForInit");   }
+	| {   PUSH(TOK_NULL, NULL /* "ForInit" */ );   }
 	;
 
 ExpressionOpt:
 	Expression
-	| {   PUSH(TOK_NULL, "Expression");   }
+	| {   PUSH(TOK_NULL, NULL /* "Expression" */ );   }
 	;
 
 ForUpdateOpt:
 	ForUpdate
-	| {   PUSH(TOK_NULL, "ForUpdate");   }
+	| {   PUSH(TOK_NULL, NULL /* "ForUpdate" */ );   }
 	;
 
 ForStatement:
@@ -1120,13 +1123,13 @@ LockStatement:
 
 CatchesOpt:
 	Catches
-	| {   PUSH(TOK_NULL, "Catches");   }
+	| {   PUSH(TOK_NULL, NULL /* "Catches" */ );   }
 	;
 
 TryStatement:
 	TOK_TRY TOK_EOL Block Catches
 	{
-		PUSH(TOK_NULL, "finally");
+		PUSH(TOK_NULL, NULL /* "finally" */ );
 		COMBINE(TOK_TRY, 3);
 	}
     | TOK_TRY TOK_EOL Block CatchesOpt Finally
@@ -1147,7 +1150,7 @@ CatchClause:
 
 Finally:
 	TOK_FINALLY TOK_EOL Block
-	{   TOP()->setType(TOK_FINALLY);   }
+	{   TOP()->type = TOK_FINALLY;   }
     ;
 
 Primary:
@@ -1180,7 +1183,7 @@ ArgumentList:
 
 DimsOpt:
 	Dims
-	| {   PUSH(TOK_NULL, "Dims");   }
+	| {   PUSH(TOK_NULL, NULL /* "Dims" */ );   }
 	;
 
 ArrayCreationExpression:
@@ -1238,11 +1241,11 @@ Dims:
 	TOK_LB TOK_RB
 	{
 		PUSH(TOK_TYPE_ARRAY, "");
-		TOP()->setCounter(1);
+		TOP()->counter = 1;
 	}
     | Dims TOK_LB TOK_RB
     {
-		TOP()->setCounter( TOP()->getCounter() + 1 );
+		++TOP()->counter;
 	}
 
 FieldAccess:
@@ -1262,7 +1265,7 @@ MethodInvocation:
 
 		third = POP();
 		second = POP();
-		PUSH(TOK_NULL, "Primary");
+		PUSH(TOK_NULL, NULL /* "Primary" */ );
 		NPUSH(second);
 		NPUSH(third);
 
@@ -1354,7 +1357,7 @@ CastExpression:
 		second = POP();
 		first = POP();
 
-		if (second->getType() == TOK_NULL)
+		if (second->type == TOK_NULL)
 		{
 			delete second;
 			second = first;

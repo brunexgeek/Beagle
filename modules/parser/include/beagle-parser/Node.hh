@@ -14,9 +14,13 @@ namespace beagle {
 class Node
 {
     public:
+        std::string text;
+        int type;
+        int counter;
+
         Node(
             int type,
-            const char *text);
+            const char *text = NULL);
         /*Node(
             int type,
             const char *value,
@@ -29,14 +33,9 @@ class Node
 
         virtual ~Node();
 
-        Node &getChild( int index ) const
-        {
-            return *children[index];
-        }
-
         void setChild( int index, Node &value )
         {
-            if (index >= 0 && index < children.size())
+            if (index >= 0 && index < (int)children.size())
 				children[index] = &value;
         }
 
@@ -45,7 +44,7 @@ class Node
             if (index == -1)
                 children.clear();
             else
-            if (index >= 0 && index < children.size())
+            if (index >= 0 && index < (int)children.size())
                 children.erase(children.begin() + index);
         }
 
@@ -56,51 +55,27 @@ class Node
 
 		int getChildCount()
 		{
-			return children.size();
+			return (int) children.size();
 		}
-
-        const std::string &getText() const
-        {
-            return text;
-        }
-
-        int getCounter() const
-        {
-            return counter;
-        }
-
-        void setCounter( int value )
-        {
-            counter = value;
-        }
-
-        int getType()
-        {
-            return type;
-        }
-
-        void setType( int type )
-        {
-            this->type = type;
-        }
 
 		Node &operator[]( int index )
 		{
 			return *children[index];
 		}
 
-        void print( std::ostream &out, Parser *parser = NULL, int level = 0, bool recursive = true);
+        void print(
+            std::ostream &out,
+            const char *(getTokenName)(int) = NULL,
+            int level = 0,
+            bool recursive = true );
 
 		operator std::string()
 		{
-			return getText();
+			return text;
 		}
 
     private:
         std::vector<Node*> children;
-        std::string text;
-        int type;
-        int counter;
 };
 
 

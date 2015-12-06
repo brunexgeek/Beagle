@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include <beagle-parser/SymbolTable.hh>
 
 
 namespace beagle
@@ -35,11 +36,15 @@ namespace beagle
 			void* buffer;
             const char *fileName;
 
-			bool readFile( );
+			void readFile( );
 
-            Node *expandFields( Node *root );
+            void expandFields( Node &root );
 
-            Node *expandVariable( Node *varDecl );
+            void expandVariable( Node &varDecl );
+
+            void expandNames(
+                Node &root,
+                SymbolTable &symbols );
 	};
 
 }; // namespace beagle

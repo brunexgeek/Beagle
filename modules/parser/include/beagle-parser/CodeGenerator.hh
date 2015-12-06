@@ -2,9 +2,12 @@
 #define BEAGLE_CODEGENERATOR_HH
 
 
+#include <stdint.h>
 #include <beagle-parser/TreeVisitor.hh>
 #include <beagle-parser/CodePrinter.hh>
 #include <beagle-parser/StructPrinter.hh>
+#include <beagle-parser/GuardPrinter.hh>
+#include <beagle-parser/VariablePrinter.hh>
 
 
 namespace beagle {
@@ -21,6 +24,10 @@ class CodeGenerator : public TreeVisitor<int>
 
         std::stringstream &getStream();
 
+        void writeHeader();
+
+        void writeFooter();
+
 		void visitCompulationUnit(
 			Node &node );
 
@@ -33,15 +40,39 @@ class CodeGenerator : public TreeVisitor<int>
 		void visitTypeDeclaration(
 			Node &node );
 
+        void visitMethod(
+            Node &parent,
+            Node &method );
+
 		void visitAnnotationDeclaration(
 			Node &parent,
 			Node &node );
 
-    private:
-        CodePrinter printer;
-        StructPrinter structPrinter;
+        void visitParameterList(
+            Node &parent,
+            Node &params );
 
-        void printCommomTypeStructures();
+        void visitParameter(
+            Node &parent,
+            Node &parameter );
+
+        void visitMethodBody(
+            Node &method,
+            Node &body );
+
+    private:
+        static const std::string CLASS_ENTRY;
+        static const std::string MODULE_METAINFO;
+        static const std::string TYPE_METAINFO;
+        static const std::string FIELD_METAINFO;
+        static const std::string METHOD_METAINFO;
+
+
+        CodePrinter printer;
+        GuardPrinter guard;
+        VariablePrinter variable;
+        StructPrinter structure;
+        std::ostream &out;
 
         void printClassStructures(
 			Node &node );
@@ -50,26 +81,27 @@ class CodeGenerator : public TreeVisitor<int>
 			std::stringstream &ss,
 			const std::string &name );
 
-		std::string createName(
-			int count,
-			const std::string &... );
-
-		void getName(
+		void getNativeName(
 			std::stringstream &ss,
 			Node &ident );
 
-		std::string getName(
+		std::string getNativeName(
 			Node &ident );
 
-		std::string getMethodName(
+		std::string getMethodNativeName(
 			Node &package,
 			Node &type,
 			Node &method );
 
-		std::string getStructName(
+        std::string getTypeName(
+            Node &package,
+            Node &type );
+
+		std::string getNativeTypeName(
 			const std::string &prefix,
 			Node &package,
-			Node &type );
+			Node &type,
+            char separator = '_');
 
 		void printClassStructures(
 			Node &package,
@@ -81,6 +113,15 @@ class CodeGenerator : public TreeVisitor<int>
 
         std::string getNativeType(
             Node &type );
+
+        std::string getPrototypeType(
+            Node &type );
+
+        std::string getPrototype(
+            Node &method );
+
+        uint32_t getNativeModifiers(
+            Node &modifiers );
 };
 
 

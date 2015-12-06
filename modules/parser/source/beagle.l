@@ -150,7 +150,7 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
                                     {
 										// use the match (length-1) as new identation size
 										int indent = 0;
-										for (int i = 1; i < strlen(yytext); ++i)
+										for (size_t i = 1; i < strlen(yytext); ++i)
 										{
 											if (yytext[i] == '\t')
 												indent += 4;
