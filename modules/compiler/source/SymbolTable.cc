@@ -1,4 +1,4 @@
-#include <beagle-parser/SymbolTable.hh>
+#include <beagle-compiler/SymbolTable.hh>
 #include "beagle.y.hh"
 #include <algorithm>
 

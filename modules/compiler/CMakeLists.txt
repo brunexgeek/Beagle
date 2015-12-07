@@ -18,8 +18,8 @@ file(GLOB PARSER_SOURCES
 
 add_library(module_parser STATIC ${PARSER_SOURCES})
 set_target_properties(module_parser PROPERTIES
-    OUTPUT_NAME "bgl-parser"
+    OUTPUT_NAME "beagle.compiler"
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-    PREFIX "lib" )
+    PREFIX "" )

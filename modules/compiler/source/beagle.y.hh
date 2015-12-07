@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_BEAGLE_Y_HH_INCLUDED
-# define YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_BEAGLE_Y_HH_INCLUDED
+#ifndef YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
+# define YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -40,7 +40,7 @@
 extern int beagle_debug;
 #endif
 /* "%code requires" blocks.  */
-#line 15 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
+#line 15 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
 
 
 
@@ -48,8 +48,8 @@ extern int beagle_debug;
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <beagle-parser/Node.hh>
-#include <beagle-parser/Parser.hh>
+#include <beagle-compiler/Node.hh>
+#include <beagle-compiler/Parser.hh>
 
 
 /*
@@ -63,13 +63,13 @@ typedef struct
 {
     yyscan_t scanner;
 
-    std::vector<beagle::Node*> stack;
+    std::vector<beagle::compiler::Node*> stack;
 
     const char *fileName;
 
     const char *rule;
 
-    beagle::Parser *parser;
+    beagle::compiler::Parser *parser;
 
 } parser_context_t;
 
@@ -83,7 +83,7 @@ typedef struct
 int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 87 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 87 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -246,11 +246,11 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 176 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
+#line 176 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
 
     char* node;
 
-#line 254 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 254 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -260,4 +260,4 @@ union YYSTYPE
 
 int beagle_parse (parser_context_t *parserContext);
 
-#endif /* !YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_PARSER_SOURCE_BEAGLE_Y_HH_INCLUDED  */
+#endif /* !YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED  */

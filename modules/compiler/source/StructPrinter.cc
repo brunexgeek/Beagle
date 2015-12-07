@@ -1,8 +1,9 @@
-#include <beagle-parser/StructPrinter.hh>
-#include <beagle-parser/CodePrinter.hh>
+#include "StructPrinter.hh"
+#include "CodePrinter.hh"
 
 
 namespace beagle {
+namespace compiler {
 
 
 StructPrinter::StructPrinter(
@@ -70,4 +71,5 @@ void StructPrinter::addStruct(
 }
 
 
+} // namespace compiler
 } // namespace beagle

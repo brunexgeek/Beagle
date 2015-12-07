@@ -2,12 +2,12 @@
 #define BEAGLE_CODEPRINTER_HH
 
 
-#include <beagle-parser/Node.hh>
+#include <beagle-compiler/Node.hh>
 #include <sstream>
 
 
 namespace beagle {
-
+namespace compiler {
 
 
 const int POINTER = 0x01;
@@ -66,6 +66,7 @@ class CodePrinter
 };
 
 
+} // namespace compiler
 } // namespace beagle
 
 

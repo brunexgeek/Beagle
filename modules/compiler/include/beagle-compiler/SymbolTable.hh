@@ -4,7 +4,7 @@
 
 #include <set>
 #include <string>
-#include <beagle-parser/Node.hh>
+#include <beagle-compiler/Node.hh>
 
 namespace beagle {
 namespace compiler {

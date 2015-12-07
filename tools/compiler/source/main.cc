@@ -2,8 +2,8 @@
 #include <fstream>
 #include <cstdlib>
 #include <getopt.h>
-#include <beagle-parser/Node.hh>
-#include <beagle-parser/Compiler.hh>
+#include <beagle-compiler/Node.hh>
+#include <beagle-compiler/Compiler.hh>
 
 
 using namespace std;
@@ -17,8 +17,8 @@ bool useLexer = false;
 
 void main_usage()
 {
-    std::cerr << "Usage: ./compiler FILE1 [ FILE2 ... ] -o OUTPUT_FILE" << std::endl;
-    std::cerr << "       ./compiler FILE1 [ FILE2 ... ] -l"  << std::endl  << std::endl;
+    std::cerr << "Usage: beagle FILE1 [ FILE2 ... ] -o OUTPUT_FILE" << std::endl;
+    std::cerr << "       beagle FILE1 [ FILE2 ... ] -l"  << std::endl  << std::endl;
     exit(1);
 }
 
@@ -37,7 +37,6 @@ void main_parseOptions( int argc, char **argv )
             case 'l':
                 useLexer = true;
                 break;
-            case '?':
             default: /* '?' */
                 main_usage();
         }
@@ -62,13 +61,15 @@ int main( int argc, char **argv )
 
 	compiler.compile();
 
-    // print the AST
+    // print the trees
     for (int i = 0; true; ++i)
     {
-        beagle::Node *root = compiler.getTree(i);
+        Node *root = compiler.getTree(i);
         if (root == NULL) break;
         root->print(std::cout, Compiler::getTokenName);
     }
+
+    return 1;
 /*
     // generate the C source code and write it into the output file
     beagle::CodeGenerator codegen(*root, 5);
@@ -78,5 +79,7 @@ int main( int argc, char **argv )
 
     std::ofstream out("output.c");
     out << codegen.getStream().str();
-    out.close();*/
+    out.close();
+
+    return 0; */
 }

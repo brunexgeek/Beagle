@@ -2,10 +2,11 @@
 #define BEAGLE_TREEVISITOR_HH
 
 
-#include <beagle-parser/Node.hh>
+#include <beagle-compiler/Node.hh>
 
 
 namespace beagle {
+namespace compiler {
 
 
 template<typename T>
@@ -85,6 +86,8 @@ class TreeVisitor
 };
 
 
+} // namespace compiler
 } // namespace beagle
+
 
 #endif // BEAGLE_TREEVISITOR_HH

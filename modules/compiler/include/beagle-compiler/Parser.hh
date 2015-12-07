@@ -3,11 +3,12 @@
 
 
 #include <iostream>
-#include <beagle-parser/Node.hh>
+#include <beagle-compiler/Node.hh>
 
 
-namespace beagle
-{
+namespace beagle {
+namespace compiler {
+
 
 	class Parser
 	{
@@ -32,7 +33,9 @@ namespace beagle
             void expandVariable( Node &varDecl );
 	};
 
-}; // namespace beagle
+
+} // namespace compiler
+} // namespace beagle
 
 
 

@@ -1,4 +1,4 @@
-#include <beagle-parser/Parser.hh>
+#include <beagle-compiler/Parser.hh>
 #include "beagle.y.hh"
 #include "beagle.l.hh"
 
@@ -19,6 +19,7 @@ const char *beagle_getTokenName( int tok );
 
 
 namespace beagle {
+namespace compiler {
 
 
 Parser::Parser()
@@ -166,4 +167,6 @@ void Parser::expandFields( Node &root )
 	}
 }
 
+
+} // namespace compiler
 } // namespace beagle

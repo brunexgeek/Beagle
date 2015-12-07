@@ -1,4 +1,4 @@
-#include <beagle-parser/CodeGenerator.hh>
+#include "CodeGenerator.hh"
 #include <iostream>
 #include <stdarg.h>
 #include "beagle.y.hh"
@@ -9,6 +9,7 @@ extern unsigned char HEADER_TEMPLATE[];
 
 
 namespace beagle {
+namespace compiler {
 
 
 const std::string CodeGenerator::CLASS_ENTRY = "__class_entry";
@@ -669,4 +670,5 @@ void CodeGenerator::writeHeader()
 }
 
 
+} // namespace compiler
 } // namespace beagle

@@ -2,8 +2,8 @@
 #define BEAGLE_COMPILER_HH
 
 
-#include <beagle-parser/Node.hh>
-#include <beagle-parser/SymbolTable.hh>
+#include <beagle-compiler/Node.hh>
+#include <beagle-compiler/SymbolTable.hh>
 #include <map>
 #include <string>
 

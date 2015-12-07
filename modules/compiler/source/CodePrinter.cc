@@ -1,8 +1,9 @@
-#include <beagle-parser/CodePrinter.hh>
+#include "CodePrinter.hh"
 #include <locale>
 
 
 namespace beagle {
+namespace compiler {
 
 
 CodePrinter::CodePrinter(
@@ -148,4 +149,5 @@ void CodePrinter::section(
 }
 
 
+} // namespace compiler
 } // namespace beagle

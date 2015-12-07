@@ -2,12 +2,13 @@
 #define BEAGLE_VARIABLEPRINTER_HH
 
 
-#include <beagle-parser/CodePrinter.hh>
+#include "CodePrinter.hh"
 #include <sstream>
 #include <iostream>
 
 
 namespace beagle {
+namespace compiler {
 
 
 class VariablePrinter : public CodePrinter
@@ -115,6 +116,8 @@ class VariablePrinter : public CodePrinter
 };
 
 
+} // namespace compiler
 } // namespace beagle
+
 
 #endif // BEAGLE_VARIABLEPRINTER_HH

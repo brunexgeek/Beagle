@@ -2,12 +2,13 @@
 #define BEAGLE_GUARDPRINTER_HH
 
 
-#include <beagle-parser/CodePrinter.hh>
+#include "CodePrinter.hh"
 #include <sstream>
 #include <iostream>
 
 
 namespace beagle {
+namespace compiler {
 
 
 class GuardPrinter : public CodePrinter
@@ -60,6 +61,8 @@ class GuardPrinter : public CodePrinter
 };
 
 
+} // namespace compiler
 } // namespace beagle
+
 
 #endif // BEAGLE_GUARDPRINTER_HH

@@ -3,14 +3,15 @@
 
 
 #include <stdint.h>
-#include <beagle-parser/TreeVisitor.hh>
-#include <beagle-parser/CodePrinter.hh>
-#include <beagle-parser/StructPrinter.hh>
-#include <beagle-parser/GuardPrinter.hh>
-#include <beagle-parser/VariablePrinter.hh>
+#include "TreeVisitor.hh"
+#include "CodePrinter.hh"
+#include "StructPrinter.hh"
+#include "GuardPrinter.hh"
+#include "VariablePrinter.hh"
 
 
 namespace beagle {
+namespace compiler {
 
 
 class CodeGenerator : public TreeVisitor<int>
@@ -66,7 +67,6 @@ class CodeGenerator : public TreeVisitor<int>
         static const std::string TYPE_METAINFO;
         static const std::string FIELD_METAINFO;
         static const std::string METHOD_METAINFO;
-
 
         CodePrinter printer;
         GuardPrinter guard;
@@ -125,6 +125,8 @@ class CodeGenerator : public TreeVisitor<int>
 };
 
 
+} // namespace compiler
 } // namespace beagle
+
 
 #endif // BEAGLE_CODEGENERATOR_HH

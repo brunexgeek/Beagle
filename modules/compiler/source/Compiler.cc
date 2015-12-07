@@ -1,5 +1,5 @@
-#include <beagle-parser/Compiler.hh>
-#include <beagle-parser/Parser.hh>
+#include <beagle-compiler/Compiler.hh>
+#include <beagle-compiler/Parser.hh>
 #include <fstream>
 #include "beagle.y.hh"
 #include <cstdlib>

@@ -1,9 +1,11 @@
-#include <beagle-parser/Node.hh>
+#include <beagle-compiler/Node.hh>
 #include <cstdarg>
 #include <cstdio>
 #include <iomanip>
 
 namespace beagle {
+namespace compiler {
+
 
 Node::Node(
     int type,
@@ -82,4 +84,6 @@ void Node::print(
         children[i]->print(out, getTokenName, level + 1);
 }
 
-}
+
+} // namespace compiler
+} // namespace beagle

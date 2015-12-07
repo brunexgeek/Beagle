@@ -8,6 +8,7 @@
 
 
 namespace beagle {
+namespace compiler {
 
 
 class Node
@@ -83,6 +84,8 @@ class Node
 };
 
 
-}
+} // namespace compiler
+} // namespace beagle
+
 
 #endif // BEAGLE_NODE_HH

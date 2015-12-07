@@ -2,12 +2,13 @@
 #define BEAGLE_STRUCTPRINTER_HH
 
 
-#include <beagle-parser/CodePrinter.hh>
+#include "CodePrinter.hh"
 #include <sstream>
 #include <iostream>
 
 
 namespace beagle {
+namespace compiler {
 
 
 class StructPrinter : public CodePrinter
@@ -42,6 +43,8 @@ class StructPrinter : public CodePrinter
 };
 
 
+} // namespace compiler
 } // namespace beagle
+
 
 #endif // BEAGLE_STRUCTPRINTER_HH

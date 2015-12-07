@@ -19,8 +19,8 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <beagle-parser/Node.hh>
-#include <beagle-parser/Parser.hh>
+#include <beagle-compiler/Node.hh>
+#include <beagle-compiler/Parser.hh>
 
 
 /*
@@ -34,13 +34,13 @@ typedef struct
 {
     yyscan_t scanner;
 
-    std::vector<beagle::Node*> stack;
+    std::vector<beagle::compiler::Node*> stack;
 
     const char *fileName;
 
     const char *rule;
 
-    beagle::Parser *parser;
+    beagle::compiler::Parser *parser;
 
 } parser_context_t;
 
@@ -59,7 +59,7 @@ int beagle_get_column  (yyscan_t yyscanner);
 
 #include <iostream>
 #include "beagle.l.hh"
-#include <beagle-parser/Node.hh>
+#include <beagle-compiler/Node.hh>
 
 
 static void beagle_error(parser_context_t *context, const char *msg)
@@ -74,23 +74,23 @@ static void beagle_error(parser_context_t *context, const char *msg)
 }
 
 
-static beagle::Node *beagle_pop( std::vector<beagle::Node*> &stack )
+static beagle::compiler::Node *beagle_pop( std::vector<beagle::compiler::Node*> &stack )
 {
     if (stack.size() == 0) return NULL;
-    beagle::Node *node = stack[ stack.size() - 1 ];
+    beagle::compiler::Node *node = stack[ stack.size() - 1 ];
     stack.pop_back();
     return node;
 }
 
 
-static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok, int n )
+static beagle::compiler::Node* beagle_combine( std::vector<beagle::compiler::Node*> &stack, int tok, int n )
 {
-    beagle::Node *temp;
+    beagle::compiler::Node *temp;
 
     if ((int) stack.size() < n) return NULL;
 
     if (tok > 0 )
-        temp = new beagle::Node(tok, NULL);
+        temp = new beagle::compiler::Node(tok, NULL);
     else
     {
         if ((int) stack.size() <= n) return NULL;
@@ -109,11 +109,11 @@ static beagle::Node* beagle_combine( std::vector<beagle::Node*> &stack, int tok,
 }
 
 
-static void beagle_printStack( std::vector<beagle::Node*> &stack, beagle::Parser *parser )
+static void beagle_printStack( std::vector<beagle::compiler::Node*> &stack, beagle::compiler::Parser *parser )
 {
     std::cout << "Stack:" << std::endl;
     for (int i = 0; i < (int) stack.size(); ++i)
-        stack[i]->print(std::cout, beagle::Parser::name, 1, false);
+        stack[i]->print(std::cout, beagle::compiler::Parser::name, 1, false);
 }
 
 
@@ -123,13 +123,13 @@ static void beagle_push(
     const char *value )
 {
     //std::cout << "PUSH " << value << std::endl;
-    context->stack.push_back( new beagle::Node(token,value) );
+    context->stack.push_back( new beagle::compiler::Node(token,value) );
 }
 
 
 static void beagle_push(
     parser_context_t *context,
-    beagle::Node *node )
+    beagle::compiler::Node *node )
 {
     context->stack.push_back(node);
 }
@@ -137,7 +137,7 @@ static void beagle_push(
 
 static void beagle_push(
     parser_context_t *context,
-    beagle::Node &node )
+    beagle::compiler::Node &node )
 {
 	beagle_push(context, &node);
 }
@@ -497,7 +497,7 @@ ArrayType:
     }
     | ArrayType TOK_LB TOK_RB
     {
-        beagle::Node *node = TOP();
+        beagle::compiler::Node *node = TOP();
         ++node->counter;
     }
     ;
@@ -517,7 +517,7 @@ QualifiedName:
     {
         //PUSH(TOK_NAME, $3);
         //COMBINE(0, 1);
-        beagle::Node *name = TOP();
+        beagle::compiler::Node *name = TOP();
         name->text += '.';
         name->text += $3;
         name->type = TOK_QNAME;
@@ -1264,7 +1264,7 @@ FieldAccess:
 MethodInvocation:
 	Name TOK_LP ArgumentListOpt TOK_RP
 	{
-		beagle::Node *second, *third;
+		beagle::compiler::Node *second, *third;
 
 		third = POP();
 		second = POP();
@@ -1279,7 +1279,7 @@ MethodInvocation:
 	| TOK_SUPER TOK_DOT SimpleName TOK_LP ArgumentListOpt TOK_RP
 	{
 
-		beagle::Node *second, *third;
+		beagle::compiler::Node *second, *third;
 
 		third = POP();
 		second = POP();
@@ -1354,7 +1354,7 @@ UnaryExpressionNotPlusMinus:
 CastExpression:
 	TOK_LP PrimitiveType DimsOpt TOK_RP UnaryExpression
 	{
-		beagle::Node *first, *second, *third;
+		beagle::compiler::Node *first, *second, *third;
 
 		third = POP();
 		second = POP();
@@ -1376,7 +1376,7 @@ CastExpression:
 	{   COMBINE(TOK_CAST, 2);   }
 	| TOK_LP Name Dims TOK_RP UnaryExpressionNotPlusMinus
 	{
-		beagle::Node *first, *second, *third;
+		beagle::compiler::Node *first, *second, *third;
 
 		third = POP();
 		second = POP();
@@ -1487,7 +1487,7 @@ Assignment:
          * Change the expression notation from infixed to prefixed
          */
 
-        beagle::Node *left, *right, *oper;
+        beagle::compiler::Node *left, *right, *oper;
 
         right = POP();
         oper = POP();
