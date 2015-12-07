@@ -15,6 +15,24 @@ namespace compiler {
 using namespace std;
 
 
+class CompilationUnit
+{
+    public:
+        Node *root;
+        SymbolTable *imports;
+
+        CompilationUnit() : root(NULL), imports(NULL)
+        {
+            // nothing to do
+        }
+
+        virtual ~CompilationUnit()
+        {
+            // nothing to do
+        }
+};
+
+
 class Compiler
 {
     public:
@@ -26,8 +44,6 @@ class Compiler
 
         void compile();
 
-        void parse();
-
         Node *getTree(
             const string &fileName );
 
@@ -38,14 +54,16 @@ class Compiler
             int tok );
 
     protected:
-        map<string, Node*> units;
+        map<string, CompilationUnit> units;
         SymbolTable symbols;
 
         void resolveTypes();
 
         void resolveTypes(
-            Node &root );
+            Node &root,
+            SymbolTable &imports );
 
+        void parse();
 };
 
 

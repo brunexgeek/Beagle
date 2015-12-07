@@ -37,9 +37,9 @@ bool Compiler::addCompilationUnit(
 
     if (realpath(fileName.c_str(), path) == NULL) return false;
 
-    map<string, Node*>::iterator it = units.find(path);
+    map<string, CompilationUnit>::iterator it = units.find(path);
     if (it == units.end())
-        units.insert( std::pair<string,Node*>(path, NULL) );
+        units.insert( std::pair<string,CompilationUnit>(path, CompilationUnit()) );
 
     return true;
 }
@@ -48,6 +48,7 @@ bool Compiler::addCompilationUnit(
 void Compiler::compile()
 {
     parse();
+    resolveTypes();
 }
 
 
@@ -55,15 +56,22 @@ void Compiler::parse()
 {
     Parser parser;
 
-    map<string, Node*>::iterator it = units.begin();
+    map<string, CompilationUnit>::iterator it = units.begin();
     for (; it != units.end(); ++it)
     {
         // parse the current file
         ifstream in((*it).first.c_str());
-        (*it).second = parser.process(in, (*it).first);
-        // add the new unit as recognized type
-        if ((*it).second != NULL)
-            symbols.addType(*(*it).second);
+        (*it).second.root = parser.process(in, (*it).first);
+
+        if ((*it).second.root != NULL)
+        {
+            // extract import names
+            SymbolTable *imports = new SymbolTable();
+            imports->extractImports( *(*it).second.root );
+            (*it).second.imports = imports;
+            // add the new unit as recognized type
+            symbols.addType( *(*it).second.root );
+       }
     }
 }
 
@@ -71,38 +79,49 @@ void Compiler::parse()
 Node *Compiler::getTree(
     const string &fileName )
 {
-    map<string, Node*>::iterator it = units.find(fileName);
+    map<string, CompilationUnit>::iterator it = units.find(fileName);
     if (it == units.end()) return NULL;
-    return (*it).second;
+    return (*it).second.root;
 }
 
 
 Node *Compiler::getTree(
     size_t index )
 {
-    if (index > units.size()) return NULL;
-    map<string, Node*>::iterator it = units.begin();
+    if (index >= units.size()) return NULL;
+    map<string, CompilationUnit>::iterator it = units.begin();
     while (index-- > 0) ++it;
-    return (*it).second;
+    return (*it).second.root;
 }
 
 
 void Compiler::resolveTypes()
 {
-    map<string, Node*>::iterator it = units.begin();
+    // iterate the compilation unit list resolving imports
+    map<string, CompilationUnit>::iterator it = units.begin();
     for (; it != units.end(); ++it)
     {
-        if ((*it).second == NULL) continue;
-        resolveTypes(*(*it).second);
+        if ((*it).second.root == NULL) continue;
+        (*it).second.imports->resolveImports(symbols);
+    }
+
+    // iterate the compilation unit list resolving type references
+    it = units.begin();
+    for (; it != units.end(); ++it)
+    {
+        if ((*it).second.root == NULL) continue;
+        resolveTypes(*(*it).second.root, *(*it).second.imports);
     }
 }
 
 
 void Compiler::resolveTypes(
-    Node &root )
+    Node &root,
+    SymbolTable &imports )
 {
     const string *resolved = NULL;
 
+    // iterate the children recursively resolving types
     for (int i = 0, n = root.getChildCount(); i < n; ++i)
     {
         Node &item = root[i];
@@ -110,14 +129,15 @@ void Compiler::resolveTypes(
         switch (item.type)
         {
             case TOK_TYPE_CLASS:
-                resolved = symbols.resolveType(item[0].text);
-                // TODO: possible memory leak!
-                if (resolved != NULL) item.text = resolved->c_str();
-                break;
-            case TOK_NAME:
+                if (item[0].type == TOK_NAME)
+                {
+                    resolved = imports.resolveType(item[0].text);
+                    // TODO: possible memory leak!
+                    if (resolved != NULL) item[0].text = resolved->c_str();
+                }
                 break;
             default:
-                resolveTypes(item);
+                if (item.getChildCount() > 0) resolveTypes(item, imports);
         }
     }
 }

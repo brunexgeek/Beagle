@@ -60,7 +60,7 @@ int main( int argc, char **argv )
         //return 0;
     }
 
-	compiler.parse();
+	compiler.compile();
 
     // print the AST
     for (int i = 0; true; ++i)

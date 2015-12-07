@@ -20,10 +20,16 @@ class SymbolTable
         const std::string *resolveType(
             const std::string &name ) const;
 
+        void resolveImports(
+            const SymbolTable &obj );
+
         void addType(
             const std::string &name );
 
         void addType(
+            const Node &unit );
+
+        void extractImports(
             const Node &unit );
 
 	private:

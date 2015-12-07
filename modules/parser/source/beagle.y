@@ -230,6 +230,7 @@ static void beagle_push(
 %token < node > TOK_VOLATILE
 %token < node > TOK_WHILE
 %token < node > TOK_NAME
+%token < node > TOK_QNAME
 %token < node > TOK_CONTINUE
 %token < node > TOK_TRANSIENT
 %token < node > TOK_TRY
@@ -519,6 +520,7 @@ QualifiedName:
         beagle::Node *name = TOP();
         name->text += '.';
         name->text += $3;
+        name->type = TOK_QNAME;
     }
     ;
 

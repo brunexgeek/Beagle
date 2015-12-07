@@ -146,16 +146,13 @@ void CodeGenerator::getNativeName(
 	Node &name )
 {
     std::string &value = name.text;
-	if (name.type != TOK_NAME) return;
+	if (name.type != TOK_NAME && name.type != TOK_QNAME) return;
 
 	for (size_t i = 0, n = value.length(); i < n; ++i)
         if (value.at(i) == '.')
             ss << '_';
         else
             ss << value.at(i);
-
-	for (int i = 0; i < name.getChildCount(); ++i)
-		if (name[i].type == TOK_NAME) getNativeName(ss, name[i]);
 }
 
 
@@ -177,7 +174,7 @@ std::string CodeGenerator::getMethodNativeName(
 {
 	std::stringstream ss;
 
-	if ( (package.type != TOK_NAME && package.type != TOK_NULL) ||
+	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
 	     method.type  != TOK_METHOD ||
 	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
 	     return "";
@@ -199,7 +196,7 @@ std::string CodeGenerator::getTypeName(
 {
 	std::stringstream ss;
 
-	if ( package.type != TOK_NAME ||
+	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
 	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
 	     return "";
 
@@ -217,7 +214,7 @@ std::string CodeGenerator::getNativeTypeName(
 {
 	std::stringstream ss;
 
-	if ( (package.type != TOK_NAME && package.type != TOK_NULL) ||
+	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
 	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
 	     return "";
 
@@ -342,7 +339,7 @@ void CodeGenerator::printClassStructures(
 	Node &package,
 	Node &type )
 {
-	if ( (package.type != TOK_NAME && package.type != TOK_NULL) ||
+	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
 	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
 	     return;
 

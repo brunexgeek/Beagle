@@ -52,7 +52,7 @@ class Node
             children.push_back(&value);
         }
 
-		int getChildCount()
+		int getChildCount() const
 		{
 			return (int) children.size();
 		}
