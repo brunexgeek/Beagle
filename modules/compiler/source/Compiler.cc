@@ -1,5 +1,6 @@
 #include <beagle-compiler/Compiler.hh>
 #include <beagle-compiler/Parser.hh>
+#include "CodeGenerator.hh"
 #include <fstream>
 #include "beagle.y.hh"
 #include <cstdlib>
@@ -45,10 +46,20 @@ bool Compiler::addCompilationUnit(
 }
 
 
-void Compiler::compile()
+string Compiler::compile()
 {
     parse();
     resolveTypes();
+
+    CodeGenerator codegen;
+    codegen.writeHeader();
+
+    map<string, CompilationUnit>::iterator it = units.begin();
+    for (; it != units.end(); ++it)
+        codegen.visitCompulationUnit( *(*it).second.root );
+    codegen.writeFooter(units);
+
+    return codegen.getStream().str();
 }
 
 

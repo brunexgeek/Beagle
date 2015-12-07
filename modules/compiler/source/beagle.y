@@ -490,10 +490,12 @@ ArrayType:
     PrimitiveType TOK_LB TOK_RB
     {
         COMBINE(TOK_TYPE_ARRAY, 1);
+        TOP()->counter = 1;
     }
     | Name TOK_LB TOK_RB
     {
         COMBINE(TOK_TYPE_ARRAY, 1);
+        TOP()->counter = 1;
     }
     | ArrayType TOK_LB TOK_RB
     {

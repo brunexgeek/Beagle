@@ -1,4 +1,5 @@
 #include "CodeGenerator.hh"
+#include <beagle-compiler/Compiler.hh>
 #include <iostream>
 #include <stdarg.h>
 #include "beagle.y.hh"
@@ -12,6 +13,9 @@ namespace beagle {
 namespace compiler {
 
 
+using namespace std;
+
+
 const std::string CodeGenerator::CLASS_ENTRY = "__class_entry";
 const std::string CodeGenerator::MODULE_METAINFO = "__module_metainfo";
 const std::string CodeGenerator::TYPE_METAINFO = "__type_metainfo";
@@ -19,10 +23,8 @@ const std::string CodeGenerator::FIELD_METAINFO = "__field_metainfo";
 const std::string CodeGenerator::METHOD_METAINFO = "__method_metainfo";
 
 
-CodeGenerator::CodeGenerator(
-    Node &root,
-    int context ) : TreeVisitor(root, context), guard(printer),
-        variable(printer), structure(printer), out(printer.getStream())
+CodeGenerator::CodeGenerator() :  guard(printer), variable(printer),
+    structure(printer), out(printer.getStream())
 {
     // nothing to do
 }
@@ -30,6 +32,18 @@ CodeGenerator::CodeGenerator(
 CodeGenerator::~CodeGenerator()
 {
     // nothing to do
+}
+
+
+void CodeGenerator::reset()
+{
+    printer.getStream().clear();
+}
+
+
+CodePrinter &CodeGenerator::getCodePrinter()
+{
+    return printer;
 }
 
 /*
@@ -300,6 +314,14 @@ bool CodeGenerator::hasModifier(
 std::string CodeGenerator::getNativeType(
     Node &type )
 {
+    if (type.type == TOK_TYPE_ARRAY)
+    {
+        string result = getNativeType(type[0]);
+        for (int i = 0; i < type.counter; ++i)
+            result += '*';
+        return result;
+    }
+    else
     if (type.type == TOK_TYPE_CLASS)
         return "field_dynamic__" + getNativeName(type[0]) + "*";
     else
@@ -443,8 +465,6 @@ void CodeGenerator::printClassStructures(
     variable.addPrimitive(methodCount);
     variable.addPlain(methodList);
 	variable.close();
-
-
 }
 
 
@@ -469,20 +489,29 @@ void CodeGenerator::printHeader(
 }
 */
 
-void CodeGenerator::writeFooter()
+void CodeGenerator::writeFooter(
+    map<string, CompilationUnit> &units )
 {
-    Node &root = getRoot();
-
     printer.section("Module meta-information");
 
     printer.comment("Module class list");
 
     // create the variable containing the list of classes in the library
     variable.open(CONST | ARRAY, true, CLASS_ENTRY, "class_list");
-    variable.openBlock();
-    variable.addString( getNativeName(root[0]) + "." + root[2][2].text);
-    variable.addNull();
-    variable.closeBlock();
+    map<string, CompilationUnit>::iterator it = units.begin();
+    for (; it != units.end(); ++it)
+    {
+        if ((*it).second.root == NULL) continue;
+
+        Node &root = *(*it).second.root;
+        Node &package = root[0];
+        Node &type = root[2];
+
+        variable.openBlock();
+        variable.addString( getNativeName(root[0]) + "." + root[2][2].text );
+        variable.addAddress( getNativeTypeName("type", package, type ) );
+        variable.closeBlock();
+    }
     variable.close();
 
     printer.comment("Module meta-information public variable");
@@ -491,7 +520,7 @@ void CodeGenerator::writeFooter()
     variable.open(CONST | PUBLIC, true, MODULE_METAINFO, "module_metainfo");
     variable.addPlain("0xFEE1600D"); // feel good! :)
     variable.addPrimitive(0);
-    variable.addPrimitive(1);
+    variable.addPrimitive(units.size());
     variable.addPlain("class_list");
     variable.close();
 }
@@ -500,12 +529,12 @@ void CodeGenerator::writeFooter()
 void CodeGenerator::visitCompulationUnit(
 	Node &root )
 {
-    //printHeader(root);
+    this->root = &root;
 
     // visit the available type declaration
     visitTypeDeclaration(root[2]);
 
-    //printFooter(root);
+    this->root = NULL;
 }
 
 
@@ -519,7 +548,8 @@ void CodeGenerator::visitPackageDeclaration(
 void CodeGenerator::visitTypeDeclaration(
 	Node &type )
 {
-    Node &package = getRoot()[0];
+    Node &package = (*getRoot())[0];
+
 	printClassStructures(package, type);
 
     if (type.type != TOK_CLASS || type[5].type != TOK_BODY)
@@ -540,7 +570,7 @@ void CodeGenerator::visitMethod(
     Node &parent,
     Node &method )
 {
-    Node &package = getRoot()[0];
+    Node &package = (*getRoot())[0];
     bool isAbstract = hasModifier(method[1], TOK_ABSTRACT);
 
     if (isAbstract) out << "// ABSTRACT: ";
@@ -605,6 +635,14 @@ void CodeGenerator::visitAnnotationDeclaration(
 std::string CodeGenerator::getPrototypeType(
     Node &type )
 {
+    if (type.type == TOK_TYPE_ARRAY)
+    {
+        string result = getPrototypeType(type[0]);
+        for (int i = 0; i < type.counter; ++i)
+            result += '[';
+        return result;
+    }
+    else
     if (type.type == TOK_TYPE_CLASS)
         return "T" + type[0].text + ";";
     else

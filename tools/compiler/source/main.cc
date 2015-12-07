@@ -59,7 +59,7 @@ int main( int argc, char **argv )
         //return 0;
     }
 
-	compiler.compile();
+	string code = compiler.compile();
 
     // print the trees
     for (int i = 0; true; ++i)
@@ -69,17 +69,9 @@ int main( int argc, char **argv )
         root->print(std::cout, Compiler::getTokenName);
     }
 
-    return 1;
-/*
-    // generate the C source code and write it into the output file
-    beagle::CodeGenerator codegen(*root, 5);
-    codegen.writeHeader();
-    codegen.visit();
-    codegen.writeFooter();
-
-    std::ofstream out("output.c");
-    out << codegen.getStream().str();
+    std::ofstream out(outputFileName.c_str());
+    out << code;
     out.close();
 
-    return 0; */
+    return 0;
 }

@@ -8,26 +8,38 @@
 #include "StructPrinter.hh"
 #include "GuardPrinter.hh"
 #include "VariablePrinter.hh"
-
+#include <map>
 
 namespace beagle {
 namespace compiler {
 
 
-class CodeGenerator : public TreeVisitor<int>
+class CompilationUnit;
+
+
+class CodeGenerator : public TreeVisitor
 {
 	public:
-		CodeGenerator(
-			Node &root,
-            int context );
+        static const std::string CLASS_ENTRY;
+        static const std::string MODULE_METAINFO;
+        static const std::string TYPE_METAINFO;
+        static const std::string FIELD_METAINFO;
+        static const std::string METHOD_METAINFO;
+
+		CodeGenerator();
 
 		virtual ~CodeGenerator();
 
         std::stringstream &getStream();
 
+        CodePrinter &getCodePrinter();
+
+        void reset();
+
         void writeHeader();
 
-        void writeFooter();
+        void writeFooter(
+            std::map<std::string, CompilationUnit> &units );
 
 		void visitCompulationUnit(
 			Node &node );
@@ -62,12 +74,6 @@ class CodeGenerator : public TreeVisitor<int>
             Node &body );
 
     private:
-        static const std::string CLASS_ENTRY;
-        static const std::string MODULE_METAINFO;
-        static const std::string TYPE_METAINFO;
-        static const std::string FIELD_METAINFO;
-        static const std::string METHOD_METAINFO;
-
         CodePrinter printer;
         GuardPrinter guard;
         VariablePrinter variable;

@@ -42,7 +42,7 @@ class Compiler
         bool addCompilationUnit(
             const string &fileName );
 
-        void compile();
+        std::string compile();
 
         Node *getTree(
             const string &fileName );

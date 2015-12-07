@@ -1,49 +1,71 @@
+#include <beagle-loader/ModuleLoader.hh>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <dlfcn.h>
+#include <linux/limits.h>
+
+namespace beagle {
+namespace loader {
 
 
-struct __types_metainfo {
-   const char* name;
-   const char* symbol;
-};
+using namespace std;
 
 
-struct __module_metainfo {
-   const uint32_t classCount;
-   const struct __types_metainfo* classTable;
-};
+#include "../../compiler/source/header-template.c"
 
 
-struct __field_metainfo {
-   const char* type;
-   const char* name;
-};
-
-struct __method_metainfo {
-    const char* prototype;
-    const char* name;
-};
-
-struct __type_metainfo {
-   uint32_t signature;
-   uint32_t hash;
-   const char* canonicalName;
-   const char* qualifiedName;
-   const char* packageName;
-   // fields meta-information
-   uint32_t fieldCount;
-   const struct __field_metainfo* fields;
-   // methods meta-information
-   uint32_t methodCount;
-   const struct __method_metainfo* methods;
-   // amount of memory necessary for static fields
-   size_t staticSize;
-   // amount of memory necessary for dynamic fields (objects)
-   size_t dynamicSize;
-};
+ModuleLoader::ModuleLoader()
+{
+    // nothing to do
+}
 
 
+ModuleLoader::~ModuleLoader()
+{
+    // nothing to do
+}
+
+
+ModuleEntry *ModuleLoader::load(
+    const std::string &fileName )
+{
+    void *library;
+    ModuleEntry *entry = NULL;
+    const struct __module_metainfo *module;
+    char path[PATH_MAX];
+
+    // get the absolute path to the module file
+    if (realpath(fileName.c_str(), path) == NULL)
+        return NULL;
+
+    library = dlopen(path, RTLD_LAZY);
+    if (library == NULL) return NULL;
+
+    module = (const struct __module_metainfo *) dlsym(library, "module_metainfo");
+    if (module == NULL) goto ESCAPE;
+
+    for (uint32_t i = 0; i < module->typeCount; ++i)
+    {
+        std::cout << module->types[i].info->qualifiedName << std::endl;
+    }
+
+    // create the new entry
+    entry = new ModuleEntry();
+    entry->library = library;
+    entry->module = (void*) module;
+    entry->fileName = path;
+    modules.insert( pair<string, ModuleEntry*>(entry->fileName, entry) );
+
+    return entry;
+ESCAPE:
+    if (library != NULL) dlclose(library);
+    if (entry != NULL) delete entry;
+
+    return NULL;
+}
+
+/*
 void showType( void *lib, const char *symbol )
 {
     const struct __field_metainfo* fields = NULL;
@@ -104,3 +126,7 @@ int main( int argc, char **argv )
     else
         fprintf(stderr, "%s\n", dlerror());
 }
+*/
+
+} // namespace compiler
+} // namespace beagle
