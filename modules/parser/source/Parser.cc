@@ -11,44 +11,42 @@
 void beagle_set_column (int  column_no , yyscan_t yyscanner);
 
 /**
- * @brief Returns the token name from it's constant.
+ * @brief Returns the token name given it constant.
  *
  * This function is defined in the Bison generated parser.
  */
 const char *beagle_getTokenName( int tok );
 
+
 namespace beagle {
 
 
-beagle::Parser::Parser(
-	std::istream *in,
-	std::ostream *out,
-	const char *fileName )
+Parser::Parser()
 {
-	this->in = in;
-	this->out = out;
-	buffer = NULL;
-	this->fileName = fileName;
-
-	// initialize the lexer
-	beagle_lex_init(&scanner);
-	readFile();
-	beagle_set_lineno(1, scanner);
-	beagle_set_column(1, scanner);
-	beagle_debug = 0;
+    // nothing to do
 }
 
 Parser::~Parser()
 {
-	if (buffer != NULL)
-		beagle__delete_buffer((YY_BUFFER_STATE)buffer, scanner);
-	beagle_lex_destroy(scanner);
+	// nothing to do
 }
 
-
-void Parser::tokens()
+/*
+void Parser::tokens(
+    std::istream &in,
+    const std::string &fileName )
 {
 	YYSTYPE temp;
+    void *scanner;
+    void *scanString;
+
+    // initialize the lexer
+	beagle_lex_init(&scanner);
+	scanString = getScanString(scanner, in);
+	beagle_set_lineno(1, scanner);
+	beagle_set_column(1, scanner);
+	beagle_debug = 0;
+
 	temp.node = 0;
 	int tok;
 	while ((tok = beagle_lex(&temp, scanner)) != 0)
@@ -58,41 +56,56 @@ void Parser::tokens()
 			std::cout << " ";
 		temp.node = 0;
 	}
-}
 
-Node *Parser::parse()
+    if (scanString != NULL)
+		beagle__delete_buffer((YY_BUFFER_STATE)scanString, scanner);
+	beagle_lex_destroy(scanner);
+}*/
+
+Node *Parser::process(
+    std::istream &in,
+    const std::string &fileName )
 {
 	Node *root = NULL;
-    SymbolTable table;
+    void *scanString;
+    void *scanner;
+
+	// initialize the lexer
+	beagle_lex_init(&scanner);
+	scanString = getScanString(scanner, in);
+	beagle_set_lineno(1, scanner);
+	beagle_set_column(1, scanner);
+	beagle_debug = 0;
 
 	parser_context_t context;
 	context.scanner = scanner;
-	context.fileName = fileName;
+	context.fileName = strdup(fileName.c_str());
 	context.rule = NULL;
 	context.parser = this;
 
 	if (beagle_parse(&context) == 0)
+    {
 		root = context.stack[ context.stack.size() - 1 ];
-	else
-		return NULL;
 
-    // TODO: load types from import modules
-    table.addType("beagle.Integer");
+        // expand field declarations
+        expandFields(*root);
+    }
 
-	// expand field declarations
-	expandFields(*root);
-    // replace names by fully qualified names
-    expandNames(*root, table);
+    if (scanString != NULL)
+		beagle__delete_buffer((YY_BUFFER_STATE)scanString, scanner);
+	beagle_lex_destroy(scanner);
 
 	return root;
 }
 
-void Parser::readFile( )
+void *Parser::getScanString(
+    void *scanner,
+    std::istream &in )
 {
 	std::stringstream ss;
 	std::string line;
 
-	while (std::getline(*in, line))
+	while (std::getline(in, line))
 	{
 		// Notice: '\2' is a "begin of line" marker required by
 		//         lexer to match some patterns
@@ -101,38 +114,13 @@ void Parser::readFile( )
 		ss << std::endl;
 	}
 
-	buffer = beagle__scan_string(ss.str().c_str(), scanner);
+	return beagle__scan_string(ss.str().c_str(), scanner);
 }
 
 
 const char *Parser::name( int tok )
 {
 	return beagle_getTokenName(tok);
-}
-
-
-void Parser::expandNames(
-    Node &root,
-    SymbolTable &symbols )
-{
-    return;
-    for (int i = 0, n = root.getChildCount(); i < n; ++i)
-    {
-        Node &item = root[i];
-
-        switch (item.type)
-        {
-            case TOK_TYPE_CLASS:
-                // TODO: check qualified names
-                if (item[0].getChildCount() == 0)
-                    std::cout << item[0].text << " from " << symbols.resolveType(item[0].text) << std::endl;
-                break;
-            case TOK_NAME:
-                break;
-            default:
-                expandNames(item, symbols);
-        }
-    }
 }
 
 

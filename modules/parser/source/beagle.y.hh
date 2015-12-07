@@ -49,6 +49,7 @@ extern int beagle_debug;
 #include <sstream>
 #include <vector>
 #include <beagle-parser/Node.hh>
+#include <beagle-parser/Parser.hh>
 
 
 /*
@@ -82,7 +83,7 @@ typedef struct
 int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 86 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 87 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -244,11 +245,11 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 175 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
+#line 176 "/media/dados/projetos/beagle/modules/parser/source/beagle.y" /* yacc.c:1909  */
 
     char* node;
 
-#line 252 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
+#line 253 "/media/dados/projetos/beagle/modules/parser/source/beagle.y.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

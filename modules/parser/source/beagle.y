@@ -20,6 +20,7 @@
 #include <sstream>
 #include <vector>
 #include <beagle-parser/Node.hh>
+#include <beagle-parser/Parser.hh>
 
 
 /*

@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <string>
-#include <beagle-parser/Parser.hh>
 #include <iostream>
 
 
@@ -59,6 +58,11 @@ class Node
 		}
 
 		Node &operator[]( int index )
+		{
+			return *children[index];
+		}
+
+        const Node &operator[]( int index ) const
 		{
 			return *children[index];
 		}

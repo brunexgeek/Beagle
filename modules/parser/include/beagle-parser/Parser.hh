@@ -3,48 +3,33 @@
 
 
 #include <iostream>
-#include <beagle-parser/SymbolTable.hh>
+#include <beagle-parser/Node.hh>
 
 
 namespace beagle
 {
 
-
-    class Node;
-
-
 	class Parser
 	{
 		public:
-			Parser(
-				std::istream* in = NULL,
-				std::ostream* out = NULL,
-                const char *fileName = NULL );
+			Parser();
 
 			virtual ~Parser();
 
 			static const char *name( int tok );
 
-			Node *parse();
-
-            void tokens();
+			Node *process(
+                std::istream &in,
+                const std::string &fileName  );
 
 		private:
-			std::istream *in;
-			std::ostream *out;
-			void* scanner;
-			void* buffer;
-            const char *fileName;
-
-			void readFile( );
+			void *getScanString(
+                void *scanner,
+                std::istream &in );
 
             void expandFields( Node &root );
 
             void expandVariable( Node &varDecl );
-
-            void expandNames(
-                Node &root,
-                SymbolTable &symbols );
 	};
 
 }; // namespace beagle
