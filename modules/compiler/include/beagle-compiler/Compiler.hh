@@ -64,6 +64,10 @@ class Compiler
             SymbolTable &imports );
 
         void parse();
+
+        void expandTypeName(
+            Node &package,
+            Node &type );
 };
 
 

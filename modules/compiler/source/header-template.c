@@ -13,6 +13,14 @@
 #ifndef GUARD_BEAGLE_STRUCTURES
 #define GUARD_BEAGLE_STRUCTURES
 
+
+struct __object_ref
+{
+    void *instance;
+    uint32_t size;
+};
+
+
 struct __field_metainfo
 {
     const uint32_t modifiers;

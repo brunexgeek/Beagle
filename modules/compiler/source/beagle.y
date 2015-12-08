@@ -492,7 +492,7 @@ ArrayType:
         COMBINE(TOK_TYPE_ARRAY, 1);
         TOP()->counter = 1;
     }
-    | Name TOK_LB TOK_RB
+    | ClassOrInterfaceType TOK_LB TOK_RB
     {
         COMBINE(TOK_TYPE_ARRAY, 1);
         TOP()->counter = 1;

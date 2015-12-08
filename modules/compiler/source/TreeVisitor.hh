@@ -3,16 +3,18 @@
 
 
 #include <beagle-compiler/Node.hh>
-
+#include <cassert>
 
 namespace beagle {
 namespace compiler {
 
 
+template <typename T>
 class TreeVisitor
 {
 	public:
-		TreeVisitor()
+		TreeVisitor(
+            T &context )
 		{
 			// nothing to do
 		}
@@ -22,10 +24,23 @@ class TreeVisitor
 			// nothing to do
 		}
 
-        Node *getRoot()
+        T &getContext()
         {
-            return root;
+            return context;
         }
+
+        void visit(
+            Node &root )
+        {
+            assert(&root != 0);
+            this->root = &root;
+            visitCompulationUnit(root);
+            this->root = NULL;
+        }
+
+    protected:
+        Node *root;
+        T context;
 
 		virtual void visitCompulationUnit(
 			Node &node ) = 0;
@@ -56,8 +71,8 @@ class TreeVisitor
 			Node &parent,
 			Node &node ) = 0;
 
-    protected:
-        Node *root;
+        virtual void visitLocalVariableDeclaration(
+            Node &variable ) = 0;
 };
 
 

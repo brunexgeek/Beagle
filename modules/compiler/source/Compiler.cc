@@ -51,15 +51,26 @@ string Compiler::compile()
     parse();
     resolveTypes();
 
-    CodeGenerator codegen;
+    NameGenerator namegen;
+    CodeGenerator codegen(namegen);
     codegen.writeHeader();
 
     map<string, CompilationUnit>::iterator it = units.begin();
     for (; it != units.end(); ++it)
-        codegen.visitCompulationUnit( *(*it).second.root );
+        codegen.visit( *(*it).second.root );
     codegen.writeFooter(units);
 
     return codegen.getStream().str();
+}
+
+
+void Compiler::expandTypeName(
+    Node &package,
+    Node &type )
+{
+    string name = package.text + '.' + type[2].text;
+    // TODO: memory leak?
+    type[2].text = name;
 }
 
 
@@ -76,6 +87,9 @@ void Compiler::parse()
 
         if ((*it).second.root != NULL)
         {
+            // expand the type name to a fully qualified form
+            expandTypeName( (*(*it).second.root)[0],
+                (*(*it).second.root)[2] );
             // extract import names
             SymbolTable *imports = new SymbolTable();
             imports->extractImports( *(*it).second.root );

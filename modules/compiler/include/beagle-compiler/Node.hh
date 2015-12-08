@@ -74,6 +74,9 @@ class Node
             int level = 0,
             bool recursive = true );
 
+        bool hasChild(
+            int modifier );
+
 		operator std::string()
 		{
 			return text;

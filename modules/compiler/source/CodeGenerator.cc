@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdarg.h>
 #include "beagle.y.hh"
+#include <cassert>
 
 
 extern unsigned int HEADER_TEMPLATE_LENGTH;
@@ -16,14 +17,15 @@ namespace compiler {
 using namespace std;
 
 
-const std::string CodeGenerator::CLASS_ENTRY = "__class_entry";
-const std::string CodeGenerator::MODULE_METAINFO = "__module_metainfo";
-const std::string CodeGenerator::TYPE_METAINFO = "__type_metainfo";
-const std::string CodeGenerator::FIELD_METAINFO = "__field_metainfo";
-const std::string CodeGenerator::METHOD_METAINFO = "__method_metainfo";
+const string CodeGenerator::CLASS_ENTRY = "__class_entry";
+const string CodeGenerator::MODULE_METAINFO = "__module_metainfo";
+const string CodeGenerator::TYPE_METAINFO = "__type_metainfo";
+const string CodeGenerator::FIELD_METAINFO = "__field_metainfo";
+const string CodeGenerator::METHOD_METAINFO = "__method_metainfo";
 
 
-CodeGenerator::CodeGenerator() :  guard(printer), variable(printer),
+CodeGenerator::CodeGenerator(
+    NameGenerator &context) : TreeVisitor(context), guard(printer), variable(printer),
     structure(printer), out(printer.getStream())
 {
     // nothing to do
@@ -49,7 +51,7 @@ CodePrinter &CodeGenerator::getCodePrinter()
 /*
 void CodeGenerator::printInternalStructures()
 {
-    const std::string GUARD_NAME = "BEAGLE_STRUCTURES";
+    const string GUARD_NAME = "BEAGLE_STRUCTURES";
 
     printer.section("Beagle internal structures");
 
@@ -114,134 +116,6 @@ void CodeGenerator::printInternalStructures()
 }
 */
 
-/**
- * Append the name to a std::stringstream instance. If the name is full qualified,
- * each dot character will be replaced by an underline.
- */
-void CodeGenerator::appendName(
-	std::stringstream &ss,
-	const std::string &name )
-{
-	char current = '_';
-
-	for (size_t i = 0; i < name.length(); ++i)
-	{
-		current = name[i];
-		if (current == '.') current = '_';
-		ss << current;
-	}
-}
-
-/*
-std::string CodeGenerator::createName(
-	int count,
-	const std::string &... )
-{
-	va_list args;
-
-	if (count <= 0) return "";
-
-	std::stringstream ss;
-
-	va_start(args, count);
-	for (int i = 0; i < count; ++i)
-	{
-		std::string *current = va_arg(args, std::string*);
-		appendName(ss, *current);
-		if (i < count - 1) ss << '_';
-	}
-	va_end(args);
-
-	return ss.str();
-}*/
-
-
-void CodeGenerator::getNativeName(
-	std::stringstream &ss,
-	Node &name )
-{
-    std::string &value = name.text;
-	if (name.type != TOK_NAME && name.type != TOK_QNAME) return;
-
-	for (size_t i = 0, n = value.length(); i < n; ++i)
-        if (value.at(i) == '.')
-            ss << '_';
-        else
-            ss << value.at(i);
-}
-
-
-std::string CodeGenerator::getNativeName(
-	Node &name )
-{
-	std::stringstream ss;
-
-	getNativeName(ss, name);
-
-	return ss.str();
-}
-
-
-std::string CodeGenerator::getMethodNativeName(
-	Node &package,
-	Node &type,
-	Node &method )
-{
-	std::stringstream ss;
-
-	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
-	     method.type  != TOK_METHOD ||
-	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
-	     return "";
-
-    if (hasModifier(method[0], TOK_STATIC))
-        ss << "static__";
-    else
-        ss << "dynamic__";
-    ss << getNativeName(package) << '_';
-	ss << getNativeName(type[2]) << '_' << getNativeName(method[3]);
-
-	return ss.str();
-}
-
-
-std::string CodeGenerator::getTypeName(
-	Node &package,
-	Node &type )
-{
-	std::stringstream ss;
-
-	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
-	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
-	     return "";
-
-	ss << package.text << '.' << type[2].text;
-
-	return ss.str();
-}
-
-
-std::string CodeGenerator::getNativeTypeName(
-	const std::string &prefix,
-	Node &package,
-	Node &type,
-    char separator )
-{
-	std::stringstream ss;
-
-	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
-	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
-	     return "";
-
-	ss << prefix <<
-        separator <<
-        separator <<
-        getNativeName(package) <<
-        separator <<
-        getNativeName(type[2]);
-
-	return ss.str();
-}
 
 
 uint32_t CodeGenerator::getNativeModifiers(
@@ -298,66 +172,6 @@ uint32_t CodeGenerator::getNativeModifiers(
 }
 
 
-bool CodeGenerator::hasModifier(
-    Node &node,
-    int modifier )
-{
-    if (node.type != TOK_MODIFIERS) return false;
-
-    for (int i = 0, n = node.getChildCount(); i < n; ++i)
-        if (node[i].type == modifier) return true;
-
-    return false;
-}
-
-
-std::string CodeGenerator::getNativeType(
-    Node &type )
-{
-    if (type.type == TOK_TYPE_ARRAY)
-    {
-        string result = getNativeType(type[0]);
-        for (int i = 0; i < type.counter; ++i)
-            result += '*';
-        return result;
-    }
-    else
-    if (type.type == TOK_TYPE_CLASS)
-        return "field_dynamic__" + getNativeName(type[0]) + "*";
-    else
-    {
-        switch (type.type)
-        {
-            case TOK_BOOLEAN:
-            case TOK_UINT8:
-                return "uint8_t";
-            case TOK_UINT16:
-            case TOK_CHAR:
-                return "uint16_t";
-            case TOK_UINT32:
-                return "uint32_t";
-            case TOK_UINT64:
-                return "uint64_t";
-            case TOK_INT8:
-                return "int8_t";
-            case TOK_INT16:
-                return "int16_t";
-            case TOK_INT32:
-            default:
-                return "int32_t";
-            case TOK_INT64:
-                return "int64_t";
-            case TOK_FLOAT:
-                return "float";
-            case TOK_DOUBLE:
-                return "double";
-            case TOK_VOID:
-                return "void";
-        }
-    }
-}
-
-
 void CodeGenerator::printClassStructures(
 	Node &package,
 	Node &type )
@@ -366,13 +180,13 @@ void CodeGenerator::printClassStructures(
 	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
 	     return;
 
-    std::string qualifiedName = getTypeName(package, type);
+    string qualifiedName = type[2];
 
-    std::string dynamicFields = getNativeTypeName("fields_dynamic", package, type );
-    std::string staticFields = getNativeTypeName("fields_static", package, type );
+    string dynamicFields = context.getNativeTypeName(type, false);
+    string staticFields = context.getNativeTypeName(type, true);
 
-    std::string fieldList = getNativeTypeName("field_list", package, type );
-    std::string methodList = getNativeTypeName("method_list", package, type );
+    string fieldList = "field_list" + context.getNativeName(type[2]);
+    string methodList = "method_list" + context.getNativeName(type[2]);
     int fieldCount = 0;
     int methodCount = 0;
 
@@ -384,10 +198,10 @@ void CodeGenerator::printClassStructures(
     for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
     {
         Node &member = type[5][i];
-        if (member.type == TOK_FIELD && !hasModifier(member[1], TOK_STATIC))
+        if (member.type == TOK_FIELD && !member[1].hasChild(TOK_STATIC))
         {
-            const std::string memberType = getNativeType(member[2]);
-            const std::string &memberName = member[3].text;
+            const string memberType = context.getNativeType(member[2]);
+            const string &memberName = member[3].text;
 
             structure.addPrimitive(0, memberType, memberName);
         }
@@ -400,10 +214,10 @@ void CodeGenerator::printClassStructures(
     for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
     {
         Node &member = type[5][i];
-        if (member.type == TOK_FIELD && hasModifier(member[1], TOK_STATIC))
+        if (member.type == TOK_FIELD && member[1].hasChild(TOK_STATIC))
         {
-            const std::string memberType = getNativeType(member[2]);
-            const std::string &memberName = member[3].text;
+            const string memberType = context.getNativeType(member[2]);
+            const string &memberName = member[3].text;
 
             structure.addPrimitive(0, memberType, memberName);
         }
@@ -418,8 +232,8 @@ void CodeGenerator::printClassStructures(
         Node &member = type[5][i];
         if (member.type == TOK_FIELD)
         {
-            const std::string memberType = getPrototypeType(member[2]);
-            const std::string &memberName = member[3].text;
+            const string memberType = getPrototypeType(member[2]);
+            const string &memberName = member[3].text;
 
             variable.openBlock();
             variable.addPrimitive( getNativeModifiers(member[1]) );
@@ -439,8 +253,8 @@ void CodeGenerator::printClassStructures(
         Node &member = type[5][i];
         if (member.type == TOK_METHOD)
         {
-            const std::string memberType = getNativeType(member[2]);
-            const std::string &memberName = member[3].text;
+            const string memberType = context.getNativeType(member[2]);
+            const string &memberName = member[3].text;
 
             variable.openBlock();
             variable.addPrimitive( getNativeModifiers(member[1]) );
@@ -454,7 +268,7 @@ void CodeGenerator::printClassStructures(
 
     // create the variable with type meta-information
     printer.comment("type meta-information of " + qualifiedName);
-	variable.open(CONST, true, TYPE_METAINFO, getNativeTypeName("type", package, type ) );
+	variable.open(CONST, true, TYPE_METAINFO, "type__" + context.getNativeName(type[2]) );
     variable.addPlain("0xCAFEBABE");
     variable.addPrimitive(0);
     variable.addString(type[2].text);
@@ -468,7 +282,7 @@ void CodeGenerator::printClassStructures(
 }
 
 
-std::stringstream &CodeGenerator::getStream()
+stringstream &CodeGenerator::getStream()
 {
     return printer.getStream();
 }
@@ -477,8 +291,8 @@ std::stringstream &CodeGenerator::getStream()
 void CodeGenerator::printHeader(
     Node &root )
 {
-    out << "#include <stdint.h>" << std::endl;
-	out << "#include <stdio.h>" << std::endl << std::endl;
+    out << "#include <stdint.h>" << endl;
+	out << "#include <stdio.h>" << endl << endl;
 
     printer.comment("This file is auto-generated! Do not edit!\n"
         "This program is distributed in the hope that it will be useful,"
@@ -504,12 +318,11 @@ void CodeGenerator::writeFooter(
         if ((*it).second.root == NULL) continue;
 
         Node &root = *(*it).second.root;
-        Node &package = root[0];
         Node &type = root[2];
 
         variable.openBlock();
-        variable.addString( getNativeName(root[0]) + "." + root[2][2].text );
-        variable.addAddress( getNativeTypeName("type", package, type ) );
+        variable.addString( root[2][2].text );
+        variable.addAddress( "type__" + context.getNativeName(type[2]) );
         variable.closeBlock();
     }
     variable.close();
@@ -548,7 +361,9 @@ void CodeGenerator::visitPackageDeclaration(
 void CodeGenerator::visitTypeDeclaration(
 	Node &type )
 {
-    Node &package = (*getRoot())[0];
+    assert(root != NULL);
+
+    Node &package = (*root)[0];
 
 	printClassStructures(package, type);
 
@@ -567,27 +382,35 @@ void CodeGenerator::visitTypeDeclaration(
 
 
 void CodeGenerator::visitMethod(
-    Node &parent,
+    Node &type,
     Node &method )
 {
-    Node &package = (*getRoot())[0];
-    bool isAbstract = hasModifier(method[1], TOK_ABSTRACT);
+    bool isAbstract = method[1].hasChild(TOK_ABSTRACT);
 
     if (isAbstract) out << "// ABSTRACT: ";
 
+    const string &returnType = context.getNativeType(method[2]);
+    const string &methodName = context.getMethodNativeName(type, method);
+
     // write method header
-    out << getNativeType(method[2]) <<
-        ' ' <<
-        getMethodNativeName(package, parent, method) <<
-        '(';
+    out << returnType << ' ' << methodName << "(\n";
+    printer.incIndent();
+    if (!method[1].hasChild(TOK_STATIC))
+    {
+        printer.indent();
+        out << "struct " << NameGenerator::OBJECT_REFERENCE << " *__this_ptr";
+        if (method[4].getChildCount() != 0)
+            out << ", \n";
+    }
     visitParameterList(method, method[4]);
     out << ")\n";
+    printer.decIndent();
 
     // write method body, if any
     if (isAbstract) return;
     out << "{\n";
     visitMethodBody(method, method[6]);
-    out << "}\n";
+    out << "}\n\n";
 }
 
 
@@ -595,11 +418,33 @@ void CodeGenerator::visitMethodBody(
     Node &method,
     Node &body )
 {
+    assert(root != NULL);
+
+    printer.incIndent();
+    // generate the variable to hold the pointer for the 'this' object
+    if (!method[1].hasChild(TOK_STATIC))
+    {
+        Node &type = (*root)[2];
+        string typeName = context.getNativeTypeName(type, false);
+        printer.indent();
+        out << "struct " << typeName << " *__this = (struct " << typeName << "*) __this_ptr->instance;\n";
+    }
+
+    // generate each method statement
     for (int i = 0, n = body.getChildCount(); i < n; ++i)
     {
         Node &stmt = body[i];
-        out << "// " << Parser::name(stmt.type) << "\n";
+        printer.indent();
+        switch (stmt.type)
+        {
+            case TOK_VARIABLE:
+                visitLocalVariableDeclaration(stmt);
+            default:
+                out << "// " << Parser::name(stmt.type) << "\n";
+        }
     }
+
+    printer.decIndent();
 }
 
 
@@ -609,8 +454,9 @@ void CodeGenerator::visitParameterList(
 {
     for (int i = 0, n = params.getChildCount(); i < n; ++i)
     {
+        printer.indent();
         visitParameter(params, params[i]);
-        if (i + 1 < n) out << ", ";
+        if (i + 1 < n) out << ",\n";
     }
 }
 
@@ -618,9 +464,9 @@ void CodeGenerator::visitParameter(
     Node &parent,
     Node &parameter )
 {
-    out << getNativeType(parameter[0]) <<
+    out << context.getNativeType(parameter[0]) <<
         ' ' <<
-        getNativeName(parameter[1]);
+        context.getNativeName(parameter[1]);
 }
 
 
@@ -632,7 +478,7 @@ void CodeGenerator::visitAnnotationDeclaration(
 }
 
 
-std::string CodeGenerator::getPrototypeType(
+string CodeGenerator::getPrototypeType(
     Node &type )
 {
     if (type.type == TOK_TYPE_ARRAY)
@@ -679,12 +525,12 @@ std::string CodeGenerator::getPrototypeType(
 }
 
 
-std::string CodeGenerator::getPrototype(
+string CodeGenerator::getPrototype(
     Node &method )
 {
     if (method.type != TOK_METHOD) return "";
 
-    std::stringstream ss;
+    stringstream ss;
 
     ss << getPrototypeType(method[2]) << '(';
     for (int i = 0, n = method[4].getChildCount(); i < n; ++i)
@@ -705,6 +551,20 @@ void CodeGenerator::writeHeader()
 {
     for (size_t i = 0; i < HEADER_TEMPLATE_LENGTH; ++i)
         out << (char) HEADER_TEMPLATE[i];
+}
+
+
+void CodeGenerator::visitLocalVariableDeclaration(
+    Node &variable )
+{
+    assert(variable.type == TOK_VARIABLE);
+
+    string nativeType = context.getNativeType(variable[0]);
+
+    for (int i = 0, n = variable[1].getChildCount(); i < n; ++i)
+    {
+        out << nativeType << ' ' << variable[1][i][0].text << ";\n";
+    }
 }
 
 

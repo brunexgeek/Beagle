@@ -8,6 +8,7 @@
 #include "StructPrinter.hh"
 #include "GuardPrinter.hh"
 #include "VariablePrinter.hh"
+#include "NameGenerator.hh"
 #include <map>
 
 namespace beagle {
@@ -17,7 +18,7 @@ namespace compiler {
 class CompilationUnit;
 
 
-class CodeGenerator : public TreeVisitor
+class CodeGenerator : public TreeVisitor<NameGenerator>
 {
 	public:
         static const std::string CLASS_ENTRY;
@@ -26,7 +27,8 @@ class CodeGenerator : public TreeVisitor
         static const std::string FIELD_METAINFO;
         static const std::string METHOD_METAINFO;
 
-		CodeGenerator();
+		CodeGenerator(
+            NameGenerator &context );
 
 		virtual ~CodeGenerator();
 
@@ -40,6 +42,8 @@ class CodeGenerator : public TreeVisitor
 
         void writeFooter(
             std::map<std::string, CompilationUnit> &units );
+
+    protected:
 
 		void visitCompulationUnit(
 			Node &node );
@@ -73,6 +77,9 @@ class CodeGenerator : public TreeVisitor
             Node &method,
             Node &body );
 
+        void visitLocalVariableDeclaration(
+            Node &variable );
+
     private:
         CodePrinter printer;
         GuardPrinter guard;
@@ -80,45 +87,15 @@ class CodeGenerator : public TreeVisitor
         StructPrinter structure;
         std::ostream &out;
 
+        //std::string dynamicFields;
+        //std::string staticFields;
+
         void printClassStructures(
 			Node &node );
-
-		void appendName(
-			std::stringstream &ss,
-			const std::string &name );
-
-		void getNativeName(
-			std::stringstream &ss,
-			Node &ident );
-
-		std::string getNativeName(
-			Node &ident );
-
-		std::string getMethodNativeName(
-			Node &package,
-			Node &type,
-			Node &method );
-
-        std::string getTypeName(
-            Node &package,
-            Node &type );
-
-		std::string getNativeTypeName(
-			const std::string &prefix,
-			Node &package,
-			Node &type,
-            char separator = '_');
 
 		void printClassStructures(
 			Node &package,
 			Node &type );
-
-        bool hasModifier(
-            Node &node,
-            int modifier );
-
-        std::string getNativeType(
-            Node &type );
 
         std::string getPrototypeType(
             Node &type );

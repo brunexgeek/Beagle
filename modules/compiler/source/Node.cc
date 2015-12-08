@@ -85,5 +85,15 @@ void Node::print(
 }
 
 
+bool Node::hasChild(
+    int modifier )
+{
+    for (int i = 0, n = getChildCount(); i < n; ++i)
+        if ((*this)[i].type == modifier) return true;
+
+    return false;
+}
+
+
 } // namespace compiler
 } // namespace beagle

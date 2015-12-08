@@ -1,6 +1,7 @@
 #include <beagle-compiler/SymbolTable.hh>
 #include "beagle.y.hh"
 #include <algorithm>
+#include <cassert>
 
 
 namespace beagle {
@@ -98,14 +99,19 @@ void SymbolTable::extractImports(
 void SymbolTable::addType(
     const Node &unit )
 {
-    if (unit.type != TOK_UNIT || ( unit[2].type != TOK_CLASS &&
-        unit[2].type != TOK_INTERFACE) )
-        return;
+    assert(unit.type == TOK_UNIT && ( unit[2].type == TOK_CLASS ||
+        unit[2].type == TOK_INTERFACE) );
 
-    string *name = new string(unit[0].text);
-    (*name) += '.';
-    (*name) += unit[2][2].text;
-    typeNames.insert(name);
+    // check if the type name is already fully qualified
+    if (unit[2][2].text.find('.') != string::npos)
+        typeNames.insert( new string(unit[2][2].text) );
+    else
+    {
+        string *name = new string(unit[0].text);
+        (*name) += '.';
+        (*name) += unit[2][2].text;
+        typeNames.insert(name);
+    }
 }
 
 
