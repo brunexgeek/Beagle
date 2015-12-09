@@ -11,8 +11,32 @@ using namespace beagle::compiler;
 
 
 string outputFileName;
-Compiler compiler;
 bool useLexer = false;
+
+
+class CustomListener : public CompilerListener
+{
+    public:
+        CustomListener()
+        {
+            // nothing to do
+        }
+
+        ~CustomListener()
+        {
+            // nothing to do
+        }
+
+        bool onError(
+            const std::string &fileName,
+            uint32_t line,
+            uint32_t column,
+            const std::string &message ) const
+        {
+            cerr << fileName << ':' << line << ':' << column << ": error: " << message << endl;
+            return true;
+        }
+};
 
 
 void main_usage()
@@ -23,7 +47,10 @@ void main_usage()
 }
 
 
-void main_parseOptions( int argc, char **argv )
+void main_parseOptions(
+    int argc,
+    char **argv,
+    Compiler &compiler )
 {
     int opt;
 
@@ -51,7 +78,9 @@ void main_parseOptions( int argc, char **argv )
 
 int main( int argc, char **argv )
 {
-	main_parseOptions(argc, argv);
+    CustomListener listener;
+    Compiler compiler(listener);
+	main_parseOptions(argc, argv, compiler);
 
     if (useLexer)
     {
@@ -59,19 +88,22 @@ int main( int argc, char **argv )
         //return 0;
     }
 
-	string code = compiler.compile();
-
-    // print the trees
-    for (int i = 0; true; ++i)
+	if (compiler.compile())
     {
-        Node *root = compiler.getTree(i);
-        if (root == NULL) break;
-        root->print(std::cout, Compiler::getTokenName);
+        // print the trees
+        for (int i = 0; true; ++i)
+        {
+            Node *root = compiler.getTree(i);
+            if (root == NULL) break;
+            root->print(std::cout, Compiler::getTokenName);
+        }
+
+        std::ofstream out(outputFileName.c_str());
+        out << compiler.getCode();
+        out.close();
+
+        return 0;
     }
 
-    std::ofstream out(outputFileName.c_str());
-    out << code;
-    out.close();
-
-    return 0;
+    return 1;
 }

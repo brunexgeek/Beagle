@@ -32,7 +32,7 @@ typedef void *yyscan_t;
 
 typedef struct
 {
-    yyscan_t scanner;
+    yyscan_t lexer;
 
     std::vector<beagle::compiler::Node*> stack;
 
@@ -66,8 +66,8 @@ static void beagle_error(parser_context_t *context, const char *msg)
 {
     printf ("%s:%d:%d: error: %s - %s\n",
         context->fileName,
-        beagle_get_lineno(context->scanner),
-        beagle_get_column(context->scanner),
+        beagle_get_lineno(context->lexer),
+        beagle_get_column(context->lexer),
         context->rule,
         msg);
     return;
@@ -120,10 +120,16 @@ static void beagle_printStack( std::vector<beagle::compiler::Node*> &stack, beag
 static void beagle_push(
     parser_context_t *context,
     int token,
-    const char *value )
+    const char *value,
+    uint32_t line = 1,
+    uint32_t column = 1 )
 {
     //std::cout << "PUSH " << value << std::endl;
-    context->stack.push_back( new beagle::compiler::Node(token,value) );
+    beagle::compiler::Node *node;
+    node = new beagle::compiler::Node(token,value);
+    node->line = line;
+    node->column = column;
+    context->stack.push_back(node);
 }
 
 
@@ -143,8 +149,9 @@ static void beagle_push(
 }
 
 
-#define scanner              parserContext->scanner
-#define PUSH(token,value)    beagle_push( parserContext, (token), (value) )
+#define scanner              parserContext->lexer
+#define PUSH(token,value)    beagle_push( parserContext, (token), (value), \
+    beagle_get_lineno(parserContext->lexer), beagle_get_column(parserContext->lexer) )
 #define NPUSH(node)          beagle_push( parserContext, (node) )
 #define POP()                beagle_pop(parserContext->stack)
 #define TOP()                (parserContext->stack[ parserContext->stack.size() - 1 ])

@@ -19,7 +19,20 @@ namespace beagle {
 namespace compiler {
 
 
-Compiler::Compiler()
+CompilerListener::CompilerListener()
+{
+    // nothing to do
+}
+
+
+CompilerListener::~CompilerListener()
+{
+    // nothing to do
+}
+
+
+Compiler::Compiler(
+    const CompilerListener &listener ) : listener(listener)
 {
     // nothing to do
 }
@@ -40,17 +53,34 @@ bool Compiler::addCompilationUnit(
 
     map<string, CompilationUnit>::iterator it = units.find(path);
     if (it == units.end())
-        units.insert( std::pair<string,CompilationUnit>(path, CompilationUnit()) );
+    {
+        CompilationUnit unit;
+        unit.fileName = fileName;
+        units.insert( std::pair<string,CompilationUnit>(path, unit) );
+    }
 
     return true;
 }
 
 
-string Compiler::compile()
+const CompilerListener &Compiler::getListener() const
 {
-    parse();
-    resolveTypes();
+    return listener;
+}
 
+
+bool Compiler::compile()
+{
+    if (!parse()) return false;
+
+    if (!resolveTypes()) return false;
+
+    return generateCode();
+}
+
+
+bool Compiler::generateCode()
+{
     NameGenerator namegen;
     CodeGenerator codegen(namegen);
     codegen.writeHeader();
@@ -60,7 +90,9 @@ string Compiler::compile()
         codegen.visit( *(*it).second.root );
     codegen.writeFooter(units);
 
-    return codegen.getStream().str();
+    this->code = codegen.getStream().str();
+
+    return true;
 }
 
 
@@ -74,9 +106,10 @@ void Compiler::expandTypeName(
 }
 
 
-void Compiler::parse()
+bool Compiler::parse()
 {
     Parser parser;
+    bool hasError = false;
 
     map<string, CompilationUnit>::iterator it = units.begin();
     for (; it != units.end(); ++it)
@@ -96,8 +129,12 @@ void Compiler::parse()
             (*it).second.imports = imports;
             // add the new unit as recognized type
             symbols.addType( *(*it).second.root );
-       }
+        }
+        else
+            hasError = true;
     }
+
+    return !hasError;
 }
 
 
@@ -120,8 +157,10 @@ Node *Compiler::getTree(
 }
 
 
-void Compiler::resolveTypes()
+bool Compiler::resolveTypes()
 {
+    bool hasError = false;
+
     // iterate the compilation unit list resolving imports
     map<string, CompilationUnit>::iterator it = units.begin();
     for (; it != units.end(); ++it)
@@ -135,16 +174,20 @@ void Compiler::resolveTypes()
     for (; it != units.end(); ++it)
     {
         if ((*it).second.root == NULL) continue;
-        resolveTypes(*(*it).second.root, *(*it).second.imports);
+        hasError |= resolveTypes((*it).second.fileName, *(*it).second.root, *(*it).second.imports);
     }
+
+    return !hasError;
 }
 
 
-void Compiler::resolveTypes(
+bool Compiler::resolveTypes(
+    const string &fileName,
     Node &root,
     SymbolTable &imports )
 {
     const string *resolved = NULL;
+    bool hasError = false;
 
     // iterate the children recursively resolving types
     for (int i = 0, n = root.getChildCount(); i < n; ++i)
@@ -157,14 +200,28 @@ void Compiler::resolveTypes(
                 if (item[0].type == TOK_NAME)
                 {
                     resolved = imports.resolveType(item[0].text);
-                    // TODO: possible memory leak!
-                    if (resolved != NULL) item[0].text = resolved->c_str();
+                    if (resolved != NULL)
+                        item[0].text = *resolved;
+                    else
+                    {
+                        listener.onError(fileName, item[0].line, item[0].column, "Unresolved type " + item[0].text);
+                        hasError |= true;
+                    }
                 }
                 break;
             default:
-                if (item.getChildCount() > 0) resolveTypes(item, imports);
+                if (item.getChildCount() > 0)
+                    hasError |= resolveTypes(fileName, item, imports);
         }
     }
+
+    return !hasError;
+}
+
+
+const string &Compiler::getCode() const
+{
+    return code;
 }
 
 

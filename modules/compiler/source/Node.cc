@@ -9,7 +9,7 @@ namespace compiler {
 
 Node::Node(
     int type,
-    const char *text ) : type(type), counter(0)
+    const char *text ) : type(type), counter(0), line(1), column(1)
 {
     if (text != NULL)
         this->text = text;

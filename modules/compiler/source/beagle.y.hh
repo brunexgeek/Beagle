@@ -61,7 +61,7 @@ typedef void *yyscan_t;
 
 typedef struct
 {
-    yyscan_t scanner;
+    yyscan_t lexer;
 
     std::vector<beagle::compiler::Node*> stack;
 
@@ -246,7 +246,7 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 176 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
+#line 183 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
 
     char* node;
 

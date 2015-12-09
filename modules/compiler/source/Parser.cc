@@ -79,7 +79,7 @@ Node *Parser::process(
 	beagle_debug = 0;
 
 	parser_context_t context;
-	context.scanner = scanner;
+	context.lexer = scanner;
 	context.fileName = strdup(fileName.c_str());
 	context.rule = NULL;
 	context.parser = this;

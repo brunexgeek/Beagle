@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <stdint.h>
 
 
 namespace beagle {
@@ -17,6 +18,8 @@ class Node
         std::string text;
         int type;
         int counter;
+        uint32_t line;
+        uint32_t column;
 
         Node(
             int type,
