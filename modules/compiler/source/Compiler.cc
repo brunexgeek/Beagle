@@ -1,6 +1,7 @@
 #include <beagle-compiler/Compiler.hh>
 #include <beagle-compiler/Parser.hh>
 #include "CodeGenerator.hh"
+#include "Semantic.hh"
 #include <fstream>
 #include "beagle.y.hh"
 #include <cstdlib>
@@ -74,11 +75,31 @@ const CompilerListener &Compiler::getListener() const
 
 bool Compiler::compile()
 {
-    if (!parse()) return false;
-
+    // perform syntax analisis
+    if (!syntaxAnalisis()) return false;
+    // perform type resolution
     if (!resolveTypes()) return false;
+    // perform semantic analisis
+    if (!semanticAnalisis()) return false;
 
     return generateCode();
+}
+
+
+bool Compiler::semanticAnalisis()
+{
+    bool success = true;
+
+    // iterate the compilation unit list
+    map<string, CompilationUnit>::iterator it = units.begin();
+    for (; it != units.end(); ++it)
+    {
+        SemanticContext context(listener);
+        Semantic semantic(context);
+        semantic.visit( *(*it).second.root );
+    }
+
+    return success;
 }
 
 
@@ -88,6 +109,7 @@ bool Compiler::generateCode()
     CodeGenerator codegen(namegen);
     codegen.writeHeader();
 
+    // iterate the compilation unit list
     map<string, CompilationUnit>::iterator it = units.begin();
     for (; it != units.end(); ++it)
         codegen.visit( *(*it).second.root );
@@ -103,13 +125,15 @@ void Compiler::expandTypeName(
     Node &package,
     Node &type )
 {
+    assert(type.type == TOK_CLASS ||
+        type.type == TOK_INTERFACE);
+
     string name = package.text + '.' + type[2].text;
-    // TODO: memory leak?
     type[2].text = name;
 }
 
 
-bool Compiler::parse()
+bool Compiler::syntaxAnalisis()
 {
     Parser parser;
     bool hasError = false;

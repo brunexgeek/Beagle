@@ -9,12 +9,10 @@ namespace beagle {
 namespace compiler {
 
 
-template <typename T>
 class TreeVisitor
 {
 	public:
-		TreeVisitor(
-            T &context )
+		TreeVisitor()
 		{
 			// nothing to do
 		}
@@ -24,55 +22,57 @@ class TreeVisitor
 			// nothing to do
 		}
 
-        T &getContext()
-        {
-            return context;
-        }
-
         void visit(
-            Node &root )
-        {
-            assert(&root != 0);
-            this->root = &root;
-            visitCompulationUnit(root);
-            this->root = NULL;
-        }
+            Node &root );
 
     protected:
         Node *root;
-        T context;
 
 		virtual void visitCompulationUnit(
-			Node &node ) = 0;
+			Node &node );
 
-		virtual void visitPackageDeclaration(
-			Node &node ) = 0;
+        virtual void visitPackage(
+			Node &package );
 
-		virtual void visitTypeDeclaration(
-			Node &node ) = 0;
+		virtual void visitImportList(
+			Node &imports );
+
+		virtual void visitImport(
+			Node &import );
+
+		virtual void visitType(
+			Node &type );
+
+        virtual void visitField(
+            Node &type,
+            Node &field );
 
         virtual void visitMethod(
-            Node &parent,
-            Node &method ) = 0;
+            Node &type,
+            Node &method );
 
         virtual void visitParameterList(
-            Node &parent,
-            Node &params ) = 0;
+            Node &method,
+            Node &params );
 
         virtual void visitParameter(
-            Node &parent,
-            Node &parameter ) = 0;
+            Node &method,
+            Node &parameter );
 
         virtual void visitMethodBody(
             Node &method,
-            Node &body ) = 0;
+            Node &body );
 
-		virtual void visitAnnotationDeclaration(
+        virtual void visitAnnotationList(
 			Node &parent,
-			Node &node ) = 0;
+			Node &annots );
 
-        virtual void visitLocalVariableDeclaration(
-            Node &variable ) = 0;
+		virtual void visitAnnotation(
+			Node &parent,
+			Node &annot );
+
+        virtual void visitLocalVariable(
+            Node &variable );
 };
 
 

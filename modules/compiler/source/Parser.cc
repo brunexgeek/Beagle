@@ -1,6 +1,8 @@
 #include <beagle-compiler/Parser.hh>
 #include "beagle.y.hh"
 #include "beagle.l.hh"
+#include <cassert>
+
 
 /**
  * Define the current column in the lexer scanner.
@@ -90,6 +92,8 @@ Node *Parser::process(
 
         // expand field declarations
         expandFields(*root);
+        // expand local variables
+        expandVariables(*root);
     }
 
     if (scanString != NULL)
@@ -125,7 +129,8 @@ const char *Parser::name( int tok )
 }
 
 
-void Parser::expandFields( Node &root )
+void Parser::expandFields(
+    Node &root )
 {
 	Node &body = root[2][5];
 	if (body.type == TOK_NULL) return;
@@ -133,9 +138,10 @@ void Parser::expandFields( Node &root )
 	for (int m = 0; m < body.getChildCount(); ++m)
 	{
 		Node &member = body[m];
+        int i = 1;
 
 		if (member.type != TOK_FIELD ||
-		    member[3].type != TOK_VARIABLES) continue;
+		    member[3].type != TOK_LIST) continue;
 
 		// expand fields with more than one variable
 		for (; member[3].getChildCount() > 1;)
@@ -146,12 +152,13 @@ void Parser::expandFields( Node &root )
 			field->addChild( *new Node(member[1]) );
 			field->addChild( *new Node(member[2]) );
 			// move the variable from current field to new one
-			Node *variables = new Node(TOK_VARIABLES, "");
+			Node *variables = new Node(TOK_LIST, "");
 			variables->addChild( member[3][0] );
 			member[3].removeChild(0);
 			field->addChild(*variables);
-			// add the new field into type body
-			body.addChild(*field);
+			// add the new field into type body (always after the current one)
+			body.addChild(*field, m + i);
+            ++i;
 		}
 
 		// Notice: at this point the current field have one
@@ -164,6 +171,78 @@ void Parser::expandFields( Node &root )
 		member.addChild(variable[1]);
 		variable.removeChild();
 		delete &variable;
+	}
+}
+
+
+void Parser::expandVariables(
+    Node &node )
+{
+    assert(node.type == TOK_UNIT ||
+        node.type == TOK_BLOCK);
+
+	if (node.type == TOK_UNIT)
+    {
+        Node &body = node[2][5];
+        if (body.type == TOK_NULL) return;
+
+        for (int i = 0, n = body.getChildCount(); i < n; ++i)
+        {
+            Node &member = body[i];
+
+            if ( (member.type != TOK_METHOD && member.type != TOK_CONSTRUCTOR) ||
+                member[6].type != TOK_BLOCK) continue;
+
+            // handle the current method body
+            expandVariables(member[6]);
+        }
+    }
+    else
+    {
+        // Notice: we need to compare the counter 'i' with the function 'getChildCount'
+        //         because we change the node children inside the loop
+        for (int i = 0; i < node.getChildCount(); ++i)
+        {
+            Node &stmt = node[i];
+
+            std::cout << "Found " << Parser::name(stmt.type) << "\n";
+
+            // if we have a block, call recursively
+            if (stmt.type == TOK_BLOCK) expandVariables(stmt);
+
+            // ignore statements other than unhandled variables
+            if (stmt.type != TOK_LOCAL || stmt.getChildCount() < 2 ||
+                stmt[1].type != TOK_LIST) continue;
+
+            // expand variables with more than one declarator
+            for (; stmt[1].getChildCount() > 0;)
+            {
+                Node &promoted = stmt[1][0];
+                promoted.type = TOK_LOCAL;
+                // promote the declarator to a local variable
+                node.addChild(promoted, i);
+                std::cout << "promoted " << promoted[0].text << " at " << i << std::endl;
+                ++i;
+                promoted.addChild( *new Node(stmt[0]), 0 );
+                stmt[1].removeChild(0);
+            }
+            // remove the original TOK_LOCAL
+            node.removeChild(i--);
+node.print(std::cout, Parser::name);
+
+            // Notice: at this point the current field have one
+            //         variable left, so we let the next code block
+            //         handle it.
+
+            // expand fields with one variable
+            /*Node &discard = stmt[1];
+            stmt.setChild(1, discard[0][0]);
+            stmt.addChild(discard[0][1]);
+            discard[0].removeChild();
+            delete &discard[0];
+            discard.removeChild();
+            delete &discard;*/
+        }
 	}
 }
 

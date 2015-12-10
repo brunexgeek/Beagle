@@ -69,7 +69,7 @@
 
 /* Copy the first part of user declarations.  */
 
-#line 73 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:339  */
+#line 73 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -89,8 +89,8 @@
 
 /* In a future release of Bison, this section will be replaced
    by #include "beagle.y.hh".  */
-#ifndef YY_BEAGLE_HOME_CPQD_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
-# define YY_BEAGLE_HOME_CPQD_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
+#ifndef YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
+# define YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -99,7 +99,7 @@
 extern int beagle_debug;
 #endif
 /* "%code requires" blocks.  */
-#line 15 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:355  */
+#line 15 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:355  */
 
 
 
@@ -142,7 +142,7 @@ typedef struct
 int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 146 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:355  */
+#line 146 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -274,29 +274,29 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_CONSTRUCTOR = 380,
     TOK_LIST = 381,
     TOK_IMPORTS = 382,
-    TOK_VARIABLE = 383,
-    TOK_VARIABLES = 384,
-    TOK_MODIFIERS = 385,
-    TOK_UNIT = 386,
-    TOK_TYPE = 387,
-    TOK_TYPES = 388,
-    TOK_MEMBER = 389,
-    TOK_IMPORT_ALL = 390,
-    TOK_STATIC_INIT = 391,
-    TOK_PARAMETER = 392,
-    TOK_PARAMETERS = 393,
-    TOK_BLOCK = 394,
-    TOK_CALL = 395,
-    TOK_ACCESS_FIELD = 396,
-    TOK_CAST = 397,
-    TOK_ACCESS_ARRAY = 398,
-    TOK_FOR_EACH = 399,
-    TOK_GROUP = 400,
-    TOK_ANNOTATION = 401,
-    TOK_NEW_ARRAY = 402,
-    TOK_ARRAY = 403,
-    TOK_ANNOTATIONS = 404,
-    TOK_ARGUMENTS = 405
+    TOK_DECLARATOR = 383,
+    TOK_MODIFIERS = 384,
+    TOK_UNIT = 385,
+    TOK_TYPE = 386,
+    TOK_TYPES = 387,
+    TOK_MEMBER = 388,
+    TOK_IMPORT_ALL = 389,
+    TOK_STATIC_INIT = 390,
+    TOK_PARAMETER = 391,
+    TOK_PARAMETERS = 392,
+    TOK_BLOCK = 393,
+    TOK_CALL = 394,
+    TOK_ACCESS_FIELD = 395,
+    TOK_CAST = 396,
+    TOK_ACCESS_ARRAY = 397,
+    TOK_FOR_EACH = 398,
+    TOK_GROUP = 399,
+    TOK_ANNOTATION = 400,
+    TOK_NEW_ARRAY = 401,
+    TOK_ARRAY = 402,
+    TOK_ANNOTATIONS = 403,
+    TOK_ARGUMENTS = 404,
+    TOK_LOCAL = 405
   };
 #endif
 
@@ -305,11 +305,11 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 183 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:355  */
+#line 183 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:355  */
 
     char* node;
 
-#line 313 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:355  */
+#line 313 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -319,13 +319,13 @@ union YYSTYPE
 
 int beagle_parse (parser_context_t *parserContext);
 
-#endif /* !YY_BEAGLE_HOME_CPQD_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED  */
+#endif /* !YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 327 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:358  */
+#line 327 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:358  */
 /* Unqualified %code blocks.  */
-#line 58 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:359  */
+#line 58 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:359  */
 
 
 #include <iostream>
@@ -431,7 +431,7 @@ static void beagle_push(
 #define PSTACK()             beagle_printStack(parserContext->stack, parserContext->parser)
 
 
-#line 435 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:359  */
+#line 435 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:359  */
 
 #ifdef short
 # undef short
@@ -743,39 +743,39 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   412,   412,   417,   419,   421,   423,   425,   427,   432,
-     433,   437,   438,   443,   444,   448,   450,   452,   454,   456,
-     458,   460,   462,   464,   469,   471,   476,   477,   481,   489,
-     493,   497,   502,   507,   515,   516,   520,   525,   544,   545,
-     550,   552,   557,   561,   562,   566,   571,   578,   579,   583,
-     584,   588,   590,   595,   597,   605,   607,   612,   614,   616,
-     618,   620,   622,   624,   626,   628,   630,   632,   637,   642,
-     643,   647,   648,   652,   653,   658,   662,   666,   668,   673,
-     677,   678,   682,   684,   689,   690,   691,   695,   696,   697,
-     701,   706,   708,   714,   719,   725,   726,   730,   736,   742,
-     744,   750,   751,   756,   757,   760,   762,   767,   769,   778,
-     783,   785,   790,   794,   799,   804,   805,   809,   810,   814,
-     815,   819,   824,   826,   831,   832,   836,   841,   843,   848,
-     852,   853,   857,   859,   864,   865,   869,   873,   881,   885,
-     886,   890,   892,   897,   901,   903,   908,   909,   913,   917,
-     922,   923,   924,   925,   926,   927,   928,   932,   933,   934,
-     935,   936,   937,   938,   939,   940,   941,   945,   950,   954,
-     955,   956,   957,   958,   959,   960,   964,   972,   981,   986,
-     991,   992,   996,  1000,  1002,  1007,  1012,  1014,  1019,  1021,
-    1029,  1035,  1040,  1041,  1045,  1046,  1050,  1051,  1055,  1060,
-    1062,  1067,  1072,  1073,  1077,  1081,  1083,  1088,  1093,  1101,
-    1106,  1114,  1120,  1125,  1127,  1132,  1133,  1137,  1142,  1147,
-    1149,  1154,  1159,  1164,  1165,  1169,  1170,  1172,  1173,  1174,
-    1175,  1176,  1180,  1185,  1187,  1192,  1193,  1197,  1231,  1236,
-    1238,  1243,  1248,  1253,  1259,  1261,  1269,  1281,  1283,  1305,
-    1307,  1312,  1313,  1314,  1315,  1319,  1324,  1329,  1330,  1331,
-    1333,  1335,  1339,  1344,  1349,  1350,  1352,  1354,  1359,  1379,
-    1381,  1398,  1399,  1401,  1403,  1408,  1409,  1411,  1416,  1417,
-    1419,  1424,  1425,  1427,  1429,  1431,  1433,  1438,  1439,  1441,
-    1446,  1447,  1452,  1453,  1458,  1459,  1464,  1465,  1470,  1471,
-    1476,  1477,  1482,  1483,  1487,  1507,  1508,  1509,  1513,  1515,
-    1517,  1519,  1521,  1523,  1525,  1527,  1529,  1531,  1533,  1538,
-    1542,  1546,  1550
+       0,   411,   411,   416,   418,   420,   422,   424,   426,   431,
+     432,   436,   437,   442,   443,   447,   449,   451,   453,   455,
+     457,   459,   461,   463,   468,   470,   475,   476,   480,   488,
+     492,   496,   501,   506,   514,   515,   519,   524,   543,   544,
+     549,   551,   556,   560,   561,   565,   570,   577,   578,   582,
+     583,   587,   589,   594,   596,   604,   606,   611,   613,   615,
+     617,   619,   621,   623,   625,   627,   629,   631,   636,   641,
+     642,   646,   647,   651,   652,   657,   661,   665,   667,   672,
+     676,   677,   681,   683,   688,   689,   690,   694,   695,   696,
+     700,   705,   707,   713,   718,   724,   725,   729,   735,   741,
+     743,   749,   750,   755,   756,   759,   761,   766,   768,   777,
+     782,   784,   789,   793,   798,   803,   804,   808,   809,   813,
+     814,   818,   823,   825,   830,   831,   835,   849,   851,   856,
+     860,   861,   865,   867,   872,   873,   877,   881,   889,   893,
+     894,   898,   900,   905,   909,   911,   916,   917,   921,   925,
+     930,   931,   932,   933,   934,   935,   936,   940,   941,   942,
+     943,   944,   945,   946,   947,   948,   949,   953,   958,   962,
+     963,   964,   965,   966,   967,   968,   972,   980,   989,   994,
+     999,  1000,  1004,  1008,  1010,  1015,  1020,  1022,  1027,  1029,
+    1037,  1043,  1048,  1049,  1053,  1054,  1058,  1059,  1063,  1068,
+    1070,  1075,  1080,  1081,  1085,  1089,  1091,  1096,  1101,  1109,
+    1114,  1122,  1128,  1133,  1135,  1140,  1141,  1145,  1150,  1155,
+    1157,  1162,  1167,  1172,  1173,  1177,  1178,  1180,  1181,  1182,
+    1183,  1184,  1188,  1193,  1195,  1200,  1201,  1205,  1239,  1244,
+    1246,  1251,  1256,  1261,  1267,  1269,  1277,  1289,  1291,  1313,
+    1315,  1320,  1321,  1322,  1323,  1327,  1332,  1337,  1338,  1339,
+    1341,  1343,  1347,  1352,  1357,  1358,  1360,  1362,  1367,  1387,
+    1389,  1406,  1407,  1409,  1411,  1416,  1417,  1419,  1424,  1425,
+    1427,  1432,  1433,  1435,  1437,  1439,  1441,  1446,  1447,  1449,
+    1454,  1455,  1460,  1461,  1466,  1467,  1472,  1473,  1478,  1479,
+    1484,  1485,  1490,  1491,  1495,  1515,  1516,  1517,  1521,  1523,
+    1525,  1527,  1529,  1531,  1533,  1535,  1537,  1539,  1541,  1546,
+    1550,  1554,  1558
 };
 #endif
 
@@ -809,14 +809,14 @@ static const char *const yytname[] =
   "TOK_VARARG", "TOK_INDENT", "TOK_DEDENT", "TOK_IN", "TOK_RANGE",
   "TOK_PASS", "TOK_TYPE_CLASS", "TOK_TYPE_ARRAY", "TOK_INTERFACES",
   "TOK_NULL", "TOK_BODY", "TOK_FIELD", "TOK_METHOD", "TOK_CONSTRUCTOR",
-  "TOK_LIST", "TOK_IMPORTS", "TOK_VARIABLE", "TOK_VARIABLES",
-  "TOK_MODIFIERS", "TOK_UNIT", "TOK_TYPE", "TOK_TYPES", "TOK_MEMBER",
-  "TOK_IMPORT_ALL", "TOK_STATIC_INIT", "TOK_PARAMETER", "TOK_PARAMETERS",
-  "TOK_BLOCK", "TOK_CALL", "TOK_ACCESS_FIELD", "TOK_CAST",
-  "TOK_ACCESS_ARRAY", "TOK_FOR_EACH", "TOK_GROUP", "TOK_ANNOTATION",
-  "TOK_NEW_ARRAY", "TOK_ARRAY", "TOK_ANNOTATIONS", "TOK_ARGUMENTS",
-  "$accept", "CompilationUnit", "Literal", "Type", "PrimitiveType",
-  "NumericType", "IntegralType", "FloatingPointType", "ReferenceType",
+  "TOK_LIST", "TOK_IMPORTS", "TOK_DECLARATOR", "TOK_MODIFIERS", "TOK_UNIT",
+  "TOK_TYPE", "TOK_TYPES", "TOK_MEMBER", "TOK_IMPORT_ALL",
+  "TOK_STATIC_INIT", "TOK_PARAMETER", "TOK_PARAMETERS", "TOK_BLOCK",
+  "TOK_CALL", "TOK_ACCESS_FIELD", "TOK_CAST", "TOK_ACCESS_ARRAY",
+  "TOK_FOR_EACH", "TOK_GROUP", "TOK_ANNOTATION", "TOK_NEW_ARRAY",
+  "TOK_ARRAY", "TOK_ANNOTATIONS", "TOK_ARGUMENTS", "TOK_LOCAL", "$accept",
+  "CompilationUnit", "Literal", "Type", "PrimitiveType", "NumericType",
+  "IntegralType", "FloatingPointType", "ReferenceType",
   "ClassOrInterfaceType", "ClassType", "InterfaceType", "ArrayType",
   "Name", "SimpleName", "QualifiedName", "ImportDeclarationsOpt",
   "ImportDeclarations", "PackageDeclaration", "ImportDeclaration",
@@ -2118,163 +2118,163 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 413 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 412 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_UNIT, 3);   }
-#line 2124 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2124 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 418 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 417 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_INTLITERAL, (yyvsp[0]. node ));   }
-#line 2130 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2130 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 420 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 419 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_FLOATLITERAL, (yyvsp[0]. node ));   }
-#line 2136 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2136 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 422 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 421 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_BOOLLITERAL, (yyvsp[0]. node ));   }
-#line 2142 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2142 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 424 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 423 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_STRINGLITERAL, (yyvsp[0]. node ));   }
-#line 2148 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2148 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 426 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 425 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_CHARLITERAL, (yyvsp[0]. node ));   }
-#line 2154 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2154 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 428 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 427 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULLLITERAL, (yyvsp[0]. node ));   }
-#line 2160 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2160 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 439 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 438 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_BOOLEAN, (yyvsp[0]. node ));    }
-#line 2166 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2166 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 449 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 448 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_UINT8, (yyvsp[0]. node ));    }
-#line 2172 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2172 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 451 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 450 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_UINT16, (yyvsp[0]. node ));    }
-#line 2178 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2178 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 453 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 452 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_UINT32, (yyvsp[0]. node ));    }
-#line 2184 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2184 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 455 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 454 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_UINT64, (yyvsp[0]. node ));    }
-#line 2190 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2190 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 457 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 456 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT8, (yyvsp[0]. node ));    }
-#line 2196 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2196 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 459 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 458 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT16, (yyvsp[0]. node ));    }
-#line 2202 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2202 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 461 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 460 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT32, (yyvsp[0]. node ));    }
-#line 2208 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2208 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 463 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 462 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_INT64, (yyvsp[0]. node ));    }
-#line 2214 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2214 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 465 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
-    {    PUSH(TOK_UINT16, (yyvsp[0]. node ));    }
-#line 2220 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 464 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+    {    PUSH(TOK_CHAR, (yyvsp[0]. node ));    }
+#line 2220 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 470 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 469 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_FLOAT, (yyvsp[0]. node ));    }
-#line 2226 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2226 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 472 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 471 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    PUSH(TOK_DOUBLE, (yyvsp[0]. node ));    }
-#line 2232 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2232 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 482 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 481 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         PUSH(TOK_NULL, NULL /* "InterfaceTypeList" */ );
         COMBINE(TOK_TYPE_CLASS, 2);
     }
-#line 2241 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2241 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 498 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 497 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         COMBINE(TOK_TYPE_ARRAY, 1);
         TOP()->counter = 1;
     }
-#line 2250 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2250 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 503 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 502 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         COMBINE(TOK_TYPE_ARRAY, 1);
         TOP()->counter = 1;
     }
-#line 2259 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2259 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 508 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 507 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         beagle::compiler::Node *node = TOP();
         ++node->counter;
     }
-#line 2268 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2268 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 521 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 520 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NAME, (yyvsp[0]. node ));    }
-#line 2274 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2274 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 526 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 525 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         //PUSH(TOK_NAME, $3);
         //COMBINE(0, 1);
@@ -2283,740 +2283,749 @@ yyreduce:
         name->text += (yyvsp[0]. node );
         name->type = TOK_QNAME;
     }
-#line 2287 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2287 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 545 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 544 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "ImportDeclarations" */ );   }
-#line 2293 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2293 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 551 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 550 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_IMPORTS, 1);   }
-#line 2299 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2299 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 553 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 552 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2305 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2305 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 567 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 566 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_IMPORT, 1);   }
-#line 2311 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2311 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 572 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 571 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         COMBINE(TOK_IMPORT_ALL, 1);
     }
-#line 2319 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2319 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 584 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 583 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "AnnotationDeclarations" */ );   }
-#line 2325 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2325 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 589 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 588 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_ANNOTATIONS, 1);   }
-#line 2331 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2331 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 591 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 590 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2337 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2337 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 596 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 595 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_ANNOTATION, 2);   }
-#line 2343 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2343 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 598 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 597 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_NULL, NULL /* "ArgumentList" */ );
 		COMBINE(TOK_ANNOTATION, 2);
 	}
-#line 2352 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2352 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 606 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 605 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_MODIFIERS, 1);   }
-#line 2358 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2358 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 608 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 607 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2364 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2364 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 613 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 612 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_PUBLIC, (yyvsp[0]. node ));   }
-#line 2370 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2370 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 615 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 614 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_PROTECTED, (yyvsp[0]. node ));   }
-#line 2376 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2376 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 617 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 616 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_PRIVATE, (yyvsp[0]. node ));   }
-#line 2382 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2382 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 619 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 618 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_STATIC, (yyvsp[0]. node ));   }
-#line 2388 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2388 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 621 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 620 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_ABSTRACT, (yyvsp[0]. node ));   }
-#line 2394 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2394 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 623 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 622 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_FINAL, (yyvsp[0]. node ));   }
-#line 2400 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2400 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 625 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 624 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NATIVE, (yyvsp[0]. node ));   }
-#line 2406 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2406 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 627 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 626 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_READLOCK, (yyvsp[0]. node ));   }
-#line 2412 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2412 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 629 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 628 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_WRITELOCK, (yyvsp[0]. node ));   }
-#line 2418 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2418 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 631 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 630 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_TRANSIENT, (yyvsp[0]. node ));   }
-#line 2424 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2424 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 633 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 632 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_VOLATILE, (yyvsp[0]. node ));   }
-#line 2430 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2430 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 638 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 637 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_CLASS, 6);   }
-#line 2436 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2436 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 643 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 642 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "Modifiers" */ );   }
-#line 2442 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2442 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 648 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 647 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "Super" */ );   }
-#line 2448 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2448 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 653 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 652 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "Interfaces" */ );   }
-#line 2454 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2454 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 667 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 666 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    COMBINE(TOK_TYPES, 1);   }
-#line 2460 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2460 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 669 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 668 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    COMBINE(0, 1);    }
-#line 2466 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2466 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 678 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 677 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "ClassBodyDeclarations" */ );   }
-#line 2472 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2472 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 683 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 682 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_BODY, 1);   }
-#line 2478 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2478 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 685 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 684 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2484 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2484 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 702 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 701 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_FIELD, 4);   }
-#line 2490 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2490 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 707 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_VARIABLES, 1);   }
-#line 2496 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 706 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LIST, 1);   }
+#line 2496 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 709 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 708 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2502 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2502 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 715 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 714 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         PUSH(TOK_NULL, NULL /* "VariableInitializer" */ );
-        COMBINE(TOK_VARIABLE, 2);
+        COMBINE(TOK_DECLARATOR, 2);
     }
-#line 2511 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2511 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 720 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_VARIABLE, 2);   }
-#line 2517 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 719 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_DECLARATOR, 2);   }
+#line 2517 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 731 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 730 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2523 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2523 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 737 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 736 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_VOID, (yyvsp[0]. node ));   }
-#line 2529 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2529 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 743 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 742 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_METHOD, 6);   }
-#line 2535 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2535 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 745 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 744 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_METHOD, 6);   }
-#line 2541 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2541 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 751 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 750 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "Throws" */ );   }
-#line 2547 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2547 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 757 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 756 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "FormalParameterList" */ );   }
-#line 2553 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2553 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 761 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 760 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {  COMBINE(TOK_PARAMETERS, 1);   }
-#line 2559 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2559 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 763 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 762 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {  COMBINE(0, 1);   }
-#line 2565 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2565 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 768 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 767 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {  COMBINE(TOK_PARAMETER, 2);   }
-#line 2571 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2571 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 770 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 769 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         COMBINE(TOK_PARAMETER, 2);
         ++TOP()->counter;
     }
-#line 2580 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2580 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 110:
-#line 784 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 783 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_THROWS, 1);   }
-#line 2586 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2586 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 786 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 785 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2592 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2592 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 795 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 794 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_STATIC_INIT, 1);   }
-#line 2598 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2598 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 114:
-#line 800 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 799 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_CONSTRUCTOR, 6);   }
-#line 2604 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2604 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 116:
-#line 805 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 804 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "ExplicitConstructorInvocation" */ );   }
-#line 2610 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2610 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 118:
-#line 810 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 809 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "BlockStatements" */ );   }
-#line 2616 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2616 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 120:
-#line 815 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 814 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "ArgumentList" */ );   }
-#line 2622 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2622 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 820 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 819 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_BODY, 2);   }
-#line 2628 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2628 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 122:
-#line 825 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 824 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   TOP()->type = TOK_THIS;   }
-#line 2634 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2634 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 123:
-#line 827 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 826 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   TOP()->type = TOK_SUPER;   }
-#line 2640 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2640 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 125:
-#line 832 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 831 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "ExtendsInterfaces" */ );   }
-#line 2646 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2646 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 126:
-#line 837 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_INTERFACE, 5);   }
-#line 2652 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 836 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+    {
+        // Notice: we need to insert an TOK_NULL between 'SimpleName' and 'ExtendsInterfacesOpt'
+        //         to make TOK_INTERFACE similar to TOK_CLASS
+        beagle::compiler::Node *intfBody = POP();
+        beagle::compiler::Node *extends = POP();
+        PUSH(TOK_NULL, NULL);
+        NPUSH(extends);
+        NPUSH(intfBody);
+        COMBINE(TOK_INTERFACE, 6);
+    }
+#line 2661 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 127:
-#line 842 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 850 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    COMBINE(TOK_TYPES, 1);   }
-#line 2658 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2667 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 128:
-#line 844 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 852 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {    COMBINE(0, 1);   }
-#line 2664 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2673 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 131:
-#line 853 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 861 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "InterfaceMemberDeclarations" */ );   }
-#line 2670 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2679 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 132:
-#line 858 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 866 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_BODY, 1);   }
-#line 2676 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2685 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 133:
-#line 860 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 868 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2682 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2691 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 137:
-#line 874 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 882 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         PUSH(TOK_NULL, NULL /* "MethodBody" */ );
         COMBINE(0, 1);
     }
-#line 2691 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2700 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 140:
-#line 886 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 894 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "VariableInitializers" */ ); }
-#line 2697 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2706 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 141:
-#line 891 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 899 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_ARRAY, 1);   }
-#line 2703 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2712 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 142:
-#line 893 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 901 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2709 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2718 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 144:
-#line 902 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 910 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_BLOCK, 1);   }
-#line 2715 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2724 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 145:
-#line 904 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 912 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2721 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2730 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 149:
-#line 918 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
-    {   COMBINE(TOK_VARIABLE, 2);   }
-#line 2727 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 926 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+    {   COMBINE(TOK_LOCAL, 2);   }
+#line 2736 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 167:
-#line 946 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 954 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_PASS, (yyvsp[-1]. node ));   }
-#line 2733 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2742 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 176:
-#line 965 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 973 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_NULL, NULL /* "Block" */ );
 		COMBINE(TOK_IF, 3);
 	}
-#line 2742 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2751 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 177:
-#line 973 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 981 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		COMBINE(TOK_BLOCK, 1);
 		PUSH(TOK_NULL, NULL /* "Block" */ );
 		COMBINE(TOK_IF, 3);
 	}
-#line 2752 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2761 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 178:
-#line 982 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 990 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_IF, 3);   }
-#line 2758 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2767 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 179:
-#line 987 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 995 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_SWITCH, 2);   }
-#line 2764 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2773 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 181:
-#line 992 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1000 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "SwitchBlockStatementGroups" */ );   }
-#line 2770 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2779 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 183:
-#line 1001 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1009 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_LIST, 1);   }
-#line 2776 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2785 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 184:
-#line 1003 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1011 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2782 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2791 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 185:
-#line 1008 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1016 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_GROUP, 2);   }
-#line 2788 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2797 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 186:
-#line 1013 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1021 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_LIST, 1);   }
-#line 2794 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2803 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 187:
-#line 1015 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1023 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2800 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2809 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 188:
-#line 1020 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1028 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_CASE, 1);   }
-#line 2806 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2815 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 189:
-#line 1022 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1030 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_DEFAULT, (yyvsp[-2]. node ));
 		COMBINE(TOK_CASE, 1);
 	}
-#line 2815 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2824 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 190:
-#line 1030 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1038 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_WHILE, 2);   }
-#line 2821 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2830 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 191:
-#line 1036 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1044 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_DO, 2);   }
-#line 2827 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2836 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 193:
-#line 1041 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1049 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "ForInit" */ );   }
-#line 2833 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2842 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 195:
-#line 1046 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1054 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "Expression" */ );   }
-#line 2839 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2848 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 197:
-#line 1051 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1059 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "ForUpdate" */ );   }
-#line 2845 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2854 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 198:
-#line 1056 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1064 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_FOR, 4);   }
-#line 2851 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2860 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 199:
-#line 1061 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1069 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_FOR_EACH, 4);   }
-#line 2857 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2866 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 200:
-#line 1063 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1071 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_FOR_EACH, 4);   }
-#line 2863 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2872 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 201:
-#line 1068 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1076 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_RANGE, 2);   }
-#line 2869 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2878 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 205:
-#line 1082 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1090 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_LIST, 1);   }
-#line 2875 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2884 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 206:
-#line 1084 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1092 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2881 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2890 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 207:
-#line 1089 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1097 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_BREAK, (yyvsp[-1]. node ));
 		COMBINE(TOK_BREAK, 1);
 	}
-#line 2890 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2899 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 208:
-#line 1094 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1102 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_INTLITERAL, "1");
 		COMBINE(TOK_BREAK, 1);
 	}
-#line 2899 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2908 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 209:
-#line 1102 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1110 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_BREAK, (yyvsp[-1]. node ));
 		COMBINE(TOK_CONTINUE, 1);
 	}
-#line 2908 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2917 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 210:
-#line 1107 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1115 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_INTLITERAL, "1");
 		COMBINE(TOK_CONTINUE, 1);
 	}
-#line 2917 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2926 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 211:
-#line 1115 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1123 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_RETURN, 1);   }
-#line 2923 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2932 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 212:
-#line 1121 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1129 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_THROW, 1);   }
-#line 2929 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2938 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 213:
-#line 1126 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1134 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_READLOCK, 2);   }
-#line 2935 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2944 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 214:
-#line 1128 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1136 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_READLOCK, 2);   }
-#line 2941 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2950 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 216:
-#line 1133 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1141 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "Catches" */ );   }
-#line 2947 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2956 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 217:
-#line 1138 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1146 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_NULL, NULL /* "finally" */ );
 		COMBINE(TOK_TRY, 3);
 	}
-#line 2956 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2965 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 218:
-#line 1143 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1151 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_TRY, 3);   }
-#line 2962 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2971 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 219:
-#line 1148 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1156 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_LIST, 1);   }
-#line 2968 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2977 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 220:
-#line 1150 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1158 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 2974 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2983 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 221:
-#line 1155 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1163 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_CATCH, 2);   }
-#line 2980 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2989 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 222:
-#line 1160 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1168 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   TOP()->type = TOK_FINALLY;   }
-#line 2986 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 2995 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 226:
-#line 1171 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1179 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_THIS, (yyvsp[0]. node ));   }
-#line 2992 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3001 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 232:
-#line 1181 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1189 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_NEW, 2);   }
-#line 2998 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3007 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 233:
-#line 1186 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1194 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_ARGUMENTS, 1);   }
-#line 3004 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3013 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 234:
-#line 1188 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1196 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 3010 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3019 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 236:
-#line 1193 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1201 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_NULL, NULL /* "Dims" */ );   }
-#line 3016 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3025 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 237:
-#line 1198 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1206 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
         /*
          * Note: unlike Java, the current specification of the language
@@ -3050,61 +3059,61 @@ yyreduce:
 
         COMBINE(TOK_NEW_ARRAY, 2);
     }
-#line 3054 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3063 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 238:
-#line 1232 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1240 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_NEW_ARRAY, 3);   }
-#line 3060 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3069 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 239:
-#line 1237 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1245 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_LIST, 1);   }
-#line 3066 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3075 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 240:
-#line 1239 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1247 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(0, 1);   }
-#line 3072 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3081 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 242:
-#line 1249 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1257 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_TYPE_ARRAY, "");
 		TOP()->counter = 1;
 	}
-#line 3081 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3090 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 243:
-#line 1254 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1262 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		++TOP()->counter;
 	}
-#line 3089 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3098 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 244:
-#line 1260 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1268 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_ACCESS_FIELD, 2);   }
-#line 3095 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3104 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 245:
-#line 1262 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1270 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		PUSH(TOK_SUPER, (yyvsp[-2]. node ));
 		COMBINE(TOK_ACCESS_FIELD, 2);
 	}
-#line 3104 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3113 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 246:
-#line 1270 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1278 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		beagle::compiler::Node *second, *third;
 
@@ -3116,17 +3125,17 @@ yyreduce:
 
 		COMBINE(TOK_CALL, 3);
 	}
-#line 3120 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3129 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 247:
-#line 1282 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1290 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_CALL, 3);   }
-#line 3126 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3135 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 248:
-#line 1284 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1292 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 
 		beagle::compiler::Node *second, *third;
@@ -3145,71 +3154,71 @@ yyreduce:
 	*/
 
 	}
-#line 3149 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3158 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 249:
-#line 1306 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1314 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_ACCESS_ARRAY, 2);   }
-#line 3155 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3164 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 250:
-#line 1308 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1316 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_ACCESS_ARRAY, 2);   }
-#line 3161 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3170 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 255:
-#line 1320 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1328 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_INC, 1);   }
-#line 3167 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3176 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 256:
-#line 1325 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1333 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_DEC, 1);   }
-#line 3173 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3182 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 259:
-#line 1332 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1340 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_PLUS, 1);   }
-#line 3179 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3188 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 260:
-#line 1334 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1342 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_MINUS, 1);   }
-#line 3185 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3194 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 262:
-#line 1340 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1348 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_INC, 1);   }
-#line 3191 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3200 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 263:
-#line 1345 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1353 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_DEC, 1);   }
-#line 3197 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3206 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 265:
-#line 1351 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1359 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_TILDE, 1);   }
-#line 3203 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3212 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 266:
-#line 1353 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1361 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_BANG, 1);   }
-#line 3209 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3218 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 268:
-#line 1360 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1368 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		beagle::compiler::Node *first, *second, *third;
 
@@ -3229,17 +3238,17 @@ yyreduce:
 
 		COMBINE(TOK_CAST, 2);
 	}
-#line 3233 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3242 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 269:
-#line 1380 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1388 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_CAST, 2);   }
-#line 3239 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3248 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 270:
-#line 1382 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1390 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 		beagle::compiler::Node *first, *second, *third;
 
@@ -3253,131 +3262,131 @@ yyreduce:
 
 		COMBINE(TOK_CAST, 2);
 	}
-#line 3257 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3266 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 272:
-#line 1400 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1408 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_MUL, 2);   }
-#line 3263 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3272 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 273:
-#line 1402 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1410 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_DIV, 2);   }
-#line 3269 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3278 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 274:
-#line 1404 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1412 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_MOD, 2);   }
-#line 3275 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3284 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 276:
-#line 1410 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1418 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_PLUS, 2);   }
-#line 3281 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3290 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 277:
-#line 1412 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1420 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_MINUS, 2);   }
-#line 3287 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3296 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 279:
-#line 1418 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1426 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_SHL, 2);   }
-#line 3293 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3302 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 280:
-#line 1420 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1428 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_SHR, 2);   }
-#line 3299 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3308 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 282:
-#line 1426 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1434 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_LT, 2);   }
-#line 3305 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3314 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 283:
-#line 1428 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1436 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_GT, 2);   }
-#line 3311 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3320 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 284:
-#line 1430 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1438 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_LE, 2);   }
-#line 3317 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3326 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 285:
-#line 1432 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1440 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_GE, 2);   }
-#line 3323 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3332 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 286:
-#line 1434 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1442 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_INSTANCEOF, 2);   }
-#line 3329 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3338 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 288:
-#line 1440 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1448 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_EQ, 2);   }
-#line 3335 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3344 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 289:
-#line 1442 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1450 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_NE, 2);   }
-#line 3341 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3350 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 291:
-#line 1448 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1456 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_AND, 2);   }
-#line 3347 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3356 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 293:
-#line 1454 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1462 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_CARET, 2);   }
-#line 3353 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3362 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 295:
-#line 1460 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1468 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_OR, 2);   }
-#line 3359 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3368 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 297:
-#line 1466 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1474 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_ANDAND, 2);   }
-#line 3365 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3374 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 299:
-#line 1472 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1480 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_OROR, 2);   }
-#line 3371 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3380 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 301:
-#line 1478 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1486 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   COMBINE(TOK_QUEST, 2);   }
-#line 3377 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3386 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 304:
-#line 1488 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1496 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {
 
         /*
@@ -3394,77 +3403,77 @@ yyreduce:
         oper->addChild(*right);
         NPUSH(oper);
     }
-#line 3398 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3407 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 308:
-#line 1514 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1522 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_ASN, (yyvsp[0]. node ));   }
-#line 3404 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3413 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 309:
-#line 1516 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1524 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_MUASN, (yyvsp[0]. node ));   }
-#line 3410 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3419 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 310:
-#line 1518 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1526 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_DIASN, (yyvsp[0]. node ));   }
-#line 3416 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3425 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 311:
-#line 1520 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1528 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_MODASN, (yyvsp[0]. node ));   }
-#line 3422 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3431 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 312:
-#line 1522 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1530 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_PLASN, (yyvsp[0]. node ));   }
-#line 3428 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3437 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 313:
-#line 1524 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1532 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_MIASN, (yyvsp[0]. node ));   }
-#line 3434 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3443 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 314:
-#line 1526 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1534 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_SLASN, (yyvsp[0]. node ));   }
-#line 3440 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3449 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 315:
-#line 1528 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1536 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_SRASN, (yyvsp[0]. node ));   }
-#line 3446 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3455 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 316:
-#line 1530 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1538 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_ANDASN, (yyvsp[0]. node ));   }
-#line 3452 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3461 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 317:
-#line 1532 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1540 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_CARETASN, (yyvsp[0]. node ));   }
-#line 3458 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3467 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
   case 318:
-#line 1534 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
+#line 1542 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1646  */
     {   PUSH(TOK_ORASN, (yyvsp[0]. node ));   }
-#line 3464 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3473 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
     break;
 
 
-#line 3468 "/home/cpqd/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
+#line 3477 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.cc" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -3692,7 +3701,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1554 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1906  */
+#line 1562 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1906  */
 
 
 

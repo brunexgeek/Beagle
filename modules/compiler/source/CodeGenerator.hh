@@ -18,7 +18,7 @@ namespace compiler {
 class CompilationUnit;
 
 
-class CodeGenerator : public TreeVisitor<NameGenerator>
+class CodeGenerator : public TreeVisitor
 {
 	public:
         static const std::string CLASS_ENTRY;
@@ -48,20 +48,21 @@ class CodeGenerator : public TreeVisitor<NameGenerator>
 		void visitCompulationUnit(
 			Node &node );
 
-		void visitPackageDeclaration(
+		void visitType(
 			Node &node );
 
-		void visitImportDeclaration(
-			Node &node );
+        void visitImports(
+            Node &imports );
 
-		void visitTypeDeclaration(
-			Node &node );
+        void visitField(
+            Node &type,
+            Node &field );
 
         void visitMethod(
             Node &parent,
             Node &method );
 
-		void visitAnnotationDeclaration(
+		void visitAnnotation(
 			Node &parent,
 			Node &node );
 
@@ -77,15 +78,17 @@ class CodeGenerator : public TreeVisitor<NameGenerator>
             Node &method,
             Node &body );
 
-        void visitLocalVariableDeclaration(
+        void visitLocalVariable(
             Node &variable );
 
     private:
+        NameGenerator &context;
         CodePrinter printer;
         GuardPrinter guard;
         VariablePrinter variable;
         StructPrinter structure;
         std::ostream &out;
+
 
         //std::string dynamicFields;
         //std::string staticFields;

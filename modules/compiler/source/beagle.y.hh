@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_BEAGLE_HOME_CPQD_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
-# define YY_BEAGLE_HOME_CPQD_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
+#ifndef YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
+# define YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -40,7 +40,7 @@
 extern int beagle_debug;
 #endif
 /* "%code requires" blocks.  */
-#line 15 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
+#line 15 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
 
 
 
@@ -83,7 +83,7 @@ typedef struct
 int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 87 "/home/cpqd/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
+#line 87 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -215,29 +215,29 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_CONSTRUCTOR = 380,
     TOK_LIST = 381,
     TOK_IMPORTS = 382,
-    TOK_VARIABLE = 383,
-    TOK_VARIABLES = 384,
-    TOK_MODIFIERS = 385,
-    TOK_UNIT = 386,
-    TOK_TYPE = 387,
-    TOK_TYPES = 388,
-    TOK_MEMBER = 389,
-    TOK_IMPORT_ALL = 390,
-    TOK_STATIC_INIT = 391,
-    TOK_PARAMETER = 392,
-    TOK_PARAMETERS = 393,
-    TOK_BLOCK = 394,
-    TOK_CALL = 395,
-    TOK_ACCESS_FIELD = 396,
-    TOK_CAST = 397,
-    TOK_ACCESS_ARRAY = 398,
-    TOK_FOR_EACH = 399,
-    TOK_GROUP = 400,
-    TOK_ANNOTATION = 401,
-    TOK_NEW_ARRAY = 402,
-    TOK_ARRAY = 403,
-    TOK_ANNOTATIONS = 404,
-    TOK_ARGUMENTS = 405
+    TOK_DECLARATOR = 383,
+    TOK_MODIFIERS = 384,
+    TOK_UNIT = 385,
+    TOK_TYPE = 386,
+    TOK_TYPES = 387,
+    TOK_MEMBER = 388,
+    TOK_IMPORT_ALL = 389,
+    TOK_STATIC_INIT = 390,
+    TOK_PARAMETER = 391,
+    TOK_PARAMETERS = 392,
+    TOK_BLOCK = 393,
+    TOK_CALL = 394,
+    TOK_ACCESS_FIELD = 395,
+    TOK_CAST = 396,
+    TOK_ACCESS_ARRAY = 397,
+    TOK_FOR_EACH = 398,
+    TOK_GROUP = 399,
+    TOK_ANNOTATION = 400,
+    TOK_NEW_ARRAY = 401,
+    TOK_ARRAY = 402,
+    TOK_ANNOTATIONS = 403,
+    TOK_ARGUMENTS = 404,
+    TOK_LOCAL = 405
   };
 #endif
 
@@ -246,11 +246,11 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 183 "/home/cpqd/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
+#line 183 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
 
     char* node;
 
-#line 254 "/home/cpqd/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
+#line 254 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -260,4 +260,4 @@ union YYSTYPE
 
 int beagle_parse (parser_context_t *parserContext);
 
-#endif /* !YY_BEAGLE_HOME_CPQD_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED  */
+#endif /* !YY_BEAGLE_MEDIA_DADOS_PROJETOS_BEAGLE_MODULES_COMPILER_SOURCE_BEAGLE_Y_HH_INCLUDED  */

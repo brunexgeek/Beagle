@@ -25,7 +25,7 @@ const string CodeGenerator::METHOD_METAINFO = "__method_metainfo";
 
 
 CodeGenerator::CodeGenerator(
-    NameGenerator &context) : TreeVisitor(context), guard(printer), variable(printer),
+    NameGenerator &context) : context(context), guard(printer), variable(printer),
     structure(printer), out(printer.getStream())
 {
     // nothing to do
@@ -345,20 +345,13 @@ void CodeGenerator::visitCompulationUnit(
     this->root = &root;
 
     // visit the available type declaration
-    visitTypeDeclaration(root[2]);
+    visitType(root[2]);
 
     this->root = NULL;
 }
 
 
-void CodeGenerator::visitPackageDeclaration(
-	Node &node )
-{
-
-}
-
-
-void CodeGenerator::visitTypeDeclaration(
+void CodeGenerator::visitType(
 	Node &type )
 {
     assert(root != NULL);
@@ -437,8 +430,9 @@ void CodeGenerator::visitMethodBody(
         printer.indent();
         switch (stmt.type)
         {
-            case TOK_VARIABLE:
-                visitLocalVariableDeclaration(stmt);
+            case TOK_LOCAL:
+                visitLocalVariable(stmt);
+                break;
             default:
                 out << "// " << Parser::name(stmt.type) << "\n";
         }
@@ -470,7 +464,7 @@ void CodeGenerator::visitParameter(
 }
 
 
-void CodeGenerator::visitAnnotationDeclaration(
+void CodeGenerator::visitAnnotation(
 	Node &parent,
     Node &node )
 {
@@ -554,17 +548,29 @@ void CodeGenerator::writeHeader()
 }
 
 
-void CodeGenerator::visitLocalVariableDeclaration(
+void CodeGenerator::visitLocalVariable(
     Node &variable )
 {
-    assert(variable.type == TOK_VARIABLE);
+    assert(variable.type == TOK_LOCAL);
 
     string nativeType = context.getNativeType(variable[0]);
 
-    for (int i = 0, n = variable[1].getChildCount(); i < n; ++i)
-    {
-        out << nativeType << ' ' << variable[1][i][0].text << ";\n";
-    }
+    out << nativeType << ' ' << variable[1].text << ";\n";
+}
+
+
+void CodeGenerator::visitImports(
+    Node &imports )
+{
+
+}
+
+
+void CodeGenerator::visitField(
+    Node &type,
+    Node &field )
+{
+
 }
 
 

@@ -319,8 +319,7 @@ static void beagle_push(
 %token < node > TOK_CONSTRUCTOR
 %token < node > TOK_LIST
 %token < node > TOK_IMPORTS
-%token < node > TOK_VARIABLE
-%token < node > TOK_VARIABLES
+%token < node > TOK_DECLARATOR
 %token < node > TOK_MODIFIERS
 %token < node > TOK_UNIT
 %token < node > TOK_TYPE
@@ -342,7 +341,7 @@ static void beagle_push(
 %token < node > TOK_ARRAY
 %token < node > TOK_ANNOTATIONS
 %token < node > TOK_ARGUMENTS
-
+%token < node > TOK_LOCAL
 
 /*
  * each nonterminal is declared.  nonterminals correspond to internal nodes
@@ -704,7 +703,7 @@ FieldDeclaration:
 
 VariableDeclarators:
     VariableDeclarator
-    {   COMBINE(TOK_VARIABLES, 1);   }
+    {   COMBINE(TOK_LIST, 1);   }
     | VariableDeclarators TOK_CM VariableDeclarator
     {   COMBINE(0, 1);   }
     ;
@@ -714,10 +713,10 @@ VariableDeclarator:
     SimpleName
     {
         PUSH(TOK_NULL, NULL /* "VariableInitializer" */ );
-        COMBINE(TOK_VARIABLE, 2);
+        COMBINE(TOK_DECLARATOR, 2);
     }
     | SimpleName TOK_ASN VariableInitializer
-    {   COMBINE(TOK_VARIABLE, 2);   }
+    {   COMBINE(TOK_DECLARATOR, 2);   }
     ;
 
 
@@ -834,7 +833,16 @@ ExtendsInterfacesOpt:
 
 InterfaceDeclaration:
     AnnotationDeclarationsOpt ModifiersOpt TOK_INTERFACE SimpleName ExtendsInterfacesOpt TOK_EOL InterfaceBody
-    {   COMBINE(TOK_INTERFACE, 5);   }
+    {
+        // Notice: we need to insert an TOK_NULL between 'SimpleName' and 'ExtendsInterfacesOpt'
+        //         to make TOK_INTERFACE similar to TOK_CLASS
+        beagle::compiler::Node *intfBody = POP();
+        beagle::compiler::Node *extends = POP();
+        PUSH(TOK_NULL, NULL);
+        NPUSH(extends);
+        NPUSH(intfBody);
+        COMBINE(TOK_INTERFACE, 6);
+    }
     ;
 
 ExtendsInterfaces:
@@ -915,7 +923,7 @@ LocalVariableDeclarationStatement:
 
 LocalVariableDeclaration:
     Type VariableDeclarators
-    {   COMBINE(TOK_VARIABLE, 2);   }
+    {   COMBINE(TOK_LOCAL, 2);   }
     ;
 
 Statement:

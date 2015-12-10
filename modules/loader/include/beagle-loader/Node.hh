@@ -20,6 +20,7 @@ class Node
         int counter;
         uint32_t line;
         uint32_t column;
+        Node *parent;
 
         Node(
             int type,
@@ -36,49 +37,28 @@ class Node
 
         virtual ~Node();
 
-        void setChild( int index, Node &value )
-        {
-            if (index >= 0 && index < (int)children.size())
-				children[index] = &value;
-        }
+        void setChild(
+            int index,
+            Node &value );
 
-        void removeChild( int index = -1 )
-        {
-            if (index == -1)
-                children.clear();
-            else
-            if (index >= 0 && index < (int)children.size())
-                children.erase(children.begin() + index);
-        }
+        void removeChild(
+            int index = -1 );
 
-		Node &addChild(
-			int type,
-			const char *text )
-		{
-			Node *node = new Node(type, text);
-			addChild(*node);
-			return *node;
-		}
+        void addChild(
+            Node &value,
+            int position = -1 );
 
-        void addChild( Node &value )
-        {
-            children.push_back(&value);
-        }
+        Node &addChild(
+            int type,
+            const char *text );
 
-		int getChildCount() const
-		{
-			return (int) children.size();
-		}
+		int getChildCount() const;
 
-		Node &operator[]( int index )
-		{
-			return *children[index];
-		}
+		Node &operator[](
+            int index );
 
-        const Node &operator[]( int index ) const
-		{
-			return *children[index];
-		}
+        const Node &operator[](
+            int index ) const;
 
         void print(
             std::ostream &out,
@@ -89,10 +69,7 @@ class Node
         bool hasChild(
             int modifier );
 
-		operator std::string()
-		{
-			return text;
-		}
+		operator std::string();
 
     private:
         std::vector<Node*> children;

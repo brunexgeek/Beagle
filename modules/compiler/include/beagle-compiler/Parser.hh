@@ -28,9 +28,11 @@ namespace compiler {
                 void *scanner,
                 std::istream &in );
 
-            void expandFields( Node &root );
+            void expandFields(
+                Node &root );
 
-            void expandVariable( Node &varDecl );
+            void expandVariables(
+                Node &root );
 	};
 
 

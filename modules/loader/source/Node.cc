@@ -2,14 +2,19 @@
 #include <cstdarg>
 #include <cstdio>
 #include <iomanip>
+#include <vector>
+
 
 namespace beagle {
 namespace compiler {
 
 
+using namespace std;
+
+
 Node::Node(
     int type,
-    const char *text ) : type(type), counter(0), line(1), column(1)
+    const char *text ) : type(type), counter(0), line(1), column(1), parent(NULL)
 {
     if (text != NULL)
         this->text = text;
@@ -92,6 +97,87 @@ bool Node::hasChild(
         if ((*this)[i].type == modifier) return true;
 
     return false;
+}
+
+
+void Node::setChild(
+    int index,
+    Node &value )
+{
+    if (index >= 0 && index < (int)children.size())
+        children[index] = &value;
+    value.parent = this;
+}
+
+
+void Node::removeChild(
+    int index )
+{
+    if (index == -1)
+    {
+        for (size_t i = 0, n = children.size(); i < n; ++i)
+            children[i]->parent = NULL;
+        children.clear();
+    }
+    else
+    if (index >= 0 && index < (int)children.size())
+    {
+        children[index]->parent = NULL;
+        children.erase(children.begin() + index);
+    }
+}
+
+
+void Node::addChild(
+    Node &value,
+    int position )
+{
+    if (position < 0 || children.size() == 0 || position >= (int) children.size())
+    {
+        children.push_back(&value);
+    }
+    else
+    {
+        vector<Node*>::iterator it = children.begin();
+        children.insert(it + position, &value);
+    }
+    value.parent = this;
+}
+
+
+Node &Node::addChild(
+    int type,
+    const char *text )
+{
+    Node *node = new Node(type, text);
+    addChild(*node);
+    return *node;
+}
+
+
+int Node::getChildCount() const
+{
+    return (int) children.size();
+}
+
+
+Node &Node::operator[](
+    int index )
+{
+    return *children[index];
+}
+
+
+const Node &Node::operator[](
+    int index ) const
+{
+    return *children[index];
+}
+
+
+Node::operator std::string ()
+{
+    return text;
 }
 
 
