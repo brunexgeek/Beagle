@@ -28,5 +28,7 @@ int main( int argc, char **argv )
         loader.load(argv[i]);
     }
 
+	loader.print();
+
     return 0;
 }

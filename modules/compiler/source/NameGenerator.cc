@@ -145,7 +145,6 @@ string NameGenerator::getNativeType(
     switch (type.type)
     {
         case TOK_TYPE_ARRAY:
-            std::cout << Parser::name(type[0].type) << std::endl;
             result = getNativeType(type[0]);
             for (int i = 0; i < type.counter; ++i)
                 result += '*';

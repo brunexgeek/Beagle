@@ -51,6 +51,15 @@ class Node
                 children.erase(children.begin() + index);
         }
 
+		Node &addChild(
+			int type,
+			const char *text )
+		{
+			Node *node = new Node(type, text);
+			addChild(*node);
+			return *node;
+		}
+
         void addChild( Node &value )
         {
             children.push_back(&value);

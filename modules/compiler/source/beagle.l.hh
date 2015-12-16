@@ -2,9 +2,9 @@
 #define beagle_HEADER_H 1
 #define beagle_IN_HEADER 1
 
-#line 6 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.hh"
+#line 6 "/home/cpqd/beagle/modules/compiler/source/beagle.l.hh"
 
-#line 8 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.hh"
+#line 8 "/home/cpqd/beagle/modules/compiler/source/beagle.l.hh"
 
 #define  YY_INT_ALIGNED short int
 
@@ -466,8 +466,8 @@ extern int beagle_lex \
 #undef YY_DECL
 #endif
 
-#line 354 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 354 "/home/cpqd/beagle/modules/compiler/source/beagle.l"
 
-#line 472 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.hh"
+#line 472 "/home/cpqd/beagle/modules/compiler/source/beagle.l.hh"
 #undef beagle_IN_HEADER
 #endif /* beagle_HEADER_H */

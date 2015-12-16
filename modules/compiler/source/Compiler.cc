@@ -19,6 +19,9 @@ namespace beagle {
 namespace compiler {
 
 
+using namespace beagle::loader;
+
+
 CompilerListener::CompilerListener()
 {
     // nothing to do
@@ -159,7 +162,7 @@ Node *Compiler::getTree(
 
 bool Compiler::resolveTypes()
 {
-    bool hasError = false;
+    bool success = true;
 
     // iterate the compilation unit list resolving imports
     map<string, CompilationUnit>::iterator it = units.begin();
@@ -174,10 +177,10 @@ bool Compiler::resolveTypes()
     for (; it != units.end(); ++it)
     {
         if ((*it).second.root == NULL) continue;
-        hasError |= resolveTypes((*it).second.fileName, *(*it).second.root, *(*it).second.imports);
+        success |= resolveTypes((*it).second.fileName, *(*it).second.root, *(*it).second.imports);
     }
 
-    return !hasError;
+    return success;
 }
 
 
@@ -187,7 +190,7 @@ bool Compiler::resolveTypes(
     SymbolTable &imports )
 {
     const string *resolved = NULL;
-    bool hasError = false;
+    bool success = true;
 
     // iterate the children recursively resolving types
     for (int i = 0, n = root.getChildCount(); i < n; ++i)
@@ -205,17 +208,17 @@ bool Compiler::resolveTypes(
                     else
                     {
                         listener.onError(fileName, item[0].line, item[0].column, "Unresolved type " + item[0].text);
-                        hasError |= true;
+                        success = false;
                     }
                 }
                 break;
             default:
                 if (item.getChildCount() > 0)
-                    hasError |= resolveTypes(fileName, item, imports);
+                    success |= resolveTypes(fileName, item, imports);
         }
     }
 
-    return !hasError;
+    return success;
 }
 
 
@@ -229,6 +232,30 @@ const char *Compiler::getTokenName(
     int tok )
 {
 	return beagle_getTokenName(tok);
+}
+
+
+Node *Compiler::import(
+	const ModuleEntry &module )
+{
+	Node *root;
+
+	map<string, TypeEntry*>::const_iterator typeCur = module.types.begin();
+	map<string, TypeEntry*>::const_iterator typeEnd = module.types.end();
+	for (; typeCur != typeEnd; ++typeCur)
+	{
+		// create the compilation unit
+		root = new Node(TOK_UNIT, NULL);
+		// add package
+		//root->addChild(TOK_QNAME, (*typeCur).second->info->packageName);
+	}
+}
+
+
+bool Compiler::import(
+	const ModuleLoader &loader )
+{
+	return false;
 }
 
 

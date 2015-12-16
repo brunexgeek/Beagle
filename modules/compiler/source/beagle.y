@@ -357,7 +357,7 @@ static void beagle_push(
 %type < node > Super Interfaces InterfaceTypeList ClassBody
 %type < node > ClassBodyDeclarations ClassBodyDeclaration
 %type < node > ClassMemberDeclaration FieldDeclaration VariableDeclarators
-%type < node > VariableDeclarator VariableDeclaratorId VariableInitializer
+%type < node > VariableDeclarator VariableInitializer
 %type < node > MethodDeclaration MethodHeader Range
 %type < node > FormalParameterList FormalParameter Throws ClassTypeList
 %type < node > MethodBody StaticInitializer ConstructorDeclaration
@@ -709,21 +709,17 @@ VariableDeclarators:
     {   COMBINE(0, 1);   }
     ;
 
+
 VariableDeclarator:
-    VariableDeclaratorId
+    SimpleName
     {
         PUSH(TOK_NULL, NULL /* "VariableInitializer" */ );
         COMBINE(TOK_VARIABLE, 2);
     }
-    | VariableDeclaratorId TOK_ASN VariableInitializer
+    | SimpleName TOK_ASN VariableInitializer
     {   COMBINE(TOK_VARIABLE, 2);   }
     ;
 
-VariableDeclaratorId:
-    TOK_NAME
-    {   PUSH(TOK_NAME, $1);   }
-    | VariableDeclaratorId TOK_LB TOK_RB
-    ;
 
 VariableInitializer:
     Expression
@@ -768,9 +764,9 @@ FormalParameterList:
     ;
 
 FormalParameter:
-    Type VariableDeclaratorId
+    Type SimpleName
     {  COMBINE(TOK_PARAMETER, 2);   }
-    | TOK_VARARG Type VariableDeclaratorId
+    | TOK_VARARG Type SimpleName
     {
         COMBINE(TOK_PARAMETER, 2);
         ++TOP()->counter;
@@ -933,8 +929,7 @@ Statement:
 	;
 
 StatementWithoutTrailingSubstatement:
-	Block
-	| ExpressionStatement
+	ExpressionStatement
 	| SwitchStatement
 	| DoStatement
 	| BreakStatement

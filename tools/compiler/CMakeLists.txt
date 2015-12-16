@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 
 include_directories(
-	"../../modules/compiler/include")
+	"../../modules/compiler/include"
+	"../../modules/loader/include")
 
 file(GLOB COMPILER_SOURCES
 	"source/*.cc")

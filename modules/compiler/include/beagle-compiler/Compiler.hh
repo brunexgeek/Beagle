@@ -4,6 +4,7 @@
 
 #include <beagle-compiler/Node.hh>
 #include <beagle-compiler/SymbolTable.hh>
+#include <beagle-loader/ModuleLoader.hh>
 #include <map>
 #include <stdint.h>
 #include <string>
@@ -94,6 +95,12 @@ class Compiler
         void expandTypeName(
             Node &package,
             Node &type );
+
+		Node *import(
+			const beagle::loader::ModuleEntry &module );
+
+        bool import(
+			const beagle::loader::ModuleLoader &loader );
 };
 
 

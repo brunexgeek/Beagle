@@ -306,8 +306,8 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 "]"                             { EMIT(TOK_RB); }
 "{"                             { EMIT(TOK_LC); }
 "}"                             { EMIT(TOK_RC); }
-"&&"                            { EMIT(TOK_ANDAND); }
-"||"                            { EMIT(TOK_OROR); }
+"and"                           { EMIT(TOK_ANDAND); }
+"or"                            { EMIT(TOK_OROR); }
 "++"                            { EMIT(TOK_INC); }
 "--"                            { EMIT(TOK_DEC); }
 "+"                             { EMIT(TOK_PLUS); }

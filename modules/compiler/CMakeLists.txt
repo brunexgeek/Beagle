@@ -1,6 +1,7 @@
 
 include_directories(
-	"include")
+	"include"
+	"../loader/include")
 
 add_custom_target(parser_bison COMMAND
 	bison --defines=${CMAKE_CURRENT_SOURCE_DIR}/source/beagle.y.hh
