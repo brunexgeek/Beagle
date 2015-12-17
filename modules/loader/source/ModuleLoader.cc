@@ -1,4 +1,5 @@
 #include <beagle-loader/ModuleLoader.hh>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -12,7 +13,17 @@ namespace loader {
 using namespace std;
 
 
-#include "../../compiler/source/header-template.c"
+Type::Type(
+	const struct __type_metainfo* info ) : info(info), root(NULL)
+{
+
+}
+
+
+Type::Type()
+{
+
+}
 
 
 ModuleLoader::ModuleLoader()
@@ -27,11 +38,11 @@ ModuleLoader::~ModuleLoader()
 }
 
 
-ModuleEntry *ModuleLoader::load(
+Module *ModuleLoader::load(
     const std::string &fileName )
 {
     void *library;
-    ModuleEntry *entry = NULL;
+    Module *entry = NULL;
     const struct __module_metainfo *module;
     char path[PATH_MAX];
 
@@ -45,14 +56,14 @@ ModuleEntry *ModuleLoader::load(
     module = (const struct __module_metainfo *) dlsym(library, "module_metainfo");
     if (module == NULL) goto ESCAPE;
 
-	entry = new ModuleEntry();
+	entry = new Module();
 
     for (uint32_t i = 0; i < module->typeCount; ++i)
     {
-		TypeEntry *type = new TypeEntry();
+		Type *type = new Type();
 		type->info = module->types[i].info;
 
-		entry->types.insert( pair<string, TypeEntry*>(string(type->info->qualifiedName), type) );
+		entry->types.insert( pair<string, Type*>(string(type->info->qualifiedName), type) );
 
 		for (uint32_t j = 0; j < module->types[i].info->fieldCount; ++j)
 		{
@@ -71,7 +82,7 @@ ModuleEntry *ModuleLoader::load(
     entry->library = library;
     entry->module = (void*) module;
     entry->fileName = path;
-    modules.insert( pair<string, ModuleEntry*>(entry->fileName, entry) );
+    modules.insert( pair<string, Module*>(entry->fileName, entry) );
 
     return entry;
 ESCAPE:
@@ -168,16 +179,17 @@ const string ModuleLoader::translatePrototype(
 }
 
 
-void ModuleLoader::print( bool friendly ) const
+void ModuleLoader::print(
+	bool friendly ) const
 {
-	std::map<std::string, ModuleEntry*>::const_iterator it = modules.begin();
+	std::map<std::string, Module*>::const_iterator it = modules.begin();
     for (; it != modules.end(); ++it)
     {
         std::cout << "Types from '" << (*it).second->fileName << "':\n";
 		std::cout << "\tVisibility  Type\n";
 
-		map<string, TypeEntry*>::const_iterator typeCur = (*it).second->types.begin();
-		map<string, TypeEntry*>::const_iterator typeEnd = (*it).second->types.end();
+		map<string, Type*>::const_iterator typeCur = (*it).second->types.begin();
+		map<string, Type*>::const_iterator typeEnd = (*it).second->types.end();
 		for (; typeCur != typeEnd; ++typeCur)
 		{
 			//const char *visibility = "PRIVATE";
@@ -190,7 +202,8 @@ void ModuleLoader::print( bool friendly ) const
 		typeEnd = (*it).second->types.end();
 		for (; typeCur != typeEnd; ++typeCur)
 		{
-			std::cout << "Fields of '" << (*typeCur).first << "':\n\tVisibility  Name                            Type\n";
+			if ((*typeCur).second->fields.size() != 0)
+				std::cout << "Fields of '" << (*typeCur).first << "':\n\tVisibility  Name                            Type\n";
 			map<string, const struct __field_metainfo*>::const_iterator fieldCur = (*typeCur).second->fields.begin();
 			map<string, const struct __field_metainfo*>::const_iterator fieldEnd = (*typeCur).second->fields.end();
 			for (; fieldCur != fieldEnd; ++fieldCur)
@@ -201,7 +214,8 @@ void ModuleLoader::print( bool friendly ) const
 					translatePrototype( (*fieldCur).second->type ).c_str() );
 			}
 
-			std::cout << "\nMethods of '" << (*typeCur).first << "':\n\tVisibility  Name                            Prototype\n";
+			if ((*typeCur).second->methods.size() != 0)
+				std::cout << "\nMethods of '" << (*typeCur).first << "':\n\tVisibility  Name                            Prototype\n";
 			map<string, const struct __method_metainfo*>::const_iterator methodCur = (*typeCur).second->methods.begin();
 			map<string, const struct __method_metainfo*>::const_iterator methodEnd = (*typeCur).second->methods.end();
 			for (; methodCur != methodEnd; ++methodCur)
@@ -215,69 +229,47 @@ void ModuleLoader::print( bool friendly ) const
     }
 }
 
-
 /*
-void showType( void *lib, const char *symbol )
+Node *ModuleLoader::prototypeToNode(
+	const std::string &type )
 {
-    const struct __field_metainfo* fields = NULL;
-    const struct __type_metainfo* type = NULL;
-    const struct __method_metainfo* methods = NULL;
-    int c = 0;
+	if (type.length() == 0) return NULL;
 
-    type = dlsym(lib, symbol);
-    printf("   Found %d field%c\n", type->fieldCount, (type->fieldCount > 1) ? 's' : ' ');
+	const char *p = type.c_str();
 
-    fields = type->fields;
-    for (c = 0; c < type->fieldCount; ++c)
+	switch (type[0])
     {
-        printf("      %-20s : %s\n", fields[c].name, fields[c].type);
+        case 'C':
+			return new Node(TOK_CHAR, NULL);
+        case 'O';
+			return new Node(TOK_BOOLEAN, NULL);
+        case '1':
+			return new Node(TOK_UINT8, NULL);
+        case '2':
+			return new Node(TOK_UINT16, NULL);
+        case '4':
+			return new Node(TOK_UINT32, NULL);
+        case '8':
+			return new Node(TOK_INT64, NULL);
+        case 'B':
+			return new Node(TOK_INT8, NULL);
+        case 'S':
+			return new Node(TOK_INT16, NULL);
+        case 'I':
+			return new Node(TOK_CHAR, NULL);
+        case 'L':
+			return new Node(TOK_CHAR, NULL);
+        case 'F':
+			return new Node(TOK_CHAR, NULL);
+        case 'D':
+			return *new Node(TOK_CHAR, NULL);
     }
+	if (type == "I")
+		return *new Node(TOK_CHAR, NULL);
+	else
+		return *new Node(TOK_CHAR, NULL);
+}*/
 
-    printf("   Found %d method%c\n", type->methodCount, (type->methodCount > 1) ? 's' : ' ');
-
-    methods = type->methods;
-    for (c = 0; c < type->methodCount; ++c)
-    {
-        printf("      %-20s : %s\n", methods[c].name, methods[c].prototype);
-    }
-}
-
-
-const struct __module_metainfo* loadModule( void *lib  )
-{
-    const struct __module_metainfo* module = dlsym(lib, "module_metainfo");
-    int c;
-
-    for (c = 0; c < module->classCount; ++c)
-        printf("   %-2d  %s\n", c, module->classTable[c].name);
-
-    return module;
-}
-
-int main( int argc, char **argv )
-{
-    const struct __types_metainfo* clazz = NULL;
-    const struct __module_metainfo* module = NULL;
-    int c = 0;
-
-    void *lib = dlopen(argv[1], RTLD_LAZY);
-    printf("Loading %s\n", argv[1]);
-    if (lib != NULL)
-    {
-        module = loadModule(lib);
-
-        for (c = 0; c < module->classCount; ++c)
-        {
-            printf("Type '%s'\n", module->classTable[c].name);
-            showType(lib, module->classTable[c].symbol);
-        }
-
-        dlclose(lib);
-    }
-    else
-        fprintf(stderr, "%s\n", dlerror());
-}
-*/
 
 } // namespace compiler
 } // namespace beagle

@@ -2,7 +2,7 @@
 #define BEAGLE_COMPILER_HH
 
 
-#include <beagle-compiler/Node.hh>
+#include <beagle-loader/Node.hh>
 #include <beagle-compiler/SymbolTable.hh>
 #include <beagle-loader/ModuleLoader.hh>
 #include <map>
@@ -15,6 +15,7 @@ namespace compiler {
 
 
 using namespace std;
+using namespace beagle::loader;
 
 
 class CompilerListener
@@ -75,6 +76,9 @@ class Compiler
 
         const CompilerListener &getListener() const;
 
+        void import(
+			const ModuleLoader &loader );
+
     protected:
         map<string, CompilationUnit> units;
         SymbolTable symbols;
@@ -96,11 +100,11 @@ class Compiler
             Node &package,
             Node &type );
 
-		Node *import(
-			const beagle::loader::ModuleEntry &module );
+		void import(
+			const Module &module );
 
-        bool import(
-			const beagle::loader::ModuleLoader &loader );
+		static Node *makeTree(
+			const Type &type );
 };
 
 

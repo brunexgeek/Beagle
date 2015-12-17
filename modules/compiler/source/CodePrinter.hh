@@ -2,7 +2,7 @@
 #define BEAGLE_CODEPRINTER_HH
 
 
-#include <beagle-compiler/Node.hh>
+#include <beagle-loader/Node.hh>
 #include <sstream>
 
 

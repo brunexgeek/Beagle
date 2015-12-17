@@ -235,27 +235,78 @@ const char *Compiler::getTokenName(
 }
 
 
-Node *Compiler::import(
-	const ModuleEntry &module )
+Node *Compiler::makeTree(
+	const Type &type )
 {
-	Node *root;
+	// create the compilation unit
+	Node *root = new Node(TOK_UNIT, NULL);
+	root->addChild(TOK_QNAME, type.info->packageName);
+	root->addChild(TOK_NULL, NULL);
+	Node &clazz = root->addChild(TOK_CLASS, NULL);
+	// create the type
+	clazz.addChild(TOK_NULL, NULL);
+	clazz.addChild(TOK_NULL, NULL);
+	clazz.addChild(TOK_QNAME, type.info->qualifiedName);
+	clazz.addChild(TOK_NULL, NULL);
+	clazz.addChild(TOK_NULL, NULL);
+	Node &body = clazz.addChild(TOK_BODY, NULL);
 
-	map<string, TypeEntry*>::const_iterator typeCur = module.types.begin();
-	map<string, TypeEntry*>::const_iterator typeEnd = module.types.end();
-	for (; typeCur != typeEnd; ++typeCur)
+	// create the fields
+	map<string, const struct __field_metainfo*>::const_iterator fieldCur = type.fields.begin();
+	map<string, const struct __field_metainfo*>::const_iterator fieldEnd = type.fields.end();
+	for (; fieldCur != fieldEnd; ++fieldCur)
 	{
-		// create the compilation unit
-		root = new Node(TOK_UNIT, NULL);
-		// add package
-		//root->addChild(TOK_QNAME, (*typeCur).second->info->packageName);
+		Node &field = body.addChild(TOK_FIELD, NULL);
+		field.addChild(TOK_NULL, NULL);  // annotations
+		field.addChild(TOK_NULL, NULL);  // modifiers
+		field.addChild(TOK_NULL, NULL);  // type
+		field.addChild(TOK_NAME, (*fieldCur).second->name);  // name
+		field.addChild(TOK_NULL, NULL);  // initializer
 	}
+
+	// create the methods
+	map<string, const struct __method_metainfo*>::const_iterator methodCur = type.methods.begin();
+	map<string, const struct __method_metainfo*>::const_iterator methodEnd = type.methods.end();
+	for (; methodCur != methodEnd; ++methodCur)
+	{
+		Node &method = body.addChild(TOK_METHOD, NULL);
+		method.addChild(TOK_NULL, NULL);  // annotations
+		method.addChild(TOK_NULL, NULL);  // modifiers
+		method.addChild(TOK_NULL, NULL);  // type
+		method.addChild(TOK_NAME, (*methodCur).second->name);  // name
+		method.addChild(TOK_NULL, NULL);  // parameters
+		method.addChild(TOK_NULL, NULL);  // ?
+		method.addChild(TOK_NULL, NULL);  // block
+	}
+
+	root->print(std::cout, Parser::name);
+
+	return root;
 }
 
 
-bool Compiler::import(
+void Compiler::import(
+	const Module &module )
+{
+	map<string, Type*>::const_iterator typeCur = module.types.begin();
+	map<string, Type*>::const_iterator typeEnd = module.types.end();
+	for (; typeCur != typeEnd; ++typeCur)
+	{
+		makeTree(*(*typeCur).second);
+	}
+
+}
+
+
+void Compiler::import(
 	const ModuleLoader &loader )
 {
-	return false;
+	map<string, Module*>::const_iterator moduleCur = loader.modules.begin();
+	map<string, Module*>::const_iterator moduleEnd = loader.modules.end();
+	for (; moduleCur != moduleEnd; ++moduleCur)
+	{
+		import(*(*moduleCur).second);
+	}
 }
 
 

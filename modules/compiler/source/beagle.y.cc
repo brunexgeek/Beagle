@@ -107,7 +107,7 @@ extern int beagle_debug;
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <beagle-compiler/Node.hh>
+#include <beagle-loader/Node.hh>
 #include <beagle-compiler/Parser.hh>
 
 
@@ -330,7 +330,7 @@ int beagle_parse (parser_context_t *parserContext);
 
 #include <iostream>
 #include "beagle.l.hh"
-#include <beagle-compiler/Node.hh>
+#include <beagle-loader/Node.hh>
 
 
 static void beagle_error(parser_context_t *context, const char *msg)

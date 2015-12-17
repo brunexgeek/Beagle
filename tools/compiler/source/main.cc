@@ -2,12 +2,14 @@
 #include <fstream>
 #include <cstdlib>
 #include <getopt.h>
-#include <beagle-compiler/Node.hh>
+#include <beagle-loader/Node.hh>
 #include <beagle-compiler/Compiler.hh>
+#include <beagle-loader/ModuleLoader.hh>
 
 
 using namespace std;
 using namespace beagle::compiler;
+using namespace beagle::loader;
 
 
 string outputFileName;
@@ -50,20 +52,24 @@ void main_usage()
 void main_parseOptions(
     int argc,
     char **argv,
-    Compiler &compiler )
+    Compiler &compiler,
+	ModuleLoader &loader )
 {
     int opt;
 
-    while ( (opt = getopt(argc, argv, "o:")) != -1)
+    while ( (opt = getopt(argc, argv, "o:l:x")) != -1)
     {
         switch (opt)
         {
             case 'o':
                 outputFileName = string(optarg);
                 break;
-            case 'l':
+            case 'x':
                 useLexer = true;
                 break;
+            case 'l':
+				loader.load(optarg);
+				break;
             default: /* '?' */
                 main_usage();
         }
@@ -78,10 +84,15 @@ void main_parseOptions(
 
 int main( int argc, char **argv )
 {
+	ModuleLoader loader;
     CustomListener listener;
     Compiler compiler(listener);
-	main_parseOptions(argc, argv, compiler);
 
+	main_parseOptions(argc, argv, compiler, loader);
+
+	// make all loaded modules visible at compilation time
+	compiler.import(loader);
+	loader.print(std::cout);
     if (useLexer)
     {
         //parser.tokens(*in, argv[1]);

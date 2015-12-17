@@ -48,7 +48,7 @@ extern int beagle_debug;
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <beagle-compiler/Node.hh>
+#include <beagle-loader/Node.hh>
 #include <beagle-compiler/Parser.hh>
 
 

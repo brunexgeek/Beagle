@@ -1,4 +1,4 @@
-#include <beagle-compiler/Node.hh>
+#include <beagle-loader/Node.hh>
 #include <cstdarg>
 #include <cstdio>
 #include <iomanip>

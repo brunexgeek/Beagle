@@ -4,7 +4,7 @@
 
 #include <set>
 #include <string>
-#include <beagle-compiler/Node.hh>
+#include <beagle-loader/Node.hh>
 
 namespace beagle {
 namespace compiler {
