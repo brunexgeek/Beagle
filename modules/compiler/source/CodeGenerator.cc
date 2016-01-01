@@ -1,8 +1,8 @@
 #include "CodeGenerator.hh"
 #include <beagle-compiler/Compiler.hh>
+#include <beagle-compiler/Parser.hh>
 #include <iostream>
 #include <stdarg.h>
-#include "beagle.y.hh"
 #include <cassert>
 
 
@@ -15,13 +15,6 @@ namespace compiler {
 
 
 using namespace std;
-
-
-const string CodeGenerator::CLASS_ENTRY = "__class_entry";
-const string CodeGenerator::MODULE_METAINFO = "__module_metainfo";
-const string CodeGenerator::TYPE_METAINFO = "__type_metainfo";
-const string CodeGenerator::FIELD_METAINFO = "__field_metainfo";
-const string CodeGenerator::METHOD_METAINFO = "__method_metainfo";
 
 
 CodeGenerator::CodeGenerator(
@@ -48,44 +41,73 @@ CodePrinter &CodeGenerator::getCodePrinter()
     return printer;
 }
 
-/*
+
 void CodeGenerator::printInternalStructures()
 {
     const string GUARD_NAME = "BEAGLE_STRUCTURES";
+
+    printer.getStream() << "#include <stdint.h>\n#include <stdio.h>\n\n";
+
+    printer.comment("This file is auto-generated! Do not edit! "
+        "This program is distributed in the hope that it will be useful, but WITHOUT"
+        "ANY WARRANTY; without even the implied warranty ofMERCHANTABILITY or FITNESS"
+        "FOR A PARTICULAR PURPOSE.");
 
     printer.section("Beagle internal structures");
 
     guard.open(GUARD_NAME);
 
-    // generate the field meta-information C struct
-    structure.open(FIELD_METAINFO);
-    structure.addPrimitive(CONST, "uint32_t" , "modifiers");
-    structure.addPrimitive(POINTER | CONST, "char" , "type");
-    structure.addPrimitive(POINTER | CONST, "char" , "name");
+    // generate object reference C struct
+    structure.open(NameGenerator::OBJECT_REFERENCE);
+    structure.addPrimitive(CodePrinter::POINTER | CodePrinter::CONST, "void" , "object");
+    structure.addPrimitive(0, "uint32_t" , "size");
     structure.close();
 
-    // generate the method meta-information C struct
-    structure.open(METHOD_METAINFO);
-    structure.addPrimitive(CONST, "uint32_t" , "modifiers");
-    structure.addPrimitive(POINTER | CONST, "char" , "prototype");
-    structure.addPrimitive(POINTER | CONST, "char" , "name");
+    // generate class member meta-information C struct
+    structure.open(NameGenerator::MEMBER_METAINFO);
+    printer.comment("member modifiers");
+    structure.addPrimitive(CodePrinter::CONST, "uint32_t" , "modifiers");
+    printer.comment("number of member annotations");
+    structure.addPrimitive(CodePrinter::CONST, "uint32_t" , "attributeCount");
+    printer.comment("pointer to the member annotations");
+    structure.addPrimitive(CodePrinter::CONST | CodePrinter::POINTER | CodePrinter::STRUCT,
+        NameGenerator::TYPE_METAINFO,
+        "attributes");
+    printer.comment("member prototype");
+    structure.addPrimitive(CodePrinter::POINTER | CodePrinter::CONST,
+        "char" ,
+        "prototype");
+    printer.comment("member name");
+    structure.addPrimitive(CodePrinter::POINTER | CodePrinter::CONST,
+        "char" ,
+        "name");
     structure.close();
 
     // generate the type (class or interface) meta-information C struct
-    structure.open(TYPE_METAINFO);
+    structure.open(NameGenerator::TYPE_METAINFO);
     structure.addPrimitive(0, "uint32_t", "signature");
     structure.addPrimitive(0, "uint32_t", "hash");
-    structure.addPrimitive(CONST | POINTER, "char", "canonicalName");
-    structure.addPrimitive(CONST | POINTER, "char", "qualifiedName");
-    structure.addPrimitive(CONST | POINTER, "char", "packageName");
+    structure.addPrimitive(CodePrinter::CONST | CodePrinter::POINTER,
+        "char",
+        "canonicalName");
+    structure.addPrimitive(CodePrinter::CONST | CodePrinter::POINTER,
+        "char",
+        "qualifiedName");
+    structure.addPrimitive(CodePrinter::CONST | CodePrinter::POINTER,
+        "char",
+        "packageName");
 
     printer.comment("fields meta-information");
     structure.addPrimitive(0, "uint32_t", "fieldCount");
-    structure.addStruct(CONST | POINTER, "__field_metainfo", "fields");
+    structure.addStruct(CodePrinter::CONST | CodePrinter::POINTER,
+        NameGenerator::MEMBER_METAINFO,
+        "fields");
 
     printer.comment("methods meta-information");
     structure.addPrimitive(0, "uint32_t", "methodCount");
-    structure.addStruct(CONST | POINTER, "__method_metainfo", "methods");
+    structure.addStruct(CodePrinter::CONST | CodePrinter::POINTER,
+        NameGenerator::MEMBER_METAINFO,
+        "methods");
 
     printer.comment("amount of memory necessary for static fields");
     structure.addPrimitive(0, "uint32_t", "staticSize");
@@ -94,28 +116,20 @@ void CodeGenerator::printInternalStructures()
     structure.addPrimitive(0, "uint32_t", "dynamicSize");
     structure.close();
 
-    // generate the C struct for class list entries
-    structure.open(CLASS_ENTRY);
-    printer.comment("canonical name");
-    structure.addPrimitive(POINTER | CONST, "char" , "name");
-    printer.comment("pointer to type metainformation");
-    structure.addStruct(POINTER | CONST, TYPE_METAINFO , "info");
-    structure.close();
-
     // generate the module meta-information C struct
-    structure.open(MODULE_METAINFO);
+    structure.open(NameGenerator::MODULE_METAINFO);
     structure.addPrimitive(0, "uint32_t", "signature");
     structure.addPrimitive(0, "uint32_t", "hash");
     printer.comment("number of types contained in the module");
-    structure.addPrimitive(CONST, "uint32_t" , "typeCount");
+    structure.addPrimitive(CodePrinter::CONST, "uint32_t" , "typeCount");
     printer.comment("pointer to the type metainformation array");
-    structure.addStruct(POINTER | CONST, CLASS_ENTRY , "types");
+    structure.addStruct(CodePrinter::POINTER | CodePrinter::CONST | CodePrinter::ARRAY,
+        NameGenerator::TYPE_METAINFO ,
+        "types");
     structure.close();
 
     guard.close(GUARD_NAME);
 }
-*/
-
 
 
 uint32_t CodeGenerator::getNativeModifiers(
@@ -123,7 +137,7 @@ uint32_t CodeGenerator::getNativeModifiers(
 {
     uint32_t mask = 0;
 
-    if (modifiers.type != TOK_MODIFIERS) return 0;
+    if (modifiers.type != NID_MODIFIERS) return 0;
 
     for (int i = 0, n = modifiers.getChildCount(); i < n; ++i)
     {
@@ -131,36 +145,36 @@ uint32_t CodeGenerator::getNativeModifiers(
 
         switch (modifiers[i].type)
         {
-            case TOK_PUBLIC:
+            case NID_PUBLIC:
                 break;
-            case TOK_PRIVATE:
+            case NID_PRIVATE:
                 shift = 1;
                 break;
-            case TOK_PROTECTED:
+            case NID_PROTECTED:
                 shift = 2;
                 break;
-            case TOK_STATIC:
+            case NID_STATIC:
                 shift = 3;
                 break;
-            case TOK_ABSTRACT:
+            case NID_ABSTRACT:
                 shift = 4;
                 break;
-            case TOK_FINAL:
+            case NID_FINAL:
                 shift = 5;
                 break;
-            case TOK_NATIVE:
+            case NID_NATIVE:
                 shift = 6;
                 break;
-            case TOK_READLOCK:
+            case NID_READLOCK:
                 shift = 7;
                 break;
-            case TOK_WRITELOCK:
+            case NID_WRITELOCK:
                 shift = 8;
                 break;
-            case TOK_TRANSIENT:
+            case NID_TRANSIENT:
                 shift = 9;
                 break;
-            case TOK_VOLATILE:
+            case NID_VOLATILE:
                 shift = 10;
                 break;
         }
@@ -176,17 +190,19 @@ void CodeGenerator::printClassStructures(
 	Node &package,
 	Node &type )
 {
-	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
-	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
+	if ( (package.type != NID_NAME && package.type != NID_QNAME) ||
+	     (type.type != NID_CLASS && type.type != NID_INTERFACE) )
 	     return;
 
     string qualifiedName = type[2];
+    string nativeName = context.getNativeName(type[2]);
 
     string dynamicFields = context.getNativeTypeName(type, false);
     string staticFields = context.getNativeTypeName(type, true);
 
-    string fieldList = "field_list" + context.getNativeName(type[2]);
-    string methodList = "method_list" + context.getNativeName(type[2]);
+    string vtableName = "vtable__" + nativeName;
+    string fieldList = "field_list__" + nativeName;
+    string methodList = "method_list__" + nativeName;
     int fieldCount = 0;
     int methodCount = 0;
 
@@ -195,13 +211,16 @@ void CodeGenerator::printClassStructures(
     // create the structure to hold the dynamic fields
     printer.comment("dynamic fields of " + qualifiedName);
 	structure.open(dynamicFields);
+    structure.addPrimitive(0, "void*", "vtable_" + nativeName);
     for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
     {
         Node &member = type[5][i];
-        if (member.type == TOK_FIELD && !member[1].hasChild(TOK_STATIC))
+        if (member.type == NID_FIELD && !member[1].hasChild(NID_STATIC))
         {
             const string memberType = context.getNativeType(member[2]);
-            const string &memberName = member[3].text;
+            string &memberName = nativeName;
+            memberName += "_";
+            memberName += member[3].text;
 
             structure.addPrimitive(0, memberType, memberName);
         }
@@ -214,7 +233,7 @@ void CodeGenerator::printClassStructures(
     for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
     {
         Node &member = type[5][i];
-        if (member.type == TOK_FIELD && member[1].hasChild(TOK_STATIC))
+        if (member.type == NID_FIELD && member[1].hasChild(NID_STATIC))
         {
             const string memberType = context.getNativeType(member[2]);
             const string &memberName = member[3].text;
@@ -226,17 +245,21 @@ void CodeGenerator::printClassStructures(
 
     // create the variable with fields meta-information
 	printer.comment("fields list of " + qualifiedName);
-    variable.open(CONST | ARRAY, true, FIELD_METAINFO, fieldList);
+    variable.open(CodePrinter::CONST | CodePrinter::STRUCT | CodePrinter::ARRAY,
+        NameGenerator::MEMBER_METAINFO,
+        fieldList);
     for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
     {
         Node &member = type[5][i];
-        if (member.type == TOK_FIELD)
+        if (member.type == NID_FIELD)
         {
             const string memberType = getPrototypeType(member[2]);
             const string &memberName = member[3].text;
 
             variable.openBlock();
             variable.addPrimitive( getNativeModifiers(member[1]) );
+            variable.addPrimitive(0);
+            variable.addNull();
             variable.addString(memberType);
             variable.addString(memberName);
             variable.closeBlock();
@@ -247,17 +270,21 @@ void CodeGenerator::printClassStructures(
 
     // create the variable with methods meta-information
     printer.comment("method list of " + qualifiedName);
-	variable.open(CONST | ARRAY, true, METHOD_METAINFO, methodList);
+	variable.open(CodePrinter::CONST | CodePrinter::STRUCT | CodePrinter::ARRAY,
+        NameGenerator::MEMBER_METAINFO,
+        methodList);
     for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
     {
         Node &member = type[5][i];
-        if (member.type == TOK_METHOD)
+        if (member.type == NID_METHOD)
         {
             const string memberType = context.getNativeType(member[2]);
             const string &memberName = member[3].text;
 
             variable.openBlock();
             variable.addPrimitive( getNativeModifiers(member[1]) );
+            variable.addPrimitive(0);
+            variable.addNull();
             variable.addString( getPrototype(member) );
             variable.addString(memberName);
             variable.closeBlock();
@@ -266,9 +293,29 @@ void CodeGenerator::printClassStructures(
     }
 	variable.close();
 
+    // create the variable with methods pointers (virtual method table)
+    printer.comment("virtual method table of " + qualifiedName);
+	variable.open(CodePrinter::CONST | CodePrinter::ARRAY,
+        "void*",
+        vtableName);
+    for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
+    {
+        Node &member = type[5][i];
+        if (member.type == NID_METHOD)
+        {
+            printer.comment(member[3].text);
+
+            variable.addNull();
+            ++methodCount;
+        }
+    }
+	variable.close();
+
     // create the variable with type meta-information
     printer.comment("type meta-information of " + qualifiedName);
-	variable.open(CONST, true, TYPE_METAINFO, "type__" + context.getNativeName(type[2]) );
+	variable.open(CodePrinter::CONST | CodePrinter::STRUCT,
+        NameGenerator::TYPE_METAINFO,
+        "type__" + context.getNativeName(type[2]) );
     variable.addPlain("0xCAFEBABE");
     variable.addPrimitive(0);
     variable.addString(type[2].text);
@@ -311,7 +358,9 @@ void CodeGenerator::writeFooter(
     printer.comment("Module class list");
 
     // create the variable containing the list of classes in the library
-    variable.open(CONST | ARRAY, true, CLASS_ENTRY, "class_list");
+    variable.open(CodePrinter::CONST | CodePrinter::CONST | CodePrinter::STRUCT | CodePrinter::ARRAY,
+        NameGenerator::TYPE_METAINFO + "*",
+        "class_list");
     map<string, CompilationUnit>::iterator it = units.begin();
     for (; it != units.end(); ++it)
     {
@@ -320,17 +369,17 @@ void CodeGenerator::writeFooter(
         Node &root = *(*it).second.root;
         Node &type = root[2];
 
-        variable.openBlock();
-        variable.addString( root[2][2].text );
+        printer.comment( root[2][2].text );
         variable.addAddress( "type__" + context.getNativeName(type[2]) );
-        variable.closeBlock();
     }
     variable.close();
 
     printer.comment("Module meta-information public variable");
 
     // create the module meta-information variable
-    variable.open(CONST | PUBLIC, true, MODULE_METAINFO, "module_metainfo");
+    variable.open(CodePrinter::CONST | CodePrinter::CONST | CodePrinter::STRUCT,
+        NameGenerator::MODULE_METAINFO,
+        "module_metainfo");
     variable.addPlain("0xFEE1600D"); // feel good! :)
     variable.addPrimitive(0);
     variable.addPrimitive(units.size());
@@ -360,14 +409,14 @@ void CodeGenerator::visitType(
 
 	printClassStructures(package, type);
 
-    if (type.type != TOK_CLASS || type[5].type != TOK_BODY)
+    if (type.type != NID_CLASS || type[5].type != NID_BODY)
         return;
 
     // iterate the methods
     for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
     {
         Node &member = type[5][i];
-        if (member.type != TOK_METHOD) continue;
+        if (member.type != NID_METHOD) continue;
 
         visitMethod(type, member);
     }
@@ -378,7 +427,7 @@ void CodeGenerator::visitMethod(
     Node &type,
     Node &method )
 {
-    bool isAbstract = method[1].hasChild(TOK_ABSTRACT);
+    bool isAbstract = method[1].hasChild(NID_ABSTRACT);
 
     if (isAbstract) out << "// ABSTRACT: ";
 
@@ -388,7 +437,7 @@ void CodeGenerator::visitMethod(
     // write method header
     out << returnType << ' ' << methodName << "(\n";
     printer.incIndent();
-    if (!method[1].hasChild(TOK_STATIC))
+    if (!method[1].hasChild(NID_STATIC))
     {
         printer.indent();
         out << "struct " << NameGenerator::OBJECT_REFERENCE << " *__this_ptr";
@@ -415,12 +464,12 @@ void CodeGenerator::visitMethodBody(
 
     printer.incIndent();
     // generate the variable to hold the pointer for the 'this' object
-    if (!method[1].hasChild(TOK_STATIC))
+    if (!method[1].hasChild(NID_STATIC))
     {
         Node &type = (*root)[2];
         string typeName = context.getNativeTypeName(type, false);
         printer.indent();
-        out << "struct " << typeName << " *__this = (struct " << typeName << "*) __this_ptr->instance;\n";
+        out << "struct " << typeName << " *__this = (struct " << typeName << "*) __this_ptr->object;\n";
     }
 
     // generate each method statement
@@ -430,11 +479,11 @@ void CodeGenerator::visitMethodBody(
         printer.indent();
         switch (stmt.type)
         {
-            case TOK_LOCAL:
+            case NID_LOCAL:
                 visitLocalVariable(stmt);
                 break;
             default:
-                out << "// " << Parser::name(stmt.type) << "\n";
+                out << "// " << Node::name(stmt.type) << "\n";
         }
     }
 
@@ -475,7 +524,7 @@ void CodeGenerator::visitAnnotation(
 string CodeGenerator::getPrototypeType(
     Node &type )
 {
-    if (type.type == TOK_TYPE_ARRAY)
+    if (type.type == NID_TYPE_ARRAY)
     {
         string result = getPrototypeType(type[0]);
         for (int i = 0; i < type.counter; ++i)
@@ -483,36 +532,36 @@ string CodeGenerator::getPrototypeType(
         return result;
     }
     else
-    if (type.type == TOK_TYPE_CLASS)
+    if (type.type == NID_TYPE_CLASS)
         return "T" + type[0].text + ";";
     else
     {
         switch (type.type)
         {
-            case TOK_CHAR:
+            case NID_CHAR:
                 return "C";
-            case TOK_BOOLEAN:
+            case NID_BOOLEAN:
                 return "O";
-            case TOK_UINT8:
+            case NID_UINT8:
                 return "1";
-            case TOK_UINT16:
+            case NID_UINT16:
                 return "2";
-            case TOK_UINT32:
+            case NID_UINT32:
                 return "4";
-            case TOK_UINT64:
+            case NID_UINT64:
                 return "8";
-            case TOK_INT8:
+            case NID_INT8:
                 return "B";
-            case TOK_INT16:
+            case NID_INT16:
                 return "S";
-            case TOK_INT32:
+            case NID_INT32:
             default:
                 return "I";
-            case TOK_INT64:
+            case NID_INT64:
                 return "L";
-            case TOK_FLOAT:
+            case NID_FLOAT:
                 return "F";
-            case TOK_DOUBLE:
+            case NID_DOUBLE:
                 return "D";
         }
     }
@@ -522,7 +571,7 @@ string CodeGenerator::getPrototypeType(
 string CodeGenerator::getPrototype(
     Node &method )
 {
-    if (method.type != TOK_METHOD) return "";
+    if (method.type != NID_METHOD) return "";
 
     stringstream ss;
 
@@ -530,7 +579,7 @@ string CodeGenerator::getPrototype(
     for (int i = 0, n = method[4].getChildCount(); i < n; ++i)
     {
         Node &parameter = method[4][i];
-        if (parameter.type == TOK_TYPE_CLASS)
+        if (parameter.type == NID_TYPE_CLASS)
             ss << "T" << getPrototypeType(parameter[0]) << ";";
         else
             ss << getPrototypeType(parameter[0]);
@@ -543,15 +592,17 @@ string CodeGenerator::getPrototype(
 
 void CodeGenerator::writeHeader()
 {
-    for (size_t i = 0; i < HEADER_TEMPLATE_LENGTH; ++i)
-        out << (char) HEADER_TEMPLATE[i];
+    /*for (size_t i = 0; i < HEADER_TEMPLATE_LENGTH; ++i)
+        out << (char) HEADER_TEMPLATE[i];*/
+
+    printInternalStructures();
 }
 
 
 void CodeGenerator::visitLocalVariable(
     Node &variable )
 {
-    assert(variable.type == TOK_LOCAL);
+    assert(variable.type == NID_LOCAL);
 
     string nativeType = context.getNativeType(variable[0]);
 

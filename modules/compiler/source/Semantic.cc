@@ -1,6 +1,5 @@
 #include "Semantic.hh"
 #include <iostream>
-#include "beagle.y.hh"
 
 
 namespace beagle {
@@ -54,10 +53,10 @@ std::ostream& operator<<(std::ostream& os, const SemanticItem& obj)
     Node &variable = *obj.node;
     Node &type = *variable.parent->parent;
 
-    assert(type.type == TOK_CLASS ||
-        type.type == TOK_INTERFACE);
+    assert(type.type == NID_CLASS ||
+        type.type == NID_INTERFACE);
 
-    if (variable.type == TOK_FIELD)
+    if (variable.type == NID_FIELD)
         os << type[2].text << '.' << variable[3].text << endl;
     return os;
 }

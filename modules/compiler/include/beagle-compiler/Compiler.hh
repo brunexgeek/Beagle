@@ -69,9 +69,6 @@ class Compiler
         Node *getTree(
             size_t index );
 
-        static const char *getTokenName(
-            int tok );
-
         const std::string &getCode() const;
 
         const CompilerListener &getListener() const;

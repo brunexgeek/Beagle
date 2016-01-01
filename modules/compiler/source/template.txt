@@ -20,18 +20,17 @@ struct __object_ref
     uint32_t size;
 };
 
-
-struct __field_metainfo
+struct __member_metainfo
 {
+    // member modifiers
     const uint32_t modifiers;
-    const char* type;
-    const char* name;
-};
-
-struct __method_metainfo
-{
-    const uint32_t modifiers;
+    // number of member annotations
+    const uint32_t annotationCount;
+    // pointer to the member annotations
+    const struct __type_metainfo** annotations;
+    // member prototype
     const char* prototype;
+    // member name
     const char* name;
 };
 
@@ -42,34 +41,26 @@ struct __type_metainfo
     const char* canonicalName;
     const char* qualifiedName;
     const char* packageName;
-    /* fields meta-information */
+    // fields meta-information
     uint32_t fieldCount;
-    const struct __field_metainfo* fields;
-    /* methods meta-information */
+    const struct __member_metainfo* fields;
+    // methods meta-information
     uint32_t methodCount;
-    const struct __method_metainfo* methods;
-    /* amount of memory necessary for static fields */
+    const struct __member_metainfo* methods;
+    // amount of memory necessary for static fields
     uint32_t staticSize;
-    /* amount of memory necessary for dynamic fields (objects) */
+    // amount of memory necessary for dynamic fields (objects)
     uint32_t dynamicSize;
-};
-
-struct __class_entry
-{
-    /* canonical name */
-    const char* name;
-    /* pointer to type metainformation */
-    const struct __type_metainfo* info;
 };
 
 struct __module_metainfo
 {
     uint32_t signature;
     uint32_t hash;
-    /* number of types contained in the module */
-    const uint32_t typeCount;
-    /* pointer to the type metainformation array */
-    const struct __class_entry* types;
+    // number of types contained in the module
+    uint32_t typeCount;
+    // pointer to the type metainformation array
+    const struct __type_metainfo** types;
 };
 
 #endif // GUARD_BEAGLE_STRUCTURES

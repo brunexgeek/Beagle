@@ -1,6 +1,5 @@
 #include "TreeVisitor.hh"
 #include <cassert>
-#include "beagle.y.hh"
 
 
 namespace beagle {
@@ -52,21 +51,21 @@ void TreeVisitor::visitImport(
 void TreeVisitor::visitType(
     Node &type )
 {
-    assert(type.type == TOK_CLASS ||
-        type.type == TOK_INTERFACE);
+    assert(type.type == NID_CLASS ||
+        type.type == NID_INTERFACE);
 
     Node &body = type[5];
-    assert(body.type == TOK_BODY);
+    assert(body.type == NID_BODY);
 
     for (int i = 0, n = body.getChildCount(); i < n; ++i)
     {
         Node &member = body[i];
 
-        assert(member.type == TOK_METHOD ||
-            member.type == TOK_CONSTRUCTOR ||
-            member.type == TOK_FIELD);
+        assert(member.type == NID_METHOD ||
+            member.type == NID_CONSTRUCTOR ||
+            member.type == NID_FIELD);
 
-        if (member.type == TOK_FIELD)
+        if (member.type == NID_FIELD)
             visitField(type, member);
         else
             visitMethod(type, member);
@@ -97,7 +96,8 @@ void TreeVisitor::visitParameterList(
     Node &method,
     Node &params )
 {
-    assert(params.type == TOK_PARAMETERS);
+    assert(params.type == NID_PARAMETERS ||
+        params.type == NID_NULL);
 
     for (int i = 0, n = params.getChildCount(); i < n; ++i)
     {
@@ -119,9 +119,9 @@ void TreeVisitor::visitMethodBody(
     Node &method,
     Node &body )
 {
-    assert((method.type == TOK_METHOD ||
-        method.type == TOK_CONSTRUCTOR) &&
-        body.type == TOK_BLOCK);
+    assert((method.type == NID_METHOD ||
+        method.type == NID_CONSTRUCTOR) &&
+        body.type == NID_BLOCK);
 
     for (int i = 0, n = body.getChildCount(); i < n; ++i)
     {
@@ -129,7 +129,7 @@ void TreeVisitor::visitMethodBody(
 
         switch (stmt.type)
         {
-            case TOK_LOCAL:
+            case NID_LOCAL:
                 visitLocalVariable(stmt);
                 break;
         }
@@ -142,8 +142,8 @@ void TreeVisitor::visitAnnotationList(
     Node &parent,
     Node &annots )
 {
-    assert(annots.type == TOK_ANNOTATIONS ||
-        annots.type == TOK_NULL);
+    assert(annots.type == NID_ANNOTATIONS ||
+        annots.type == NID_NULL);
 
     // iterate the annotations
     for (int i = 0, n = annots.getChildCount(); i < n; ++i)

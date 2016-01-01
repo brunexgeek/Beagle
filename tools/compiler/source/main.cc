@@ -106,7 +106,7 @@ int main( int argc, char **argv )
         {
             Node *root = compiler.getTree(i);
             if (root == NULL) break;
-            root->print(std::cout, Compiler::getTokenName);
+            root->print(std::cout, Node::name);
         }
 
         std::ofstream out(outputFileName.c_str());

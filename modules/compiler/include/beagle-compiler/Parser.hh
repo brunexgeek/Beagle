@@ -9,6 +9,8 @@
 namespace beagle {
 namespace compiler {
 
+using namespace beagle::loader;
+
 
 	class Parser
 	{
@@ -16,8 +18,6 @@ namespace compiler {
 			Parser();
 
 			virtual ~Parser();
-
-			static const char *name( int tok );
 
 			Node *process(
                 std::istream &in,

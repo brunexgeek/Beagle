@@ -1,5 +1,4 @@
 #include <beagle-compiler/SymbolTable.hh>
-#include "beagle.y.hh"
 #include <algorithm>
 #include <cassert>
 
@@ -83,12 +82,12 @@ void SymbolTable::addType(
 void SymbolTable::extractImports(
     const Node &unit )
 {
-    if (unit.type != TOK_UNIT || unit[1].type != TOK_IMPORTS)
+    if (unit.type != NID_UNIT || unit[1].type != NID_IMPORTS)
         return;
 
     for (int i = 0, n = unit[1].getChildCount(); i < n; ++i)
     {
-        if (unit[1][i].type == TOK_IMPORT_ALL)
+        if (unit[1][i].type == NID_IMPORT_ALL)
             addType(unit[1][i][0].text + ".*");
         else
             addType(unit[1][i][0].text);
@@ -99,8 +98,8 @@ void SymbolTable::extractImports(
 void SymbolTable::addType(
     const Node &unit )
 {
-    assert(unit.type == TOK_UNIT && ( unit[2].type == TOK_CLASS ||
-        unit[2].type == TOK_INTERFACE) );
+    assert(unit.type == NID_UNIT && ( unit[2].type == NID_CLASS ||
+        unit[2].type == NID_INTERFACE) );
 
     // check if the type name is already fully qualified
     if (unit[2][2].text.find('.') != string::npos)

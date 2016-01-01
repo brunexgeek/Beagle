@@ -17,7 +17,7 @@ void beagle_set_column (int  column_no , yyscan_t yyscanner);
  *
  * This function is defined in the Bison generated parser.
  */
-const char *beagle_getTokenName( int tok );
+//const char *beagle_getTokenName( int tok );
 
 
 namespace beagle {
@@ -55,7 +55,7 @@ void Parser::tokens(
 	while ((tok = beagle_lex(&temp, scanner)) != 0)
 	{
 		std::cout << temp.node;
-		if (tok != TOK_EOL)
+		if (tok != NID_EOL)
 			std::cout << " ";
 		temp.node = 0;
 	}
@@ -123,36 +123,32 @@ void *Parser::getScanString(
 }
 
 
-const char *Parser::name( int tok )
-{
-	return beagle_getTokenName(tok);
-}
-
-
 void Parser::expandFields(
     Node &root )
 {
+    assert(root.type == NID_UNIT);
+
 	Node &body = root[2][5];
-	if (body.type == TOK_NULL) return;
+	if (body.type == NID_NULL) return;
 
 	for (int m = 0; m < body.getChildCount(); ++m)
 	{
 		Node &member = body[m];
         int i = 1;
 
-		if (member.type != TOK_FIELD ||
-		    member[3].type != TOK_LIST) continue;
+		if (member.type != NID_FIELD ||
+		    member[3].type != NID_LIST) continue;
 
 		// expand fields with more than one variable
 		for (; member[3].getChildCount() > 1;)
 		{
 			// create a new field with the same parameters
-			Node *field = new Node(TOK_FIELD, "");
+			Node *field = new Node(NID_FIELD, "");
 			field->addChild( *new Node(member[0]) );
 			field->addChild( *new Node(member[1]) );
 			field->addChild( *new Node(member[2]) );
 			// move the variable from current field to new one
-			Node *variables = new Node(TOK_LIST, "");
+			Node *variables = new Node(NID_LIST, "");
 			variables->addChild( member[3][0] );
 			member[3].removeChild(0);
 			field->addChild(*variables);
@@ -178,20 +174,20 @@ void Parser::expandFields(
 void Parser::expandVariables(
     Node &node )
 {
-    assert(node.type == TOK_UNIT ||
-        node.type == TOK_BLOCK);
+    assert(node.type == NID_UNIT ||
+        node.type == NID_BLOCK);
 
-	if (node.type == TOK_UNIT)
+	if (node.type == NID_UNIT)
     {
         Node &body = node[2][5];
-        if (body.type == TOK_NULL) return;
+        if (body.type == NID_NULL) return;
 
         for (int i = 0, n = body.getChildCount(); i < n; ++i)
         {
             Node &member = body[i];
 
-            if ( (member.type != TOK_METHOD && member.type != TOK_CONSTRUCTOR) ||
-                member[6].type != TOK_BLOCK) continue;
+            if ( (member.type != NID_METHOD && member.type != NID_CONSTRUCTOR) ||
+                member[6].type != NID_BLOCK) continue;
 
             // handle the current method body
             expandVariables(member[6]);
@@ -205,20 +201,20 @@ void Parser::expandVariables(
         {
             Node &stmt = node[i];
 
-            std::cout << "Found " << Parser::name(stmt.type) << "\n";
+            std::cout << "Found " << Node::name(stmt.type) << "\n";
 
             // if we have a block, call recursively
-            if (stmt.type == TOK_BLOCK) expandVariables(stmt);
+            if (stmt.type == NID_BLOCK) expandVariables(stmt);
 
             // ignore statements other than unhandled variables
-            if (stmt.type != TOK_LOCAL || stmt.getChildCount() < 2 ||
-                stmt[1].type != TOK_LIST) continue;
+            if (stmt.type != NID_LOCAL || stmt.getChildCount() < 2 ||
+                stmt[1].type != NID_LIST) continue;
 
             // expand variables with more than one declarator
             for (; stmt[1].getChildCount() > 0;)
             {
                 Node &promoted = stmt[1][0];
-                promoted.type = TOK_LOCAL;
+                promoted.type = NID_LOCAL;
                 // promote the declarator to a local variable
                 node.addChild(promoted, i);
                 std::cout << "promoted " << promoted[0].text << " at " << i << std::endl;
@@ -226,9 +222,8 @@ void Parser::expandVariables(
                 promoted.addChild( *new Node(stmt[0]), 0 );
                 stmt[1].removeChild(0);
             }
-            // remove the original TOK_LOCAL
+            // remove the original NID_LOCAL
             node.removeChild(i--);
-node.print(std::cout, Parser::name);
 
             // Notice: at this point the current field have one
             //         variable left, so we let the next code block

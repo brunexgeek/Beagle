@@ -3,7 +3,6 @@
 #include "CodeGenerator.hh"
 #include "Semantic.hh"
 #include <fstream>
-#include "beagle.y.hh"
 #include <cstdlib>
 #include <linux/limits.h>
 
@@ -125,8 +124,8 @@ void Compiler::expandTypeName(
     Node &package,
     Node &type )
 {
-    assert(type.type == TOK_CLASS ||
-        type.type == TOK_INTERFACE);
+    assert(type.type == NID_CLASS ||
+        type.type == NID_INTERFACE);
 
     string name = package.text + '.' + type[2].text;
     type[2].text = name;
@@ -223,8 +222,8 @@ bool Compiler::resolveTypes(
 
         switch (item.type)
         {
-            case TOK_TYPE_CLASS:
-                if (item[0].type == TOK_NAME)
+            case NID_TYPE_CLASS:
+                if (item[0].type == NID_NAME)
                 {
                     resolved = imports.resolveType(item[0].text);
                     if (resolved != NULL)
@@ -252,40 +251,33 @@ const string &Compiler::getCode() const
 }
 
 
-const char *Compiler::getTokenName(
-    int tok )
-{
-	return beagle_getTokenName(tok);
-}
-
-
 Node *Compiler::makeTree(
 	const Type &type )
 {
 	// create the compilation unit
-	Node *root = new Node(TOK_UNIT, NULL);
-	root->addChild(TOK_QNAME, type.info->packageName);
-	root->addChild(TOK_NULL, NULL);
-	Node &clazz = root->addChild(TOK_CLASS, NULL);
+	Node *root = new Node(NID_UNIT, NULL);
+	root->addChild(NID_QNAME, type.info->packageName);
+	root->addChild(NID_NULL, NULL);
+	Node &clazz = root->addChild(NID_CLASS, NULL);
 	// create the type
-	clazz.addChild(TOK_NULL, NULL);
-	clazz.addChild(TOK_NULL, NULL);
-	clazz.addChild(TOK_QNAME, type.info->qualifiedName);
-	clazz.addChild(TOK_NULL, NULL);
-	clazz.addChild(TOK_NULL, NULL);
-	Node &body = clazz.addChild(TOK_BODY, NULL);
+	clazz.addChild(NID_NULL, NULL);
+	clazz.addChild(NID_NULL, NULL);
+	clazz.addChild(NID_QNAME, type.info->qualifiedName);
+	clazz.addChild(NID_NULL, NULL);
+	clazz.addChild(NID_NULL, NULL);
+	Node &body = clazz.addChild(NID_BODY, NULL);
 
 	// create the fields
 	map<string, const struct __field_metainfo*>::const_iterator fieldCur = type.fields.begin();
 	map<string, const struct __field_metainfo*>::const_iterator fieldEnd = type.fields.end();
 	for (; fieldCur != fieldEnd; ++fieldCur)
 	{
-		Node &field = body.addChild(TOK_FIELD, NULL);
-		field.addChild(TOK_NULL, NULL);  // annotations
-		field.addChild(TOK_NULL, NULL);  // modifiers
-		field.addChild(TOK_NULL, NULL);  // type
-		field.addChild(TOK_NAME, (*fieldCur).second->name);  // name
-		field.addChild(TOK_NULL, NULL);  // initializer
+		Node &field = body.addChild(NID_FIELD, NULL);
+		field.addChild(NID_NULL, NULL);  // annotations
+		field.addChild(NID_NULL, NULL);  // modifiers
+		field.addChild(NID_NULL, NULL);  // type
+		field.addChild(NID_NAME, (*fieldCur).second->name);  // name
+		field.addChild(NID_NULL, NULL);  // initializer
 	}
 
 	// create the methods
@@ -293,17 +285,17 @@ Node *Compiler::makeTree(
 	map<string, const struct __method_metainfo*>::const_iterator methodEnd = type.methods.end();
 	for (; methodCur != methodEnd; ++methodCur)
 	{
-		Node &method = body.addChild(TOK_METHOD, NULL);
-		method.addChild(TOK_NULL, NULL);  // annotations
-		method.addChild(TOK_NULL, NULL);  // modifiers
-		method.addChild(TOK_NULL, NULL);  // type
-		method.addChild(TOK_NAME, (*methodCur).second->name);  // name
-		method.addChild(TOK_NULL, NULL);  // parameters
-		method.addChild(TOK_NULL, NULL);  // ?
-		method.addChild(TOK_NULL, NULL);  // block
+		Node &method = body.addChild(NID_METHOD, NULL);
+		method.addChild(NID_NULL, NULL);  // annotations
+		method.addChild(NID_NULL, NULL);  // modifiers
+		method.addChild(NID_NULL, NULL);  // type
+		method.addChild(NID_NAME, (*methodCur).second->name);  // name
+		method.addChild(NID_NULL, NULL);  // parameters
+		method.addChild(NID_NULL, NULL);  // ?
+		method.addChild(NID_NULL, NULL);  // block
 	}
 
-	root->print(std::cout, Parser::name);
+	root->print(std::cout, Node::name);
 
 	return root;
 }

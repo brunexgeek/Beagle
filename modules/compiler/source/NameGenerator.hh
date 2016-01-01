@@ -12,14 +12,22 @@ namespace beagle {
 namespace compiler {
 
 
+using namespace beagle::loader;
+
+
 class NameGenerator
 {
     public:
         static const std::string DYNAMIC_TYPE_PREFIX;
         static const std::string STATIC_TYPE_PREFIX;
         static const std::string OBJECT_REFERENCE;
+        static const std::string CLASS_ENTRY;
+        static const std::string MODULE_METAINFO;
+        static const std::string TYPE_METAINFO;
+        static const std::string MEMBER_METAINFO;
 
         NameGenerator();
+
         ~NameGenerator();
 
 

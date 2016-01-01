@@ -10,24 +10,19 @@ namespace beagle {
 namespace compiler {
 
 
-const int POINTER = 0x01;
-
-const int CONST = 0x02;
-
-const int ARRAY = 0x04;
-
-const int STRUCT = 0x08;
-
-const int PRIVATE = 0x10;
-
-const int PUBLIC = 0x20;
-
+using namespace beagle::loader;
 
 
 class CodePrinter
 {
 
     public:
+        static const int POINTER;
+        static const int CONST;
+        static const int ARRAY;
+        static const int PUBLIC;
+        static const int STRUCT;
+
         CodePrinter(
             int tabSize = 4 );
 

@@ -9,6 +9,9 @@ namespace beagle {
 namespace compiler {
 
 
+using namespace beagle::loader;
+
+
 class TreeVisitor
 {
 	public:

@@ -63,7 +63,7 @@ typedef struct
 {
     yyscan_t lexer;
 
-    std::vector<beagle::compiler::Node*> stack;
+    std::vector<beagle::loader::Node*> stack;
 
     const char *fileName;
 
@@ -204,40 +204,7 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_DEDENT = 369,
     TOK_IN = 370,
     TOK_RANGE = 371,
-    TOK_PASS = 372,
-    TOK_TYPE_CLASS = 373,
-    TOK_TYPE_ARRAY = 374,
-    TOK_INTERFACES = 375,
-    TOK_NULL = 376,
-    TOK_BODY = 377,
-    TOK_FIELD = 378,
-    TOK_METHOD = 379,
-    TOK_CONSTRUCTOR = 380,
-    TOK_LIST = 381,
-    TOK_IMPORTS = 382,
-    TOK_DECLARATOR = 383,
-    TOK_MODIFIERS = 384,
-    TOK_UNIT = 385,
-    TOK_TYPE = 386,
-    TOK_TYPES = 387,
-    TOK_MEMBER = 388,
-    TOK_IMPORT_ALL = 389,
-    TOK_STATIC_INIT = 390,
-    TOK_PARAMETER = 391,
-    TOK_PARAMETERS = 392,
-    TOK_BLOCK = 393,
-    TOK_CALL = 394,
-    TOK_ACCESS_FIELD = 395,
-    TOK_CAST = 396,
-    TOK_ACCESS_ARRAY = 397,
-    TOK_FOR_EACH = 398,
-    TOK_GROUP = 399,
-    TOK_ANNOTATION = 400,
-    TOK_NEW_ARRAY = 401,
-    TOK_ARRAY = 402,
-    TOK_ANNOTATIONS = 403,
-    TOK_ARGUMENTS = 404,
-    TOK_LOCAL = 405
+    TOK_PASS = 372
   };
 #endif
 
@@ -246,11 +213,11 @@ int beagle_get_column  (yyscan_t yyscanner);
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 183 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
+#line 186 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
 
     char* node;
 
-#line 254 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
+#line 221 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

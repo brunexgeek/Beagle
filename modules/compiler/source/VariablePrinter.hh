@@ -35,7 +35,6 @@ class VariablePrinter : public CodePrinter
 
         void open(
             int modifiers,
-            bool isStruct,
             const std::string &type,
             const std::string &name )
         {
@@ -44,10 +43,10 @@ class VariablePrinter : public CodePrinter
                 getStream() << "static ";
             if ((modifiers & CONST) > 0)
                 getStream() << "const ";
-            if (isStruct)
+            if ((modifiers & STRUCT) != 0)
                 getStream() << "struct ";
             getStream() << type << " " << name;
-            if ((modifiers & ARRAY) > 0)
+            if ((modifiers & ARRAY) != 0)
                 getStream() << "[]";
             getStream() << " = \n";
             indent();

@@ -1,7 +1,7 @@
 #include "NameGenerator.hh"
 #include <string>
-#include "beagle.y.hh"
 #include <cassert>
+#include <sstream>
 
 namespace beagle {
 namespace compiler {
@@ -11,9 +11,12 @@ using namespace std;
 
 
 const string NameGenerator::DYNAMIC_TYPE_PREFIX = "";
-const string NameGenerator::STATIC_TYPE_PREFIX = "__static";
-const string NameGenerator::OBJECT_REFERENCE = "__object_ref";
-
+const string NameGenerator::STATIC_TYPE_PREFIX = "static__";
+const string NameGenerator::CLASS_ENTRY = "typeList";
+const string NameGenerator::MODULE_METAINFO = "ModuleMetainfo";
+const string NameGenerator::TYPE_METAINFO = "TypeMetainfo";
+const string NameGenerator::MEMBER_METAINFO = "MemberMetainfo";
+const string NameGenerator::OBJECT_REFERENCE = "ObjectRef";
 
 NameGenerator::NameGenerator()
 {
@@ -31,7 +34,7 @@ void NameGenerator::getNativeName(
 	std::stringstream &ss,
 	Node &name )
 {
-    assert(name.type == TOK_NAME || name.type == TOK_QNAME);
+    assert(name.type == NID_NAME || name.type == NID_QNAME);
     std::string &value = name.text;
 
 	for (size_t i = 0, n = value.length(); i < n; ++i)
@@ -57,10 +60,10 @@ string NameGenerator::getNativeTypeName(
     Node &node,
     bool isStatic )
 {
-    assert(node.type == TOK_CLASS ||
-        node.type == TOK_INTERFACE ||
-        node.type == TOK_NAME ||
-        node.type == TOK_QNAME);
+    assert(node.type == NID_CLASS ||
+        node.type == NID_INTERFACE ||
+        node.type == NID_NAME ||
+        node.type == NID_QNAME);
 
     string result;
 
@@ -68,8 +71,8 @@ string NameGenerator::getNativeTypeName(
         result += STATIC_TYPE_PREFIX;
     else
         result += DYNAMIC_TYPE_PREFIX;
-    result += "__";
-    if (node.type == TOK_CLASS || node.type == TOK_INTERFACE)
+    //result += "__";
+    if (node.type == NID_CLASS || node.type == NID_INTERFACE)
         result += getNativeName(node[2]);
     else
         result += getNativeName(node);
@@ -84,11 +87,11 @@ std::string NameGenerator::getMethodNativeName(
 {
 	std::stringstream ss;
 
-	if ( method.type  != TOK_METHOD ||
-	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
+	if ( method.type  != NID_METHOD ||
+	     (type.type != NID_CLASS && type.type != NID_INTERFACE) )
 	     return "";
 
-    if (method[1].hasChild(TOK_STATIC))
+    if (method[1].hasChild(NID_STATIC))
         ss << "static__";
     else
         ss << "dynamic__";
@@ -104,8 +107,8 @@ std::string NameGenerator::getTypeName(
 {
 	std::stringstream ss;
 
-	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
-	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
+	if ( (package.type != NID_NAME && package.type != NID_QNAME) ||
+	     (type.type != NID_CLASS && type.type != NID_INTERFACE) )
 	     return "";
 
 	ss << package.text << '.' << type[2].text;
@@ -122,8 +125,8 @@ std::string NameGenerator::getTypeName(
 {
 	std::stringstream ss;
 
-	if ( (package.type != TOK_NAME && package.type != TOK_QNAME) ||
-	     (type.type != TOK_CLASS && type.type != TOK_INTERFACE) )
+	if ( (package.type != NID_NAME && package.type != NID_QNAME) ||
+	     (type.type != NID_CLASS && type.type != NID_INTERFACE) )
 	     return "";
 
 	ss << prefix <<
@@ -144,12 +147,12 @@ string NameGenerator::getNativeType(
 
     switch (type.type)
     {
-        case TOK_TYPE_ARRAY:
+        case NID_TYPE_ARRAY:
             result = getNativeType(type[0]);
             for (int i = 0; i < type.counter; ++i)
                 result += '*';
             return result;
-        case TOK_TYPE_CLASS:
+        case NID_TYPE_CLASS:
             result += "struct ";
             result += OBJECT_REFERENCE;//getNativeTypeName(type[0]);
             result += '*';
@@ -163,46 +166,46 @@ string NameGenerator::getNativeType(
 string NameGenerator::getNativeType(
     int type )
 {
-    assert(type == TOK_BOOLEAN ||
-        type == TOK_UINT8 ||
-        type == TOK_UINT16 ||
-        type == TOK_CHAR ||
-        type == TOK_UINT32 ||
-        type == TOK_UINT64 ||
-        type == TOK_INT8 ||
-        type == TOK_INT16 ||
-        type == TOK_INT32 ||
-        type == TOK_INT64 ||
-        type == TOK_FLOAT ||
-        type == TOK_DOUBLE ||
-        type == TOK_VOID);
+    assert(type == NID_BOOLEAN ||
+        type == NID_UINT8 ||
+        type == NID_UINT16 ||
+        type == NID_CHAR ||
+        type == NID_UINT32 ||
+        type == NID_UINT64 ||
+        type == NID_INT8 ||
+        type == NID_INT16 ||
+        type == NID_INT32 ||
+        type == NID_INT64 ||
+        type == NID_FLOAT ||
+        type == NID_DOUBLE ||
+        type == NID_VOID);
 
     switch (type)
     {
-        case TOK_BOOLEAN:
-        case TOK_UINT8:
+        case NID_BOOLEAN:
+        case NID_UINT8:
             return "uint8_t";
-        case TOK_UINT16:
-        case TOK_CHAR:
+        case NID_UINT16:
+        case NID_CHAR:
             return "uint16_t";
         default:
-        case TOK_UINT32:
+        case NID_UINT32:
             return "uint32_t";
-        case TOK_UINT64:
+        case NID_UINT64:
             return "uint64_t";
-        case TOK_INT8:
+        case NID_INT8:
             return "int8_t";
-        case TOK_INT16:
+        case NID_INT16:
             return "int16_t";
-        case TOK_INT32:
+        case NID_INT32:
             return "int32_t";
-        case TOK_INT64:
+        case NID_INT64:
             return "int64_t";
-        case TOK_FLOAT:
+        case NID_FLOAT:
             return "float";
-        case TOK_DOUBLE:
+        case NID_DOUBLE:
             return "double";
-        case TOK_VOID:
+        case NID_VOID:
             return "void";
     }
 }

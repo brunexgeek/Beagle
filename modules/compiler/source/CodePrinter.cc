@@ -6,6 +6,13 @@ namespace beagle {
 namespace compiler {
 
 
+const int CodePrinter::POINTER = 0x01;
+const int CodePrinter::CONST   = 0x02;
+const int CodePrinter::ARRAY   = 0x04;
+const int CodePrinter::PUBLIC  = 0x08;
+const int CodePrinter::STRUCT  = 0x10;
+
+
 CodePrinter::CodePrinter(
     int tabSize ) : level(0), parent(NULL)
 {
@@ -105,7 +112,7 @@ void CodePrinter::comment(
     {
         if (text[i] == '\n' || (s >= 70 && text[i] == ' '))
         {
-            out << std::endl << "  ";
+            out << std::endl << "   ";
             indent();
             s = 0;
             continue;

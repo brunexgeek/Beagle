@@ -21,12 +21,6 @@ class CompilationUnit;
 class CodeGenerator : public TreeVisitor
 {
 	public:
-        static const std::string CLASS_ENTRY;
-        static const std::string MODULE_METAINFO;
-        static const std::string TYPE_METAINFO;
-        static const std::string FIELD_METAINFO;
-        static const std::string METHOD_METAINFO;
-
 		CodeGenerator(
             NameGenerator &context );
 
@@ -108,6 +102,8 @@ class CodeGenerator : public TreeVisitor
 
         uint32_t getNativeModifiers(
             Node &modifiers );
+
+        void printInternalStructures();
 };
 
 

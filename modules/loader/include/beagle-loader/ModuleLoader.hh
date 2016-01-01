@@ -13,9 +13,6 @@ namespace beagle {
 namespace loader {
 
 
-using namespace beagle::compiler;
-
-
 struct __field_metainfo
 {
     const uint32_t modifiers;
@@ -39,25 +36,16 @@ struct __type_metainfo
     const char* canonicalName;
     const char* qualifiedName;
     const char* packageName;
-    /* fields meta-information */
+    // fields meta-information
     uint32_t fieldCount;
     const struct __field_metainfo* fields;
-    /* methods meta-information */
+    // methods meta-information
     uint32_t methodCount;
     const struct __method_metainfo* methods;
-    /* amount of memory necessary for static fields */
+    // amount of memory necessary for static fields
     uint32_t staticSize;
-    /* amount of memory necessary for dynamic fields (objects) */
+    // amount of memory necessary for dynamic fields (objects)
     uint32_t dynamicSize;
-};
-
-
-struct __class_entry
-{
-    /* canonical name */
-    const char* name;
-    /* pointer to type metainformation */
-    const struct __type_metainfo* info;
 };
 
 
@@ -68,7 +56,7 @@ struct __module_metainfo
     /* number of types contained in the module */
     const uint32_t typeCount;
     /* pointer to the type metainformation array */
-    const struct __class_entry* types;
+    const struct __type_metainfo* types;
 };
 
 

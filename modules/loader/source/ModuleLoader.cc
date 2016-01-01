@@ -61,19 +61,19 @@ Module *ModuleLoader::load(
     for (uint32_t i = 0; i < module->typeCount; ++i)
     {
 		Type *type = new Type();
-		type->info = module->types[i].info;
+		type->info = module->types + i;
 
 		entry->types.insert( pair<string, Type*>(string(type->info->qualifiedName), type) );
 
-		for (uint32_t j = 0; j < module->types[i].info->fieldCount; ++j)
+		for (uint32_t j = 0; j < module->types[i].fieldCount; ++j)
 		{
-			const struct __field_metainfo* current = &module->types[i].info->fields[j];
+			const struct __field_metainfo* current = &module->types[i].fields[j];
 			type->fields.insert( pair<string, const struct __field_metainfo*>(string(current->name), current) );
 		}
 
-		for (uint32_t j = 0; j < module->types[i].info->methodCount; ++j)
+		for (uint32_t j = 0; j < module->types[i].methodCount; ++j)
 		{
-			const struct __method_metainfo* current = &module->types[i].info->methods[j];
+			const struct __method_metainfo* current = &module->types[i].methods[j];
 			type->methods.insert( pair<string, const struct __method_metainfo*>(string(current->name), current) );
 		}
     }
