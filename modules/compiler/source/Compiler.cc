@@ -24,245 +24,244 @@ using namespace beagle::loader;
 
 CompilerListener::CompilerListener()
 {
-    // nothing to do
+	// nothing to do
 }
 
 
 CompilerListener::~CompilerListener()
 {
-    // nothing to do
+	// nothing to do
 }
 
 
 Compiler::Compiler(
-    const CompilerListener &listener ) : listener(listener)
+	const CompilerListener &listener ) : listener(listener)
 {
-    // nothing to do
+	// nothing to do
 }
 
 
 Compiler::~Compiler()
 {
-    // nothing to do
+	// nothing to do
 }
 
 
 bool Compiler::addCompilationUnit(
-    const string &fileName )
+	const string &fileName )
 {
-    char path[PATH_MAX+1];
+	char path[PATH_MAX+1];
 
-    if (realpath(fileName.c_str(), path) == NULL) return false;
+	if (realpath(fileName.c_str(), path) == NULL) return false;
 
-    map<string, CompilationUnit>::iterator it = units.find(path);
-    if (it == units.end())
-    {
-        CompilationUnit unit;
-        unit.fileName = fileName;
-        units.insert( std::pair<string,CompilationUnit>(path, unit) );
-    }
+	map<string, CompilationUnit>::iterator it = units.find(path);
+	if (it == units.end())
+	{
+		CompilationUnit unit;
+		unit.fileName = fileName;
+		units.insert( std::pair<string,CompilationUnit>(path, unit) );
+	}
 
-    return true;
+	return true;
 }
 
 
 const CompilerListener &Compiler::getListener() const
 {
-    return listener;
+	return listener;
 }
 
 
 bool Compiler::compile()
 {
-    // perform syntax analisis
-    if (!syntaxAnalisis()) return false;
-    // perform type resolution
-    if (!resolveTypes()) return false;
-    // perform semantic analisis
-    if (!semanticAnalisis()) return false;
+	// perform syntax analisis
+	if (!syntaxAnalisis()) return false;
+	// perform type resolution
+	if (!resolveTypes()) return false;
+	// perform semantic analisis
+	if (!semanticAnalisis()) return false;
 
-    return generateCode();
+	return true;//generateCode();
 }
 
 
 bool Compiler::semanticAnalisis()
 {
-    bool success = true;
+	bool success = true;
 
-    // iterate the compilation unit list
-    map<string, CompilationUnit>::iterator it = units.begin();
-    for (; it != units.end(); ++it)
-    {
-        SemanticContext context(listener);
-        Semantic semantic(context);
-        semantic.visit( *(*it).second.root );
-    }
+	// iterate the compilation unit list
+	map<string, CompilationUnit>::iterator it = units.begin();
+	for (; it != units.end(); ++it)
+	{
+		SemanticContext context(listener);
+		Semantic semantic(context);
+		semantic.visit( *(*it).second.root );
+	}
 
-    return success;
+	return success;
 }
 
 
 bool Compiler::generateCode()
 {
-    NameGenerator namegen;
-    CodeGenerator codegen(namegen);
-    codegen.writeHeader();
+	NameGenerator namegen;
+	CodeGenerator codegen(namegen);
+	codegen.writeHeader();
 
-    // iterate the compilation unit list
-    map<string, CompilationUnit>::iterator it = units.begin();
-    for (; it != units.end(); ++it)
-        codegen.visit( *(*it).second.root );
-    codegen.writeFooter(units);
+	// iterate the compilation unit list
+	map<string, CompilationUnit>::iterator it = units.begin();
+	for (; it != units.end(); ++it)
+		codegen.visit( *(*it).second.root );
+	codegen.writeFooter(units);
 
-    this->code = codegen.getStream().str();
+	this->code = codegen.getStream().str();
 
-    return true;
+	return true;
 }
 
 
 void Compiler::expandTypeName(
-    Node &package,
-    Node &type )
+	Node &package,
+	Node &type )
 {
-    assert(type.type == NID_CLASS ||
-        type.type == NID_INTERFACE);
+	assert(type.type == NID_CLASS ||
+		type.type == NID_INTERFACE);
 
-    string name = package.text + '.' + type[2].text;
-    type[2].text = name;
+	string name = package.text + '.' + type[2].text;
+	type[2].text = name;
 }
 
 
 bool Compiler::printTokens()
 {
-    Parser parser;
-    bool hasError = false;
+	Parser parser;
+	bool hasError = false;
 
-    map<string, CompilationUnit>::iterator it = units.begin();
-    for (; it != units.end(); ++it)
-    {
-        // parse the current file
-        ifstream in((*it).first.c_str());
-        parser.tokens(in, (*it).first);
-    }
+	map<string, CompilationUnit>::iterator it = units.begin();
+	for (; it != units.end(); ++it)
+	{
+		// parse the current file
+		ifstream in((*it).first.c_str());
+		parser.tokens(in, (*it).first);
+	}
 }
 
 
 bool Compiler::syntaxAnalisis()
 {
-    Parser parser;
-    bool hasError = false;
+	Parser parser;
+	bool hasError = false;
 
-    map<string, CompilationUnit>::iterator it = units.begin();
-    for (; it != units.end(); ++it)
-    {
-        // parse the current file
-        ifstream in((*it).first.c_str());
-        (*it).second.root = parser.process(in, (*it).first);
+	map<string, CompilationUnit>::iterator it = units.begin();
+	for (; it != units.end(); ++it)
+	{
+		// parse the current file
+		ifstream in((*it).first.c_str());
+		(*it).second.root = parser.process(in, (*it).first);
 
-        if ((*it).second.root != NULL)
-        {
-            // expand the type name to a fully qualified form
-            expandTypeName( (*(*it).second.root)[0],
-                (*(*it).second.root)[2] );
-            // extract import names
-            SymbolTable *imports = new SymbolTable();
-            imports->extractImports( *(*it).second.root );
-            (*it).second.imports = imports;
-            // add the new unit as recognized type
-            symbols.addType( *(*it).second.root );
-        }
-        else
-            hasError = true;
-    }
+		if ((*it).second.root != NULL)
+		{
+			// expand the type name to a fully qualified form
+			//expandTypeName( (*(*it).second.root)[0], (*(*it).second.root)[2] );
+			// extract import names
+			SymbolTable *imports = new SymbolTable();
+			imports->extractImports( *(*it).second.root );
+			(*it).second.imports = imports;
+			// add the new unit as recognized type
+			symbols.addType( *(*it).second.root );
+		}
+		else
+			hasError = true;
+	}
 
-    return !hasError;
+	return !hasError;
 }
 
 
 Node *Compiler::getTree(
-    const string &fileName )
+	const string &fileName )
 {
-    map<string, CompilationUnit>::iterator it = units.find(fileName);
-    if (it == units.end()) return NULL;
-    return (*it).second.root;
+	map<string, CompilationUnit>::iterator it = units.find(fileName);
+	if (it == units.end()) return NULL;
+	return (*it).second.root;
 }
 
 
 Node *Compiler::getTree(
-    size_t index )
+	size_t index )
 {
-    if (index >= units.size()) return NULL;
-    map<string, CompilationUnit>::iterator it = units.begin();
-    while (index-- > 0) ++it;
-    return (*it).second.root;
+	if (index >= units.size()) return NULL;
+	map<string, CompilationUnit>::iterator it = units.begin();
+	while (index-- > 0) ++it;
+	return (*it).second.root;
 }
 
 
 bool Compiler::resolveTypes()
 {
-    bool success = true;
+	bool success = true;
 
-    // iterate the compilation unit list resolving imports
-    map<string, CompilationUnit>::iterator it = units.begin();
-    for (; it != units.end(); ++it)
-    {
-        if ((*it).second.root == NULL) continue;
-        (*it).second.imports->resolveImports(symbols);
-    }
+	// iterate the compilation unit list resolving imports
+	map<string, CompilationUnit>::iterator it = units.begin();
+	for (; it != units.end(); ++it)
+	{
+		if ((*it).second.root == NULL) continue;
+		(*it).second.imports->resolveImports(symbols);
+	}
 
-    // iterate the compilation unit list resolving type references
-    it = units.begin();
-    for (; it != units.end(); ++it)
-    {
-        if ((*it).second.root == NULL) continue;
-        success |= resolveTypes((*it).second.fileName, *(*it).second.root, *(*it).second.imports);
-    }
+	// iterate the compilation unit list resolving type references
+	it = units.begin();
+	for (; it != units.end(); ++it)
+	{
+		if ((*it).second.root == NULL) continue;
+		success |= resolveTypes((*it).second.fileName, *(*it).second.root, *(*it).second.imports);
+	}
 
-    return success;
+	return success;
 }
 
 
 bool Compiler::resolveTypes(
-    const string &fileName,
-    Node &root,
-    SymbolTable &imports )
+	const string &fileName,
+	Node &root,
+	SymbolTable &imports )
 {
-    const string *resolved = NULL;
-    bool success = true;
+	const string *resolved = NULL;
+	bool success = true;
 
-    // iterate the children recursively resolving types
-    for (int i = 0, n = root.getChildCount(); i < n; ++i)
-    {
-        Node &item = root[i];
+	// iterate the children recursively resolving types
+	for (int i = 0, n = root.getChildCount(); i < n; ++i)
+	{
+		Node &item = root[i];
 
-        switch (item.type)
-        {
-            case NID_TYPE_CLASS:
-                if (item[0].type == NID_NAME)
-                {
-                    resolved = imports.resolveType(item[0].text);
-                    if (resolved != NULL)
-                        item[0].text = *resolved;
-                    else
-                    {
-                        listener.onError(fileName, item[0].line, item[0].column, "Unresolved type " + item[0].text);
-                        success = false;
-                    }
-                }
-                break;
-            default:
-                if (item.getChildCount() > 0)
-                    success |= resolveTypes(fileName, item, imports);
-        }
-    }
+		switch (item.type)
+		{
+			case NID_TYPE_CLASS:
+				if (item[0].type == NID_NAME)
+				{
+					resolved = imports.resolveType(item[0].text);
+					if (resolved != NULL)
+						item[0].text = *resolved;
+					else
+					{
+						listener.onError(fileName, item[0].line, item[0].column, "Unresolved type " + item[0].text);
+						success = false;
+					}
+				}
+				break;
+			default:
+				if (item.getChildCount() > 0)
+					success |= resolveTypes(fileName, item, imports);
+		}
+	}
 
-    return success;
+	return success;
 }
 
 
 const string &Compiler::getCode() const
 {
-    return code;
+	return code;
 }
 
 

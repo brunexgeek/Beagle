@@ -62,15 +62,15 @@ typedef void *yyscan_t;
 
 typedef struct
 {
-    yyscan_t lexer;
+	yyscan_t lexer;
 
-    std::vector<beagle::loader::Node*> stack;
+	std::vector<beagle::loader::Node*> stack;
 
-    const char *fileName;
+	const char *fileName;
 
-    const char *rule;
+	const char *rule;
 
-    beagle::compiler::Parser *parser;
+	beagle::compiler::Parser *parser;
 
 } parser_context_t;
 
@@ -213,9 +213,9 @@ int beagle_get_column  (yyscan_t yyscanner);
 
 union YYSTYPE
 {
-#line 190 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
+#line 201 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
 
-    Token* token;
+	Token* token;
 
 #line 221 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
 };

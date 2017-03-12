@@ -25,16 +25,16 @@ class TreeVisitor
 			// nothing to do
 		}
 
-        void visit(
-            Node &root );
+		void visit(
+			Node &root );
 
-    protected:
-        Node *root;
+	protected:
+		Node *root;
 
 		virtual void visitCompulationUnit(
 			Node &node );
 
-        virtual void visitPackage(
+		virtual void visitPackage(
 			Node &package );
 
 		virtual void visitImportList(
@@ -46,27 +46,31 @@ class TreeVisitor
 		virtual void visitType(
 			Node &type );
 
-        virtual void visitField(
-            Node &type,
-            Node &field );
+		virtual void visitField(
+			Node &type,
+			Node &field );
 
-        virtual void visitMethod(
-            Node &type,
-            Node &method );
+		virtual void visitMethod(
+			Node &type,
+			Node &method );
 
-        virtual void visitParameterList(
-            Node &method,
-            Node &params );
+		virtual void visitConstructor(
+			Node &type,
+			Node &method );
 
-        virtual void visitParameter(
-            Node &method,
-            Node &parameter );
+		virtual void visitParameterList(
+			Node &method,
+			Node &params );
 
-        virtual void visitMethodBody(
-            Node &method,
-            Node &body );
+		virtual void visitParameter(
+			Node &method,
+			Node &parameter );
 
-        virtual void visitAnnotationList(
+		virtual void visitMethodBody(
+			Node &method,
+			Node &body );
+
+		virtual void visitAnnotationList(
 			Node &parent,
 			Node &annots );
 
@@ -74,8 +78,8 @@ class TreeVisitor
 			Node &parent,
 			Node &annot );
 
-        virtual void visitLocalVariable(
-            Node &variable );
+		virtual void visitLocalVariable(
+			Node &variable );
 };
 
 

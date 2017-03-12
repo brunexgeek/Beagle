@@ -382,12 +382,18 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 			text += current;
 			continue;
 		}
+		else
+			escape = false;
 	}
 
 	EMIT_TEXT(TOK_STRINGLITERAL, text.c_str());
 }
 
-<INITIAL>{IDENTIFIER}                    { EMIT(TOK_NAME); }
+<INITIAL>{IDENTIFIER} {
+	EMIT(TOK_NAME);
+}
 
-.                               { EMIT(TOK_BAD_TOKEN); }
+. {
+	EMIT(TOK_BAD_TOKEN);
+}
 

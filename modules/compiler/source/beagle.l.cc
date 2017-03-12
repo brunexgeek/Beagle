@@ -772,7 +772,7 @@ static yyconst flex_int16_t yy_rule_linenum[119] =
       332,  334,  335,  336,  337,  338,  339,  340,  341,  342,
 
       343,  345,  346,  347,  349,  350,  351,  352,  353,  354,
-      355,  356,  357,  359,  360,  362,  390,  392
+      355,  356,  357,  359,  360,  362,  392,  396
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -1992,6 +1992,8 @@ YY_RULE_SETUP
 			text += current;
 			continue;
 		}
+		else
+			escape = false;
 	}
 
 	EMIT_TEXT(TOK_STRINGLITERAL, text.c_str());
@@ -1999,20 +2001,24 @@ YY_RULE_SETUP
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 390 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_NAME); }
+#line 392 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{
+	EMIT(TOK_NAME);
+}
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 392 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_BAD_TOKEN); }
+#line 396 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{
+	EMIT(TOK_BAD_TOKEN);
+}
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 394 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 400 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 ECHO;
 	YY_BREAK
-#line 2016 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
+#line 2022 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -3342,4 +3348,4 @@ void beagle_free (void * ptr , yyscan_t yyscanner)
 
 /* %ok-for-header */
 
-#line 394 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 400 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
