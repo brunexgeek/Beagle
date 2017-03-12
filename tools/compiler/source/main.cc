@@ -95,8 +95,8 @@ int main( int argc, char **argv )
 	loader.print(std::cout);
     if (useLexer)
     {
-        //parser.tokens(*in, argv[1]);
-        //return 0;
+        compiler.printTokens();
+        return 0;
     }
 
 	if (compiler.compile())

@@ -7,12 +7,8 @@
 #include <fstream>
 #include <iostream>
 #include "beagle.y.hh"
-
-static int currentIndentSize = 0;
-
-static int stepSize = 0;
-
-static bool isEmptyLine = true;
+#include "Token.hh"
+#include "LexerContext.hh"
 
 static const char *beagle_getTokenText( int tok, const char *text )
 {
@@ -29,11 +25,25 @@ static const char *beagle_getTokenText( int tok, const char *text )
 	}
 }
 
-#define EMIT(tok)                                                    \
-    do {                                                             \
-        yylval->node = strdup(beagle_getTokenText((tok), yytext));    \
-		isEmptyLine = ((tok) == TOK_EOL) | ((tok) == TOK_DEDENT);    \
-		return (tok); } while (0)
+
+#define CONTEXT() ( (LexerContext*) beagle_get_extra(yyscanner) )
+
+#define EMIT(id) \
+	do {                                                                         \
+		yylval->token = new Token((id), beagle_getTokenText( (id), yytext ) );   \
+		   CONTEXT()->isEmptyLine = ((id) == TOK_EOL) | ((id) == TOK_DEDENT);    \
+		return id;                                                               \
+	} while (0)
+
+#define EMIT_TEXT(id, text) \
+	do {                                                                         \
+		yylval->token = new Token( (id), (text) );   \
+		   CONTEXT()->isEmptyLine = ((id) == TOK_EOL) | ((id) == TOK_DEDENT);    \
+		return id;                                                               \
+	} while (0)
+
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wsign-compare"
 
 %}
 
@@ -68,31 +78,25 @@ DECIMAL_FP_LITERAL_4    [0-9]+{DECIMAL_EXPONENT}?[FD]
 
 DECIMAL_FP_LITERAL      ({DECIMAL_FP_LITERAL_1}|{DECIMAL_FP_LITERAL_2}|{DECIMAL_FP_LITERAL_3}|{DECIMAL_FP_LITERAL_4})
 
-    /*
-    HEXADECIMAL_EXPONENT    ["P"] (["+","-"])? (["0"-"9"])+
-
-    HEX_FP_LITERAL_1        0[xX]([0-9a-fA-F])+\.? HEXADECIMAL_EXPONENT ([F,D])?
-
-    HEX_FP_LITERAL_2        0[xX]([0-9a-fA-F])*\.[0-9,a-f,A-F]
-
-    HEXADECIMAL_FLOATING_POINT_LITERAL  ( HEX_FP_LITERAL_1 | HEX_FP_LITERAL_2 )+ HEXADECIMAL_EXPONENT (["F","D"])?
-
-    FLOATING_POINT_LITERAL  ( DECIMAL_FLOATING_POINT_LITERAL  | HEXADECIMAL_FLOATING_POINT_LITERAL ) */
-
 HEX_DIGIT               [A-Fa-f0-9]
+
+U1                      [\x00-\x7F]
+U2                      [\xC0-\xDF][\x80-\xBF]
+U3                      [\xE0-\xEF][\x80-\xBF][\x80-\xBF]
+U4                      [\xF0-\xF7][\x80-\xBF][\x80-\xBF][\x80-\xBF]
+
+UTF8_CHAR               ({U1}|{U2}|{U3}|{U4})
+ASCII_CHAR              U1
 
 CHAR_ESCAPE_LETTER      \\[ntbrf\\'"]
 CHAR_ESCAPE_HEX         \\[xX]{HEX_DIGIT}{HEX_DIGIT}?
 CHAR_ESCAPE_UTF16       \\u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}
 CHAR_ESCAPE             ({CHAR_ESCAPE_LETTER}|{CHAR_ESCAPE_HEX}|{CHAR_ESCAPE_UTF16})
 
-CHARACTER_LITERAL       '([^'\\\n\r]|{CHAR_ESCAPE})'
-
-STRING_LITERAL          \"([^"\\\n\r]|{CHAR_ESCAPE})*\"
-
 IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 
 %s IN_COMMENT
+%s STATE_STRING
 
 %%
 
@@ -107,247 +111,283 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 
 <IN_COMMENT>("*/"){WHITESPACE}*"\n"  {
 
-	if (!isEmptyLine)
+	if (!CONTEXT()->isEmptyLine)
 		unput('\n');
 	else
 		yylineno++;
 	BEGIN(INITIAL);
 }
-<IN_COMMENT>("*/"){WHITESPACE}*              { BEGIN(INITIAL); }
-<IN_COMMENT>([^*\n]+)           { /* eat comment in chunks */ }
-<IN_COMMENT>("*")               { /* eat the lone star */ }
-<IN_COMMENT>(\n)                { yylineno++; }
 
-{BOL}{WHITESPACE}*"//"[^\n]*"\n"  {
+<IN_COMMENT>("*/"){WHITESPACE}* {
+	BEGIN(INITIAL);
+}
+
+<IN_COMMENT>([^*\n]+) {
+	/* eat comment in chunks */
+}
+
+<IN_COMMENT>("*") {
+	/* eat the lone star */
+}
+
+<IN_COMMENT>(\n) {
+	yylineno++;
+}
+
+<INITIAL>{BOL}{WHITESPACE}*"//"[^\n]*"\n"  {
 	// discards everything
 	yylineno++;
 }
 
-{WHITESPACE}*"//"[^\n]*"\n"  {
+<INITIAL>{WHITESPACE}*"//"[^\n]*"\n"  {
 	// discard the comments, but keeps the
 	// end of line in the stream
 	unput('\n');
 }
 
 
-{DEDENT}                        {
-									//std::cerr << "====== " << currentIndentSize << " -> " << currentIndentSize - stepSize << " (step is " << stepSize << ")" << std::endl;
-									currentIndentSize -= stepSize;
-									EMIT(TOK_DEDENT);
-								}
+<INITIAL>{DEDENT} {
+	//std::cerr << "====== " << currentIndentSize << " -> " << currentIndentSize - stepSize << " (step is " << stepSize << ")" << std::endl;
+	CONTEXT()->currentIndentSize -= CONTEXT()->stepSize;
+	EMIT(TOK_DEDENT);
+}
 
  /*
   * Lines with only white spaces are empty lines
   */
-{BOL}{WHITESPACE}*"\n"          {
-									yylineno++;
-									if (!isEmptyLine)
-										EMIT(TOK_EOL);
-                                }
+<INITIAL>{BOL}{WHITESPACE}*"\n" {
+	yylineno++;
+	if (!CONTEXT()->isEmptyLine)
+		EMIT(TOK_EOL);
+}
 
-{BOL}{WHITESPACE}*              {
-                                    if (isEmptyLine)
-                                    {
-										// use the match (length-1) as new identation size
-										int indent = 0;
-										for (size_t i = 1; i < strlen(yytext); ++i)
-										{
-											if (yytext[i] == '\t')
-												indent += 4;
-											else
-												++indent;
-										}
+<INITIAL>{BOL}{WHITESPACE}* {
+	if (CONTEXT()->isEmptyLine)
+	{
+		// use the match (length-1) as new identation size
+		int indent = 0;
+		for (size_t i = 1; i < strlen(yytext); ++i)
+		{
+			if (yytext[i] == '\t')
+				indent += 4;
+			else
+				++indent;
+		}
 
-										if (indent != currentIndentSize)
-										{
+		if (indent != CONTEXT()->currentIndentSize)
+		{
 
-											if (stepSize == 0)
-											{
-												// if we don't have a step, use the current
-												// indentation size
-												stepSize = indent;
-											}
+			if (CONTEXT()->stepSize == 0)
+			{
+				// if we don't have a step, use the current
+				// indentation size
+				CONTEXT()->stepSize = indent;
+			}
 
-											//std::cerr << "====== " << currentIndentSize << " -> " << indent << " (step is " << stepSize << ")" << std::endl;
+			//std::cerr << "====== " << CONTEXT()->currentIndentSize << " -> " << indent << " (step is " << CONTEXT()->stepSize << ")" << std::endl;
 
-											// compute the difference between current and new indentantion
-											int diff = indent - currentIndentSize;
+			// compute the difference between current and new indentantion
+			int diff = indent - CONTEXT()->currentIndentSize;
 
-											// valid indentations are an increment of stepSize (TOK_INDENT) or
-											// a decrement of any multipe of stepSize (TOK_DEDENT)
+			// valid indentations are increments of stepSize (TOK_INDENT) or
+			// decrements of any multiple of stepSize (TOK_DEDENT)
 
-											// check if we have a valid increment indentation
-											if (diff == stepSize)
-											{
-												currentIndentSize += stepSize;
-												EMIT(TOK_INDENT);
-											}
-											else
-											if (diff < 0 && (abs(diff) % stepSize) == 0)
-											{
-												diff = abs(diff) / stepSize - 1;
+			// check if we have a valid increment indentation
+			if (diff == CONTEXT()->stepSize)
+			{
+				CONTEXT()->currentIndentSize += CONTEXT()->stepSize;
+				EMIT(TOK_INDENT);
+			}
+			else
+			if (diff < 0 && (abs(diff) % CONTEXT()->stepSize) == 0)
+			{
+				diff = abs(diff) / CONTEXT()->stepSize - 1;
 
-												// insert a special character to emit the remaining TOK_DEDENT
-												// later
-												for (int i = 0; i < diff; ++i)
-													unput('\1');
+				// insert a special character to emit the remaining TOK_DEDENT
+				// later
+				for (int i = 0; i < diff; ++i)
+					unput('\1');
 
-												currentIndentSize -= stepSize;
-												EMIT(TOK_DEDENT);
-											}
+				CONTEXT()->currentIndentSize -= CONTEXT()->stepSize;
+				EMIT(TOK_DEDENT);
+			}
+			else
+			{
+				// indentation changed, but is invalid
+				std::cerr << "Error at line " << yylineno;
+				YY_FATAL_ERROR(": inconsistent identation");
+			}
+		}
+	}
+}
 
-											// indentation changed, but is invalid
-											std::cerr << "Error at line " << yylineno;
-											YY_FATAL_ERROR(": inconsistent identation");
-										}
-									}
-                                }
+<<EOF>> {
+	// close all remaining scopes
+	if (CONTEXT()->currentIndentSize > 0)
+	{
+		int count = CONTEXT()->currentIndentSize / CONTEXT()->stepSize;
+		// if we have more than one remaining scope, insert
+		// the special character to close them later
+		if (count > 1)
+			for (int i = 0; i < count-1; ++i)
+				unput('\1');
+		CONTEXT()->currentIndentSize -= CONTEXT()->stepSize;
+		EMIT(TOK_DEDENT);
+	}
+	else
+		yyterminate();
+}
 
-<<EOF>>                           {
-									// close all remaining scopes
-                                    if (currentIndentSize > 0)
-                                    {
-										int count = currentIndentSize / stepSize;
-										// if we have more than one remaining scope, insert
-										// the special character to close them later
-										if (count > 1)
-											for (int i = 0; i < count-1; ++i)
-												unput('\1');
-										currentIndentSize -= stepSize;
-										EMIT(TOK_DEDENT);
-                                    }
-                                    else
-										yyterminate();
-							   }
+<INITIAL>{ESCAPE_LINE} {
+	/*
+	* Ignore the EOL and remaining white spaces after
+	* the slash, merging the current and next lines.
+	*/
+	yylineno++;
+}
 
-{ESCAPE_LINE}                   {
-                                    /*
-                                     * Ignore the EOL and remaining white spaces after
-                                     * the slash, merging the current and next lines.
-                                     */
-                                     yylineno++;
-                                }
+<INITIAL>{WHITESPACE}                    { /* just ignore remaining white spaces */ }
+<INITIAL>"\n"                            { yylineno++; EMIT(TOK_EOL); }
 
-{WHITESPACE}                    { /* just ignore remaining white spaces */ }
-"\n"                            { yylineno++; EMIT(TOK_EOL); }
+<INITIAL>"int8"                          { EMIT(TOK_INT8); }
+<INITIAL>"int16"                         { EMIT(TOK_INT16); }
+<INITIAL>"int32"                         { EMIT(TOK_INT32); }
+<INITIAL>"int64"                         { EMIT(TOK_INT64); }
 
-"abstract"                      { EMIT(TOK_ABSTRACT); }
-"bool"                          { EMIT(TOK_BOOLEAN); }
-"break"                         { EMIT(TOK_BREAK); }
+<INITIAL>"uint8"                         { EMIT(TOK_UINT8); }
+<INITIAL>"uint16"                        { EMIT(TOK_UINT16); }
+<INITIAL>"uint32"                        { EMIT(TOK_UINT32); }
+<INITIAL>"uint64"                        { EMIT(TOK_UINT64); }
 
-"int8"                          { EMIT(TOK_INT8); }
-"int16"                         { EMIT(TOK_INT16); }
-"int32"                         { EMIT(TOK_INT32); }
-"int64"                         { EMIT(TOK_INT64); }
+<INITIAL>"float"                         { EMIT(TOK_FLOAT); }
+<INITIAL>"double"                        { EMIT(TOK_DOUBLE); }
 
-"uint8"                         { EMIT(TOK_UINT8); }
-"uint16"                        { EMIT(TOK_UINT16); }
-"uint32"                        { EMIT(TOK_UINT32); }
-"uint64"                        { EMIT(TOK_UINT64); }
+<INITIAL>"abstract"                      { EMIT(TOK_ABSTRACT); }
+<INITIAL>"bool"                          { EMIT(TOK_BOOLEAN); }
+<INITIAL>"break"                         { EMIT(TOK_BREAK); }
+<INITIAL>"case"                          { EMIT(TOK_CASE); }
+<INITIAL>"catch"                         { EMIT(TOK_CATCH); }
+<INITIAL>"class"                         { EMIT(TOK_CLASS); }
+<INITIAL>"const"                         { EMIT(TOK_CONST); }
+<INITIAL>"default"                       { EMIT(TOK_DEFAULT); }
+<INITIAL>"do"                            { EMIT(TOK_DO); }
+<INITIAL>"else"                          { EMIT(TOK_ELSE); }
+<INITIAL>"extends"                       { EMIT(TOK_EXTENDS); }
+<INITIAL>"final"                         { EMIT(TOK_FINAL); }
+<INITIAL>"finally"                       { EMIT(TOK_FINALLY); }
+<INITIAL>"for"                           { EMIT(TOK_FOR); }
+<INITIAL>"if"                            { EMIT(TOK_IF); }
+<INITIAL>"implements"                    { EMIT(TOK_IMPLEMENTS); }
+<INITIAL>"import"                        { EMIT(TOK_IMPORT); }
+<INITIAL>"is"                            { EMIT(TOK_INSTANCEOF); }
+<INITIAL>"interface"                     { EMIT(TOK_INTERFACE); }
+<INITIAL>"native"                        { EMIT(TOK_NATIVE); }
+<INITIAL>"new"                           { EMIT(TOK_NEW); }
+<INITIAL>"package"                       { EMIT(TOK_PACKAGE); }
+<INITIAL>"private"                       { EMIT(TOK_PRIVATE); }
+<INITIAL>"protected"                     { EMIT(TOK_PROTECTED); }
+<INITIAL>"public"                        { EMIT(TOK_PUBLIC); }
+<INITIAL>"return"                        { EMIT(TOK_RETURN); }
+<INITIAL>"readlock"                      { EMIT(TOK_READLOCK); }
+<INITIAL>"writelock"                     { EMIT(TOK_WRITELOCK); }
+<INITIAL>"in"                            { EMIT(TOK_IN); }
+<INITIAL>"range"                         { EMIT(TOK_RANGE); }
+<INITIAL>"pass"                          { EMIT(TOK_PASS); }
 
-"int"                           { EMIT(TOK_INT32); }
-"long"                          { EMIT(TOK_INT64); }
-"char"                          { EMIT(TOK_CHAR); }
+<INITIAL>"static"                        { EMIT(TOK_STATIC); }
+<INITIAL>"super"                         { EMIT(TOK_SUPER); }
+<INITIAL>"switch"                        { EMIT(TOK_SWITCH); }
+<INITIAL>"this"                          { EMIT(TOK_THIS); }
+<INITIAL>"throw"                         { EMIT(TOK_THROW); }
+<INITIAL>"throws"                        { EMIT(TOK_THROWS); }
+<INITIAL>"void"                          { EMIT(TOK_VOID); }
+<INITIAL>"volatile"                      { EMIT(TOK_VOLATILE); }
+<INITIAL>"while"                         { EMIT(TOK_WHILE); }
+<INITIAL>"continue"                      { EMIT(TOK_CONTINUE); }
+<INITIAL>"try"                           { EMIT(TOK_TRY); }
+<INITIAL>"vararg"                        { EMIT(TOK_VARARG); }
 
-"case"                          { EMIT(TOK_CASE); }
-"catch"                         { EMIT(TOK_CATCH); }
-"class"                         { EMIT(TOK_CLASS); }
-"const"                         { EMIT(TOK_CONST); }
-"default"                       { EMIT(TOK_DEFAULT); }
-"do"                            { EMIT(TOK_DO); }
-"double"                        { EMIT(TOK_DOUBLE); }
-"else"                          { EMIT(TOK_ELSE); }
-"extends"                       { EMIT(TOK_EXTENDS); }
-"final"                         { EMIT(TOK_FINAL); }
-"finally"                       { EMIT(TOK_FINALLY); }
-"float"                         { EMIT(TOK_FLOAT); }
-"for"                           { EMIT(TOK_FOR); }
-"if"                            { EMIT(TOK_IF); }
-"implements"                    { EMIT(TOK_IMPLEMENTS); }
-"import"                        { EMIT(TOK_IMPORT); }
-"is"                            { EMIT(TOK_INSTANCEOF); }
-"interface"                     { EMIT(TOK_INTERFACE); }
-"native"                        { EMIT(TOK_NATIVE); }
-"new"                           { EMIT(TOK_NEW); }
-"package"                       { EMIT(TOK_PACKAGE); }
-"private"                       { EMIT(TOK_PRIVATE); }
-"protected"                     { EMIT(TOK_PROTECTED); }
-"public"                        { EMIT(TOK_PUBLIC); }
-"return"                        { EMIT(TOK_RETURN); }
-"readlock"                      { EMIT(TOK_READLOCK); }
-"writelock"                     { EMIT(TOK_WRITELOCK); }
-"in"                            { EMIT(TOK_IN); }
-"range"                         { EMIT(TOK_RANGE); }
-"pass"                          { EMIT(TOK_PASS); }
+<INITIAL>">"                             { EMIT(TOK_GT); }
+<INITIAL>"<"                             { EMIT(TOK_LT); }
+<INITIAL>">="                            { EMIT(TOK_GE); }
+<INITIAL>"<="                            { EMIT(TOK_LE); }
+<INITIAL>"=="                            { EMIT(TOK_EQ); }
+<INITIAL>"!="                            { EMIT(TOK_NE); }
+<INITIAL>"("                             { EMIT(TOK_LP); }
+<INITIAL>")"                             { EMIT(TOK_RP); }
+<INITIAL>"["                             { EMIT(TOK_LB); }
+<INITIAL>"]"                             { EMIT(TOK_RB); }
+<INITIAL>"{"                             { EMIT(TOK_LC); }
+<INITIAL>"}"                             { EMIT(TOK_RC); }
+<INITIAL>"and"                           { EMIT(TOK_ANDAND); }
+<INITIAL>"or"                            { EMIT(TOK_OROR); }
+<INITIAL>"++"                            { EMIT(TOK_INC); }
+<INITIAL>"--"                            { EMIT(TOK_DEC); }
+<INITIAL>"+"                             { EMIT(TOK_PLUS); }
+<INITIAL>"-"                             { EMIT(TOK_MINUS); }
+<INITIAL>"*"                             { EMIT(TOK_MUL); }
+<INITIAL>"/"                             { EMIT(TOK_DIV); }
+<INITIAL>"&"                             { EMIT(TOK_AND); }
+<INITIAL>"|"                             { EMIT(TOK_OR); }
+<INITIAL>"^"                             { EMIT(TOK_CARET); }
 
-"static"                        { EMIT(TOK_STATIC); }
-"super"                         { EMIT(TOK_SUPER); }
-"switch"                        { EMIT(TOK_SWITCH); }
-"this"                          { EMIT(TOK_THIS); }
-"throw"                         { EMIT(TOK_THROW); }
-"throws"                        { EMIT(TOK_THROWS); }
-"void"                          { EMIT(TOK_VOID); }
-"volatile"                      { EMIT(TOK_VOLATILE); }
-"while"                         { EMIT(TOK_WHILE); }
-"continue"                      { EMIT(TOK_CONTINUE); }
-"transient"                     { EMIT(TOK_TRANSIENT); }
-"try"                           { EMIT(TOK_TRY); }
-"vararg"                        { EMIT(TOK_VARARG); }
+<INITIAL>"%"                             { EMIT(TOK_MOD); }
+<INITIAL>"<<"                            { EMIT(TOK_SHL); }
+<INITIAL>">>"                            { EMIT(TOK_SHR); }
+<INITIAL>"+="                            { EMIT(TOK_PLASN); }
+<INITIAL>"-="                            { EMIT(TOK_MIASN); }
+<INITIAL>"*="                            { EMIT(TOK_MUASN); }
+<INITIAL>"/="                            { EMIT(TOK_DIASN); }
+<INITIAL>"&="                            { EMIT(TOK_ANDASN); }
+<INITIAL>"|="                            { EMIT(TOK_ORASN); }
+<INITIAL>"^="                            { EMIT(TOK_CARETASN); }
 
-">"                             { EMIT(TOK_GT); }
-"<"                             { EMIT(TOK_LT); }
-">="                            { EMIT(TOK_GE); }
-"<="                            { EMIT(TOK_LE); }
-"=="                            { EMIT(TOK_EQ); }
-"!="                            { EMIT(TOK_NE); }
-"("                             { EMIT(TOK_LP); }
-")"                             { EMIT(TOK_RP); }
-"["                             { EMIT(TOK_LB); }
-"]"                             { EMIT(TOK_RB); }
-"{"                             { EMIT(TOK_LC); }
-"}"                             { EMIT(TOK_RC); }
-"and"                           { EMIT(TOK_ANDAND); }
-"or"                            { EMIT(TOK_OROR); }
-"++"                            { EMIT(TOK_INC); }
-"--"                            { EMIT(TOK_DEC); }
-"+"                             { EMIT(TOK_PLUS); }
-"-"                             { EMIT(TOK_MINUS); }
-"*"                             { EMIT(TOK_MUL); }
-"/"                             { EMIT(TOK_DIV); }
-"&"                             { EMIT(TOK_AND); }
-"|"                             { EMIT(TOK_OR); }
-"^"                             { EMIT(TOK_CARET); }
+<INITIAL>"<<="                           { EMIT(TOK_SLASN); }
+<INITIAL>">>="                           { EMIT(TOK_SRASN); }
+<INITIAL>"%="                            { EMIT(TOK_MODASN); }
 
-"%"                             { EMIT(TOK_MOD); }
-"<<"                            { EMIT(TOK_SHL); }
-">>"                            { EMIT(TOK_SHR); }
-"+="                            { EMIT(TOK_PLASN); }
-"-="                            { EMIT(TOK_MIASN); }
-"*="                            { EMIT(TOK_MUASN); }
-"/="                            { EMIT(TOK_DIASN); }
-"&="                            { EMIT(TOK_ANDASN); }
-"|="                            { EMIT(TOK_ORASN); }
-"^="                            { EMIT(TOK_CARETASN); }
+<INITIAL>";"                             { EMIT(TOK_SM); }
+<INITIAL>","                             { EMIT(TOK_CM); }
+<INITIAL>"."                             { EMIT(TOK_DOT); }
+<INITIAL>"="                             { EMIT(TOK_ASN); }
+<INITIAL>"!"                             { EMIT(TOK_BANG); }
+<INITIAL>"~"                             { EMIT(TOK_TILDE); }
+<INITIAL>"?"                             { EMIT(TOK_QUEST); }
+<INITIAL>":"                             { EMIT(TOK_COLON); }
+<INITIAL>"@"                             { EMIT(TOK_AT); }
 
-"<<="                           { EMIT(TOK_SLASN); }
-">>="                           { EMIT(TOK_SRASN); }
-"%="                            { EMIT(TOK_MODASN); }
+<INITIAL>{INTEGER_LITERAL}               { EMIT(TOK_INTLITERAL); }
+<INITIAL>{DECIMAL_FP_LITERAL}            { EMIT(TOK_FLOATLITERAL); }
 
-";"                             { EMIT(TOK_SM); }
-","                             { EMIT(TOK_CM); }
-"."                             { EMIT(TOK_DOT); }
-"="                             { EMIT(TOK_ASN); }
-"!"                             { EMIT(TOK_BANG); }
-"~"                             { EMIT(TOK_TILDE); }
-"?"                             { EMIT(TOK_QUEST); }
-":"                             { EMIT(TOK_COLON); }
-"@"                             { EMIT(TOK_AT); }
+<INITIAL>"'"|"\"" {
+	bool escape = false;
+	char type = yytext[0];
+	std::string text;
 
-{INTEGER_LITERAL}               { EMIT(TOK_INTLITERAL); }
-{DECIMAL_FP_LITERAL}            { EMIT(TOK_FLOATLITERAL); }
-{CHARACTER_LITERAL}             { EMIT(TOK_CHARLITERAL); }
-{STRING_LITERAL}                { EMIT(TOK_STRINGLITERAL); }
-{IDENTIFIER}                    { EMIT(TOK_NAME); }
+	while (true)
+	{
+		char current = yyinput(yyscanner);
+
+		if (current == 0 || current == '\n')
+		{
+			std::cerr << "Error at line " << yylineno;
+			YY_FATAL_ERROR(": unterminated string literal");
+		}
+
+		if (!escape && current == type) break;
+
+		escape = (current == '\\');
+		if (!escape)
+		{
+			text += current;
+			continue;
+		}
+	}
+
+	EMIT_TEXT(TOK_STRINGLITERAL, text.c_str());
+}
+
+<INITIAL>{IDENTIFIER}                    { EMIT(TOK_NAME); }
 
 .                               { EMIT(TOK_BAD_TOKEN); }
 

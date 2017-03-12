@@ -2,9 +2,9 @@
 #define beagle_HEADER_H 1
 #define beagle_IN_HEADER 1
 
-#line 6 "/home/cpqd/beagle/modules/compiler/source/beagle.l.hh"
+#line 6 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.hh"
 
-#line 8 "/home/cpqd/beagle/modules/compiler/source/beagle.l.hh"
+#line 8 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.hh"
 
 #define  YY_INT_ALIGNED short int
 
@@ -14,8 +14,8 @@
 
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
-#define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 35
+#define YY_FLEX_MINOR_VERSION 6
+#define YY_FLEX_SUBMINOR_VERSION 0
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -182,6 +182,11 @@ typedef void* yyscan_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
+#ifndef YY_TYPEDEF_YY_SIZE_T
+#define YY_TYPEDEF_YY_SIZE_T
+typedef size_t yy_size_t;
+#endif
+
 /* %if-not-reentrant */
 /* %endif */
 
@@ -189,11 +194,6 @@ typedef struct yy_buffer_state *YY_BUFFER_STATE;
 /* %if-not-reentrant */
 /* %endif */
 /* %endif */
-
-#ifndef YY_TYPEDEF_YY_SIZE_T
-#define YY_TYPEDEF_YY_SIZE_T
-typedef size_t yy_size_t;
-#endif
 
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
@@ -273,7 +273,7 @@ void beagle_pop_buffer_state (yyscan_t yyscanner );
 
 YY_BUFFER_STATE beagle__scan_buffer (char *base,yy_size_t size ,yyscan_t yyscanner );
 YY_BUFFER_STATE beagle__scan_string (yyconst char *yy_str ,yyscan_t yyscanner );
-YY_BUFFER_STATE beagle__scan_bytes (yyconst char *bytes,int len ,yyscan_t yyscanner );
+YY_BUFFER_STATE beagle__scan_bytes (yyconst char *bytes,yy_size_t len ,yyscan_t yyscanner );
 
 /* %endif */
 
@@ -283,7 +283,7 @@ void beagle_free (void * ,yyscan_t yyscanner );
 
 /* %% [1.0] yytext/yyin/yyout/yy_state_type/yylineno etc. def's & init go here */
 
-#define beagle_wrap(n) 1
+#define beagle_wrap(yyscanner) (/*CONSTCOND*/1)
 #define YY_SKIP_YYWRAP
 
 #define FLEX_DEBUG
@@ -297,6 +297,7 @@ void beagle_free (void * ,yyscan_t yyscanner );
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0
 #define IN_COMMENT 1
+#define STATE_STRING 2
 
 #endif
 
@@ -348,19 +349,23 @@ void beagle_set_extra (YY_EXTRA_TYPE user_defined ,yyscan_t yyscanner );
 
 FILE *beagle_get_in (yyscan_t yyscanner );
 
-void beagle_set_in  (FILE * in_str ,yyscan_t yyscanner );
+void beagle_set_in  (FILE * _in_str ,yyscan_t yyscanner );
 
 FILE *beagle_get_out (yyscan_t yyscanner );
 
-void beagle_set_out  (FILE * out_str ,yyscan_t yyscanner );
+void beagle_set_out  (FILE * _out_str ,yyscan_t yyscanner );
 
-int beagle_get_leng (yyscan_t yyscanner );
+yy_size_t beagle_get_leng (yyscan_t yyscanner );
 
 char *beagle_get_text (yyscan_t yyscanner );
 
 int beagle_get_lineno (yyscan_t yyscanner );
 
-void beagle_set_lineno (int line_number ,yyscan_t yyscanner );
+void beagle_set_lineno (int _line_number ,yyscan_t yyscanner );
+
+int beagle_get_column  (yyscan_t yyscanner );
+
+void beagle_set_column (int _column_no ,yyscan_t yyscanner );
 
 /* %if-bison-bridge */
 
@@ -466,8 +471,8 @@ extern int beagle_lex \
 #undef YY_DECL
 #endif
 
-#line 354 "/home/cpqd/beagle/modules/compiler/source/beagle.l"
+#line 394 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 
-#line 472 "/home/cpqd/beagle/modules/compiler/source/beagle.l.hh"
+#line 477 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.hh"
 #undef beagle_IN_HEADER
 #endif /* beagle_HEADER_H */

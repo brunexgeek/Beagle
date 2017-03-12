@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -50,6 +50,7 @@ extern int beagle_debug;
 #include <vector>
 #include <beagle-loader/Node.hh>
 #include <beagle-compiler/Parser.hh>
+#include "Token.hh"
 
 
 /*
@@ -83,7 +84,7 @@ typedef struct
 int beagle_get_column  (yyscan_t yyscanner);
 
 
-#line 87 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
+#line 88 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -136,89 +137,90 @@ int beagle_get_column  (yyscan_t yyscanner);
     TOK_NAME = 301,
     TOK_QNAME = 302,
     TOK_CONTINUE = 303,
-    TOK_TRANSIENT = 304,
-    TOK_TRY = 305,
-    TOK_NULLLITERAL = 306,
-    TOK_BOOLLITERAL = 307,
-    TOK_INTLITERAL = 308,
-    TOK_CHARLITERAL = 309,
-    TOK_FLOATLITERAL = 310,
-    TOK_STRINGLITERAL = 311,
-    TOK_UINT8 = 312,
-    TOK_UINT16 = 313,
-    TOK_UINT32 = 314,
-    TOK_UINT64 = 315,
-    TOK_INT8 = 316,
-    TOK_INT16 = 317,
-    TOK_INT32 = 318,
-    TOK_INT64 = 319,
-    TOK_LP = 320,
-    TOK_RP = 321,
-    TOK_LC = 322,
-    TOK_RC = 323,
-    TOK_LB = 324,
-    TOK_RB = 325,
-    TOK_SM = 326,
-    TOK_CM = 327,
-    TOK_DOT = 328,
-    TOK_ASN = 329,
-    TOK_LT = 330,
-    TOK_GT = 331,
-    TOK_BANG = 332,
-    TOK_TILDE = 333,
-    TOK_QUEST = 334,
-    TOK_COLON = 335,
-    TOK_EQ = 336,
-    TOK_NE = 337,
-    TOK_LE = 338,
-    TOK_GE = 339,
-    TOK_ANDAND = 340,
-    TOK_OROR = 341,
-    TOK_INC = 342,
-    TOK_DEC = 343,
-    TOK_PLUS = 344,
-    TOK_MINUS = 345,
-    TOK_MUL = 346,
-    TOK_DIV = 347,
-    TOK_AND = 348,
-    TOK_OR = 349,
-    TOK_CARET = 350,
-    TOK_MOD = 351,
-    TOK_SHL = 352,
-    TOK_SHR = 353,
-    TOK_PLASN = 354,
-    TOK_MIASN = 355,
-    TOK_MUASN = 356,
-    TOK_DIASN = 357,
-    TOK_ANDASN = 358,
-    TOK_ORASN = 359,
-    TOK_CARETASN = 360,
-    TOK_SLASN = 361,
-    TOK_SRASN = 362,
-    TOK_MODASN = 363,
-    TOK_BAD_TOKEN = 364,
-    TOK_EOL = 365,
-    TOK_AT = 366,
-    TOK_VARARG = 367,
-    TOK_INDENT = 368,
-    TOK_DEDENT = 369,
-    TOK_IN = 370,
-    TOK_RANGE = 371,
-    TOK_PASS = 372
+    TOK_TRY = 304,
+    TOK_NULLLITERAL = 305,
+    TOK_BOOLLITERAL = 306,
+    TOK_INTLITERAL = 307,
+    TOK_CHARLITERAL = 308,
+    TOK_FLOATLITERAL = 309,
+    TOK_STRINGLITERAL = 310,
+    TOK_UINT8 = 311,
+    TOK_UINT16 = 312,
+    TOK_UINT32 = 313,
+    TOK_UINT64 = 314,
+    TOK_INT8 = 315,
+    TOK_INT16 = 316,
+    TOK_INT32 = 317,
+    TOK_INT64 = 318,
+    TOK_LP = 319,
+    TOK_RP = 320,
+    TOK_LC = 321,
+    TOK_RC = 322,
+    TOK_LB = 323,
+    TOK_RB = 324,
+    TOK_SM = 325,
+    TOK_CM = 326,
+    TOK_DOT = 327,
+    TOK_ASN = 328,
+    TOK_LT = 329,
+    TOK_GT = 330,
+    TOK_BANG = 331,
+    TOK_TILDE = 332,
+    TOK_QUEST = 333,
+    TOK_COLON = 334,
+    TOK_EQ = 335,
+    TOK_NE = 336,
+    TOK_LE = 337,
+    TOK_GE = 338,
+    TOK_ANDAND = 339,
+    TOK_OROR = 340,
+    TOK_INC = 341,
+    TOK_DEC = 342,
+    TOK_PLUS = 343,
+    TOK_MINUS = 344,
+    TOK_MUL = 345,
+    TOK_DIV = 346,
+    TOK_AND = 347,
+    TOK_OR = 348,
+    TOK_CARET = 349,
+    TOK_MOD = 350,
+    TOK_SHL = 351,
+    TOK_SHR = 352,
+    TOK_PLASN = 353,
+    TOK_MIASN = 354,
+    TOK_MUASN = 355,
+    TOK_DIASN = 356,
+    TOK_ANDASN = 357,
+    TOK_ORASN = 358,
+    TOK_CARETASN = 359,
+    TOK_SLASN = 360,
+    TOK_SRASN = 361,
+    TOK_MODASN = 362,
+    TOK_BAD_TOKEN = 363,
+    TOK_EOL = 364,
+    TOK_AT = 365,
+    TOK_VARARG = 366,
+    TOK_INDENT = 367,
+    TOK_DEDENT = 368,
+    TOK_IN = 369,
+    TOK_RANGE = 370,
+    TOK_PASS = 371
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
+
 union YYSTYPE
 {
-#line 186 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
+#line 190 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
 
-    char* node;
+    Token* token;
 
 #line 221 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y.hh" /* yacc.c:1909  */
 };
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

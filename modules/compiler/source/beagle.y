@@ -21,6 +21,7 @@
 #include <vector>
 #include <beagle-loader/Node.hh>
 #include <beagle-compiler/Parser.hh>
+#include "Token.hh"
 
 
 /*
@@ -99,7 +100,7 @@ static beagle::compiler::Node* beagle_combine( std::vector<beagle::compiler::Nod
         if ((int) stack.size() <= n) return NULL;
         temp = stack[ stack.size() - 1 - n ];
     }
-    for (size_t i = stack.size() - n; i < (int) stack.size(); ++i)
+    for (int i = (int) stack.size() - n; i < (int) stack.size(); ++i)
     {
         //std::cout << temp->getValue() << ": adding child " << p->getValue() << std::endl;;
         temp->addChild( *stack[i] );
@@ -122,14 +123,14 @@ static void beagle_printStack( std::vector<beagle::compiler::Node*> &stack, beag
 
 static void beagle_push(
     parser_context_t *context,
-    int token,
-    const char *value,
-    uint32_t line = 1,
-    uint32_t column = 1 )
+    int type,
+    Token *token,
+    int line = 0,
+    int column = 0 )
 {
     //std::cout << "PUSH " << value << std::endl;
     beagle::compiler::Node *node;
-    node = new beagle::compiler::Node(token,value);
+    node = new beagle::compiler::Node(type, (token == NULL) ? NULL : token->value.c_str());
     node->line = line;
     node->column = column;
     context->stack.push_back(node);
@@ -153,7 +154,7 @@ static void beagle_push(
 
 
 #define scanner              parserContext->lexer
-#define PUSH(token,value)    beagle_push( parserContext, (token), (value), \
+#define PUSH(type, token)    beagle_push( parserContext, (type), (token), \
     beagle_get_lineno(parserContext->lexer), beagle_get_column(parserContext->lexer) )
 #define NPUSH(node)          beagle_push( parserContext, (node) )
 #define POP()                beagle_pop(parserContext->stack)
@@ -161,6 +162,9 @@ static void beagle_push(
 #define COMBINE(tok,n)       beagle_combine(parserContext->stack, (tok), (n))
 #define RULE(x)              parserContext->rule = (x)
 #define PSTACK()             beagle_printStack(parserContext->stack, parserContext->parser)
+
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wsign-compare"
 
 }
 
@@ -184,7 +188,7 @@ static void beagle_push(
  * %union declares of what kinds of values appear on the value stack
  */
 %union {
-    char* node;
+    Token* token;
 }
 
 /*
@@ -196,180 +200,178 @@ static void beagle_push(
 
  *
  */
-%token < node > TOK_ABSTRACT
-%token < node > TOK_BOOLEAN
-%token < node > TOK_BREAK
-%token < node > TOK_CASE
-%token < node > TOK_CATCH
-%token < node > TOK_CHAR
-%token < node > TOK_CLASS
-%token < node > TOK_CONST
-%token < node > TOK_DEFAULT
-%token < node > TOK_DO
-%token < node > TOK_DOUBLE
-%token < node > TOK_ELSE
-%token < node > TOK_EXTENDS
-%token < node > TOK_FINAL
-%token < node > TOK_FINALLY
-%token < node > TOK_FLOAT
-%token < node > TOK_FOR
-%token < node > TOK_GOTO
-%token < node > TOK_IF
-%token < node > TOK_IMPLEMENTS
-%token < node > TOK_IMPORT
-%token < node > TOK_INSTANCEOF
-%token < node > TOK_INTERFACE
-%token < node > TOK_LONG
-%token < node > TOK_NATIVE
-%token < node > TOK_NEW
-%token < node > TOK_PACKAGE
-%token < node > TOK_PRIVATE
-%token < node > TOK_PROTECTED
-%token < node > TOK_PUBLIC
-%token < node > TOK_RETURN
-%token < node > TOK_SUSPEND
-%token < node > TOK_STATIC
-%token < node > TOK_SUPER
-%token < node > TOK_SWITCH
-%token < node > TOK_READLOCK
-%token < node > TOK_WRITELOCK
-%token < node > TOK_THIS
-%token < node > TOK_THROW
-%token < node > TOK_THROWS
-%token < node > TOK_VOID
-%token < node > TOK_VOLATILE
-%token < node > TOK_WHILE
-%token < node > TOK_NAME
-%token < node > TOK_QNAME
-%token < node > TOK_CONTINUE
-%token < node > TOK_TRANSIENT
-%token < node > TOK_TRY
-%token < node > TOK_NULLLITERAL
-%token < node > TOK_BOOLLITERAL
-%token < node > TOK_INTLITERAL
-%token < node > TOK_CHARLITERAL
-%token < node > TOK_FLOATLITERAL
-%token < node > TOK_STRINGLITERAL
-%token < node > TOK_UINT8
-%token < node > TOK_UINT16
-%token < node > TOK_UINT32
-%token < node > TOK_UINT64
-%token < node > TOK_INT8
-%token < node > TOK_INT16
-%token < node > TOK_INT32
-%token < node > TOK_INT64
-%token < node > TOK_LP
-%token < node > TOK_RP
-%token < node > TOK_LC
-%token < node > TOK_RC
-%token < node > TOK_LB
-%token < node > TOK_RB
-%token < node > TOK_SM
-%token < node > TOK_CM
-%token < node > TOK_DOT
-%token < node > TOK_ASN
-%token < node > TOK_LT
-%token < node > TOK_GT
-%token < node > TOK_BANG
-%token < node > TOK_TILDE
-%token < node > TOK_QUEST
-%token < node > TOK_COLON
-%token < node > TOK_EQ
-%token < node > TOK_NE
-%token < node > TOK_LE
-%token < node > TOK_GE
-%token < node > TOK_ANDAND
-%token < node > TOK_OROR
-%token < node > TOK_INC
-%token < node > TOK_DEC
-%token < node > TOK_PLUS
-%token < node > TOK_MINUS
-%token < node > TOK_MUL
-%token < node > TOK_DIV
-%token < node > TOK_AND
-%token < node > TOK_OR
-%token < node > TOK_CARET
-%token < node > TOK_MOD
-%token < node > TOK_SHL
-%token < node > TOK_SHR
-%token < node > TOK_PLASN
-%token < node > TOK_MIASN
-%token < node > TOK_MUASN
-%token < node > TOK_DIASN
-%token < node > TOK_ANDASN
-%token < node > TOK_ORASN
-%token < node > TOK_CARETASN
-%token < node > TOK_SLASN
-%token < node > TOK_SRASN
-%token < node > TOK_MODASN
-%token < node > TOK_BAD_TOKEN
-%token < node > TOK_EOL
-%token < node > TOK_AT
-%token < node > TOK_VARARG
-%token < node > TOK_INDENT
-%token < node > TOK_DEDENT
-%token < node > TOK_IN
-%token < node > TOK_RANGE
-%token < node > TOK_PASS
+%token < token > TOK_ABSTRACT
+%token < token > TOK_BOOLEAN
+%token < token > TOK_BREAK
+%token < token > TOK_CASE
+%token < token > TOK_CATCH
+%token < token > TOK_CHAR
+%token < token > TOK_CLASS
+%token < token > TOK_CONST
+%token < token > TOK_DEFAULT
+%token < token > TOK_DO
+%token < token > TOK_DOUBLE
+%token < token > TOK_ELSE
+%token < token > TOK_EXTENDS
+%token < token > TOK_FINAL
+%token < token > TOK_FINALLY
+%token < token > TOK_FLOAT
+%token < token > TOK_FOR
+%token < token > TOK_GOTO
+%token < token > TOK_IF
+%token < token > TOK_IMPLEMENTS
+%token < token > TOK_IMPORT
+%token < token > TOK_INSTANCEOF
+%token < token > TOK_INTERFACE
+%token < token > TOK_LONG
+%token < token > TOK_NATIVE
+%token < token > TOK_NEW
+%token < token > TOK_PACKAGE
+%token < token > TOK_PRIVATE
+%token < token > TOK_PROTECTED
+%token < token > TOK_PUBLIC
+%token < token > TOK_RETURN
+%token < token > TOK_SUSPEND
+%token < token > TOK_STATIC
+%token < token > TOK_SUPER
+%token < token > TOK_SWITCH
+%token < token > TOK_READLOCK
+%token < token > TOK_WRITELOCK
+%token < token > TOK_THIS
+%token < token > TOK_THROW
+%token < token > TOK_THROWS
+%token < token > TOK_VOID
+%token < token > TOK_VOLATILE
+%token < token > TOK_WHILE
+%token < token > TOK_NAME
+%token < token > TOK_QNAME
+%token < token > TOK_CONTINUE
+%token < token > TOK_TRY
+%token < token > TOK_NULLLITERAL
+%token < token > TOK_BOOLLITERAL
+%token < token > TOK_INTLITERAL
+%token < token > TOK_CHARLITERAL
+%token < token > TOK_FLOATLITERAL
+%token < token > TOK_STRINGLITERAL
+%token < token > TOK_UINT8
+%token < token > TOK_UINT16
+%token < token > TOK_UINT32
+%token < token > TOK_UINT64
+%token < token > TOK_INT8
+%token < token > TOK_INT16
+%token < token > TOK_INT32
+%token < token > TOK_INT64
+%token < token > TOK_LP
+%token < token > TOK_RP
+%token < token > TOK_LC
+%token < token > TOK_RC
+%token < token > TOK_LB
+%token < token > TOK_RB
+%token < token > TOK_SM
+%token < token > TOK_CM
+%token < token > TOK_DOT
+%token < token > TOK_ASN
+%token < token > TOK_LT
+%token < token > TOK_GT
+%token < token > TOK_BANG
+%token < token > TOK_TILDE
+%token < token > TOK_QUEST
+%token < token > TOK_COLON
+%token < token > TOK_EQ
+%token < token > TOK_NE
+%token < token > TOK_LE
+%token < token > TOK_GE
+%token < token > TOK_ANDAND
+%token < token > TOK_OROR
+%token < token > TOK_INC
+%token < token > TOK_DEC
+%token < token > TOK_PLUS
+%token < token > TOK_MINUS
+%token < token > TOK_MUL
+%token < token > TOK_DIV
+%token < token > TOK_AND
+%token < token > TOK_OR
+%token < token > TOK_CARET
+%token < token > TOK_MOD
+%token < token > TOK_SHL
+%token < token > TOK_SHR
+%token < token > TOK_PLASN
+%token < token > TOK_MIASN
+%token < token > TOK_MUASN
+%token < token > TOK_DIASN
+%token < token > TOK_ANDASN
+%token < token > TOK_ORASN
+%token < token > TOK_CARETASN
+%token < token > TOK_SLASN
+%token < token > TOK_SRASN
+%token < token > TOK_MODASN
+%token < token > TOK_BAD_TOKEN
+%token < token > TOK_EOL
+%token < token > TOK_AT
+%token < token > TOK_VARARG
+%token < token > TOK_INDENT
+%token < token > TOK_DEDENT
+%token < token > TOK_IN
+%token < token > TOK_RANGE
+%token < token > TOK_PASS
 
 
 /*
  * each nonterminal is declared.  nonterminals correspond to internal nodes
  */
-%type < node > Literal Type PrimitiveType NumericType IntegralType
-%type < node > FloatingPointType ReferenceType ClassOrInterfaceType
-%type < node > ClassType InterfaceType ArrayType Name SimpleName
-%type < node > QualifiedName CompilationUnit ImportDeclarations
-%type < node > PackageDeclaration ImportDeclaration
-%type < node > SingleTypeImportDeclaration TypeImportOnDemandDeclaration
-%type < node > TypeDeclaration Modifiers Modifier ClassDeclaration
-%type < node > Super Interfaces InterfaceTypeList ClassBody
-%type < node > ClassBodyDeclarations ClassBodyDeclaration
-%type < node > ClassMemberDeclaration FieldDeclaration VariableDeclarators
-%type < node > VariableDeclarator VariableInitializer
-%type < node > MethodDeclaration MethodHeader Range
-%type < node > FormalParameterList FormalParameter Throws ClassTypeList
-%type < node > MethodBody StaticInitializer ConstructorDeclaration
-%type < node > ConstructorBody ForEachStatement
-%type < node > ExplicitConstructorInvocation InterfaceDeclaration
-%type < node > ExtendsInterfaces InterfaceBody InterfaceMemberDeclarations
-%type < node > InterfaceMemberDeclaration ConstantDeclaration
-%type < node > AbstractMethodDeclaration ArrayInitializer
-%type < node > VariableInitializers Block BlockStatements BlockStatement
-%type < node > LocalVariableDeclarationStatement LocalVariableDeclaration
-%type < node > Statement EmptyStatement
-%type < node > StatementWithoutTrailingSubstatement
-%type < node > ExpressionStatement StatementExpression IfThenStatement
-%type < node > IfThenElseStatement IfThenInlineStatement
-%type < node > SwitchStatement SwitchBlock SwitchBlockStatementGroups
-%type < node > SwitchBlockStatementGroup SwitchLabels SwitchLabel
-%type < node > WhileStatement DoStatement
-%type < node > ForStatement ForInit ForUpdate
-%type < node > StatementExpressionList BreakStatement ContinueStatement
-%type < node > ReturnStatement ThrowStatement LockStatement
-%type < node > TryStatement Catches CatchClause Finally Primary
-%type < node > PrimaryNoNewArray ClassInstanceCreationExpression
-%type < node > ArgumentList ArrayCreationExpression DimExprs DimExpr Dims
-%type < node > FieldAccess MethodInvocation ArrayAccess PostFixExpression
-%type < node > PostIncrementExpression PostDecrementExpression
-%type < node > UnaryExpression PreIncrementExpression PreDecrementExpression
-%type < node > UnaryExpressionNotPlusMinus CastExpression
-%type < node > MultiplicativeExpression AdditiveExpression ShiftExpression
-%type < node > RelationalExpression EqualityExpression AndExpression
-%type < node > ExclusiveOrExpression InclusiveOrExpression
-%type < node > ConditionalAndExpression ConditionalOrExpression
-%type < node > ConditionalExpression AssignmentExpression Assignment
-%type < node > LeftHandSide AssignmentOperator Expression ConstantExpression
-%type < node > ImportDeclarationsOpt
-%type < node > ModifiersOpt SuperOpt InterfacesOpt ClassBodyDeclarationsOpt
-%type < node > ThrowsOpt FormalParameterListOpt CatchesOpt
-%type < node > BlockStatementsOpt
-%type < node > ArgumentListOpt ExplicitConstructorInvocationOpt DimsOpt
-%type < node > ExtendsInterfacesOpt InterfaceMemberDeclarationsOpt
-%type < node > VariableInitializersOpt SwitchBlockStatementGroupsOpt
-%type < node > ForInitOpt ExpressionOpt ForUpdateOpt
-%type < node > AnnotationDeclarations AnnotationDeclaration
-%type < node > BeginBlock EndBlock AnnotationDeclarationsOpt
+%type < token > Literal Type PrimitiveType NumericType IntegralType
+%type < token > FloatingPointType ReferenceType ClassOrInterfaceType
+%type < token > InterfaceType ArrayType Name SimpleName
+%type < token > CompilationUnit ImportDeclarations
+%type < token > PackageDeclaration ImportDeclaration
+%type < token > SingleTypeImportDeclaration TypeImportOnDemandDeclaration
+%type < token > TypeDeclaration Modifiers Modifier ClassDeclaration
+%type < token > Super Interfaces InterfaceTypeList ClassBody
+%type < token > ClassBodyDeclarations ClassBodyDeclaration
+%type < token > ClassMemberDeclaration FieldDeclaration VariableDeclarators
+%type < token > VariableDeclarator VariableInitializer
+%type < token > MethodDeclaration MethodHeader Range
+%type < token > FormalParameterList FormalParameter Throws ClassTypeList
+%type < token > MethodBody StaticInitializer ConstructorDeclaration
+%type < token > ConstructorBody ForEachStatement
+%type < token > ExplicitConstructorInvocation InterfaceDeclaration
+%type < token > ExtendsInterfaces InterfaceBody InterfaceMemberDeclarations
+%type < token > InterfaceMemberDeclaration ConstantDeclaration
+%type < token > AbstractMethodDeclaration ArrayInitializer
+%type < token > VariableInitializers Block BlockStatements BlockStatement
+%type < token > LocalVariableDeclarationStatement LocalVariableDeclaration
+%type < token > Statement EmptyStatement
+%type < token > StatementWithoutTrailingSubstatement
+%type < token > ExpressionStatement StatementExpression IfThenStatement
+%type < token > IfThenElseStatement IfThenInlineStatement
+%type < token > SwitchStatement SwitchBlock SwitchBlockStatementGroups
+%type < token > SwitchBlockStatementGroup SwitchLabels SwitchLabel
+%type < token > WhileStatement DoStatement
+%type < token > ForStatement ForInit ForUpdate
+%type < token > StatementExpressionList BreakStatement ContinueStatement
+%type < token > ReturnStatement ThrowStatement LockStatement
+%type < token > TryStatement Catches CatchClause Finally Primary
+%type < token > PrimaryNoNewArray ClassInstanceCreationExpression
+%type < token > ArgumentList ArrayCreationExpression Dimensions DimensionsExpr
+%type < token > FieldAccess MethodInvocation ArrayAccess PostFixExpression
+%type < token > PostIncrementExpression PostDecrementExpression
+%type < token > UnaryExpression PreIncrementExpression PreDecrementExpression
+%type < token > UnaryExpressionNotPlusMinus CastExpression
+%type < token > MultiplicativeExpression AdditiveExpression ShiftExpression
+%type < token > RelationalExpression EqualityExpression AndExpression
+%type < token > ExclusiveOrExpression InclusiveOrExpression
+%type < token > ConditionalAndExpression ConditionalOrExpression
+%type < token > ConditionalExpression AssignmentExpression Assignment
+%type < token > LeftHandSide AssignmentOperator Expression ConstantExpression
+%type < token > ImportDeclarationsOpt
+%type < token > ModifiersOpt SuperOpt InterfacesOpt ClassBodyDeclarationsOpt
+%type < token > ThrowsOpt FormalParameterListOpt CatchesOpt
+%type < token > ArgumentListOpt
+%type < token > ExtendsInterfacesOpt InterfaceMemberDeclarationsOpt
+%type < token > VariableInitializersOpt SwitchBlockStatementGroupsOpt
+%type < token > ForInitOpt ExpressionOpt ForUpdateOpt
+%type < token > AnnotationDeclarations AnnotationDeclaration
+%type < token > BeginBlock EndBlock AnnotationDeclarationsOpt
 
 
 %start CompilationUnit
@@ -454,10 +456,6 @@ ClassOrInterfaceType:
     }
     ;
 
-ClassType:
-    ClassOrInterfaceType
-    ;
-
 InterfaceType:
     ClassOrInterfaceType
     ;
@@ -480,24 +478,20 @@ ArrayType:
     }
     ;
 
-Name:
-    SimpleName
-    | QualifiedName
-    ;
-
 SimpleName:
     TOK_NAME
     {   PUSH(NID_NAME, $1);    }
     ;
 
-QualifiedName:
-    Name TOK_DOT TOK_NAME
+Name:
+    SimpleName
+    | Name TOK_DOT SimpleName
     {
         //PUSH(NID_NAME, $3);
         //COMBINE(0, 1);
         beagle::compiler::Node *name = TOP();
         name->text += '.';
-        name->text += $3;
+        name->text += $3->value;
         name->type = NID_QNAME;
     }
     ;
@@ -596,10 +590,10 @@ Modifier:
     {   PUSH(NID_READLOCK, $1);   }
 	| TOK_WRITELOCK
     {   PUSH(NID_WRITELOCK, $1);   }
-    | TOK_TRANSIENT
-    {   PUSH(NID_TRANSIENT, $1);   }
     | TOK_VOLATILE
     {   PUSH(NID_VOLATILE, $1);   }
+    | TOK_CONST
+    {   PUSH(NID_CONST, $1);   }
     ;
 
 ClassDeclaration:
@@ -622,9 +616,8 @@ InterfacesOpt:
     | {   PUSH(NID_NULL, NULL /* "Interfaces" */ );   }
     ;
 
-
 Super:
-    TOK_EXTENDS ClassType
+    TOK_EXTENDS ClassOrInterfaceType
     ;
 
 Interfaces:
@@ -678,7 +671,6 @@ VariableDeclarators:
     {   COMBINE(0, 1);   }
     ;
 
-
 VariableDeclarator:
     SimpleName
     {
@@ -688,7 +680,6 @@ VariableDeclarator:
     | SimpleName TOK_ASN VariableInitializer
     {   COMBINE(NID_DECLARATOR, 2);   }
     ;
-
 
 VariableInitializer:
     Expression
@@ -749,9 +740,9 @@ Throws:
 
 
 ClassTypeList:
-	ClassType
+	ClassOrInterfaceType
 	{   COMBINE(NID_THROWS, 1);   }
-    | ClassTypeList TOK_CM ClassType
+    | ClassTypeList TOK_CM ClassOrInterfaceType
     {   COMBINE(0, 1);   }
     ;
 
@@ -769,23 +760,15 @@ ConstructorDeclaration:
     {   COMBINE(NID_CONSTRUCTOR, 6);   }
     ;
 
-ExplicitConstructorInvocationOpt:
-    ExplicitConstructorInvocation
-    | {   PUSH(NID_NULL, NULL /* "ExplicitConstructorInvocation" */ );   }
-    ;
-
-BlockStatementsOpt:
-    BlockStatements
-    | {   PUSH(NID_NULL, NULL /* "BlockStatements" */ );   }
-    ;
-
 ArgumentListOpt:
     ArgumentList
     | {   PUSH(NID_NULL, NULL /* "ArgumentList" */ );   }
     ;
 
 ConstructorBody:
-    BeginBlock ExplicitConstructorInvocationOpt BlockStatementsOpt EndBlock
+    BeginBlock ExplicitConstructorInvocation EndBlock
+    | BeginBlock BlockStatements EndBlock
+    | BeginBlock ExplicitConstructorInvocation BlockStatements EndBlock
     {   COMBINE(NID_BODY, 2);   }
     ;
 
@@ -872,7 +855,7 @@ VariableInitializers:
     ;
 
 Block:
-    BeginBlock BlockStatementsOpt EndBlock
+    BeginBlock BlockStatements EndBlock
     ;
 
 BlockStatements:
@@ -883,8 +866,7 @@ BlockStatements:
     ;
 
 BlockStatement:
-    LocalVariableDeclarationStatement
-    | Statement
+    Statement
     ;
 
 LocalVariableDeclarationStatement:
@@ -904,6 +886,7 @@ Statement:
 	| WhileStatement
 	| ForStatement
 	| ForEachStatement
+    | LocalVariableDeclarationStatement
 	;
 
 StatementWithoutTrailingSubstatement:
@@ -1070,7 +1053,7 @@ BreakStatement:
 	}
 	| TOK_BREAK TOK_EOL
 	{
-		PUSH(NID_INTLITERAL, "1");
+		PUSH(NID_INTLITERAL, NULL);
 		COMBINE(NID_BREAK, 1);
 	}
     ;
@@ -1083,7 +1066,7 @@ ContinueStatement:
 	}
 	| TOK_CONTINUE TOK_EOL
 	{
-		PUSH(NID_INTLITERAL, "1");
+		PUSH(NID_INTLITERAL, NULL);
 		COMBINE(NID_CONTINUE, 1);
 	}
     ;
@@ -1151,11 +1134,11 @@ PrimaryNoNewArray:
 	| ClassInstanceCreationExpression
 	| FieldAccess
 	| MethodInvocation
-	| ArrayAccess
+    | ArrayAccess
 	;
 
 ClassInstanceCreationExpression:
-	TOK_NEW ClassType TOK_LP ArgumentListOpt TOK_RP
+	TOK_NEW ClassOrInterfaceType TOK_LP ArgumentListOpt TOK_RP
 	{   COMBINE(NID_NEW, 2);   }
     ;
 
@@ -1166,13 +1149,8 @@ ArgumentList:
     {   COMBINE(0, 1);   }
     ;
 
-DimsOpt:
-	Dims
-	| {   PUSH(NID_NULL, NULL /* "Dims" */ );   }
-	;
-
 ArrayCreationExpression:
-    TOK_NEW PrimitiveType DimExprs
+    TOK_NEW PrimitiveType DimensionsExpr
     {
         /*
          * Note: unlike Java, the current specification of the language
@@ -1206,32 +1184,33 @@ ArrayCreationExpression:
 
         COMBINE(NID_NEW_ARRAY, 2);
     }
-    | TOK_NEW ClassOrInterfaceType DimExprs DimsOpt
+    | TOK_NEW ClassOrInterfaceType DimensionsExpr
     {   COMBINE(NID_NEW_ARRAY, 3);   }
     ;
 
-DimExprs:
-    DimExpr
-    {   COMBINE(NID_LIST, 1);   }
-    | DimExprs DimExpr
-    {   COMBINE(0, 1);   }
-    ;
-
-DimExpr:
-	TOK_LB Expression TOK_RB
-	;
-
-
-Dims:
+Dimensions:
 	TOK_LB TOK_RB
 	{
-		PUSH(NID_TYPE_ARRAY, "");
+		PUSH(NID_TYPE_ARRAY, NULL);
 		TOP()->counter = 1;
 	}
-    | Dims TOK_LB TOK_RB
+    | Dimensions TOK_LB TOK_RB
     {
 		++TOP()->counter;
 	}
+    ;
+
+DimensionsExpr:
+	TOK_LB Expression TOK_RB
+	{
+		PUSH(NID_TYPE_ARRAY, NULL);
+		TOP()->counter = 1;
+	}
+    | DimensionsExpr TOK_LB Expression TOK_RB
+    {
+		++TOP()->counter;
+	}
+    ;
 
 FieldAccess:
 	Primary TOK_DOT SimpleName
@@ -1265,7 +1244,7 @@ MethodInvocation:
 
 		third = POP();
 		second = POP();
-		PUSH(NID_SUPER, "");
+		PUSH(NID_SUPER, NULL);
 		NPUSH(second);
 		NPUSH(third);
 
@@ -1280,9 +1259,7 @@ MethodInvocation:
 	;
 
 ArrayAccess:
-	Name TOK_LB Expression TOK_RB
-	{   COMBINE(NID_ACCESS_ARRAY, 2);   }
-	| PrimaryNoNewArray TOK_LB Expression TOK_RB
+	PrimaryNoNewArray TOK_LB Expression TOK_RB
 	{   COMBINE(NID_ACCESS_ARRAY, 2);   }
 	;
 
@@ -1332,9 +1309,8 @@ UnaryExpressionNotPlusMinus:
     | CastExpression
     ;
 
-
 CastExpression:
-	TOK_LP PrimitiveType DimsOpt TOK_RP UnaryExpression
+	TOK_LP PrimitiveType Dimensions TOK_RP UnaryExpression
 	{
 		beagle::compiler::Node *first, *second, *third;
 
@@ -1356,7 +1332,7 @@ CastExpression:
 	}
 	| TOK_LP Expression TOK_RP UnaryExpressionNotPlusMinus
 	{   COMBINE(NID_CAST, 2);   }
-	| TOK_LP Name Dims TOK_RP UnaryExpressionNotPlusMinus
+	| TOK_LP Name Dimensions TOK_RP UnaryExpressionNotPlusMinus
 	{
 		beagle::compiler::Node *first, *second, *third;
 

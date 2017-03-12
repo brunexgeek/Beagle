@@ -23,6 +23,10 @@ using namespace beagle::loader;
                 std::istream &in,
                 const std::string &fileName  );
 
+void tokens(
+    std::istream &in,
+    const std::string &fileName );
+
 		private:
 			void *getScanString(
                 void *scanner,

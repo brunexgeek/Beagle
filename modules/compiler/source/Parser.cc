@@ -1,6 +1,7 @@
 #include <beagle-compiler/Parser.hh>
 #include "beagle.y.hh"
 #include "beagle.l.hh"
+#include "LexerContext.hh"
 #include <cassert>
 
 
@@ -17,7 +18,7 @@ void beagle_set_column (int  column_no , yyscan_t yyscanner);
  *
  * This function is defined in the Bison generated parser.
  */
-//const char *beagle_getTokenName( int tok );
+const char *beagle_getTokenName( int tok );
 
 
 namespace beagle {
@@ -34,7 +35,7 @@ Parser::~Parser()
 	// nothing to do
 }
 
-/*
+
 void Parser::tokens(
     std::istream &in,
     const std::string &fileName )
@@ -42,28 +43,30 @@ void Parser::tokens(
 	YYSTYPE temp;
     void *scanner;
     void *scanString;
+	LexerContext scannerContext;
 
     // initialize the lexer
 	beagle_lex_init(&scanner);
 	scanString = getScanString(scanner, in);
 	beagle_set_lineno(1, scanner);
 	beagle_set_column(1, scanner);
+	beagle_set_extra(&scannerContext, scanner);
 	beagle_debug = 0;
 
-	temp.node = 0;
+	temp.token = 0;
 	int tok;
 	while ((tok = beagle_lex(&temp, scanner)) != 0)
 	{
-		std::cout << temp.node;
+		std::cout << beagle_getTokenName(temp.token->id);
 		if (tok != NID_EOL)
 			std::cout << " ";
-		temp.node = 0;
+		temp.token = 0;
 	}
 
     if (scanString != NULL)
 		beagle__delete_buffer((YY_BUFFER_STATE)scanString, scanner);
 	beagle_lex_destroy(scanner);
-}*/
+}
 
 Node *Parser::process(
     std::istream &in,
@@ -72,13 +75,15 @@ Node *Parser::process(
 	Node *root = NULL;
     void *scanString;
     void *scanner;
+	LexerContext scannerContext;
 
 	// initialize the lexer
 	beagle_lex_init(&scanner);
 	scanString = getScanString(scanner, in);
 	beagle_set_lineno(1, scanner);
 	beagle_set_column(1, scanner);
-	beagle_debug = 0;
+	beagle_set_extra(&scannerContext, scanner);
+	beagle_debug = 1;
 
 	parser_context_t context;
 	context.lexer = scanner;
@@ -201,7 +206,7 @@ void Parser::expandVariables(
         {
             Node &stmt = node[i];
 
-            std::cout << "Found " << Node::name(stmt.type) << "\n";
+            //std::cout << "Found " << Node::name(stmt.type) << "\n";
 
             // if we have a block, call recursively
             if (stmt.type == NID_BLOCK) expandVariables(stmt);

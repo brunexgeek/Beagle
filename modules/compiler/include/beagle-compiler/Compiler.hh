@@ -63,6 +63,8 @@ class Compiler
 
         bool compile();
 
+        bool printTokens();
+
         Node *getTree(
             const string &fileName );
 

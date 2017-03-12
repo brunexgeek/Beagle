@@ -132,6 +132,21 @@ void Compiler::expandTypeName(
 }
 
 
+bool Compiler::printTokens()
+{
+    Parser parser;
+    bool hasError = false;
+
+    map<string, CompilationUnit>::iterator it = units.begin();
+    for (; it != units.end(); ++it)
+    {
+        // parse the current file
+        ifstream in((*it).first.c_str());
+        parser.tokens(in, (*it).first);
+    }
+}
+
+
 bool Compiler::syntaxAnalisis()
 {
     Parser parser;
