@@ -66,7 +66,7 @@ typedef struct
 
 	std::vector<beagle::loader::Node*> stack;
 
-	const char *fileName;
+	std::string fileName;
 
 	const char *rule;
 
@@ -213,7 +213,7 @@ int beagle_get_column  (yyscan_t yyscanner);
 
 union YYSTYPE
 {
-#line 201 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
+#line 204 "/media/dados/projetos/beagle/modules/compiler/source/beagle.y" /* yacc.c:1909  */
 
 	Token* token;
 

@@ -2,6 +2,9 @@
 #define LEXERCONTENT_HH
 
 
+#include <list>
+
+
 struct LexerContext
 {
 
@@ -11,7 +14,19 @@ struct LexerContext
 
     bool isEmptyLine;
 
-    LexerContext() : currentIndentSize(0), stepSize(0), isEmptyLine(true) {}
+    std::list<Token*> tokens;
+
+    LexerContext() : currentIndentSize(0), stepSize(0), isEmptyLine(true)
+    {
+
+    }
+
+    ~LexerContext()
+    {
+        auto it = tokens.begin();
+        for (; it != tokens.end(); ++it)
+            delete *it;
+    }
 
 };
 

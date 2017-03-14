@@ -87,7 +87,7 @@ Node *Parser::process(
 
 	parser_context_t context;
 	context.lexer = scanner;
-	context.fileName = strdup(fileName.c_str());
+	context.fileName = fileName;
 	context.rule = NULL;
 	context.parser = this;
 
@@ -148,17 +148,17 @@ void Parser::expandFields(
 		for (; member[3].getChildCount() > 1;)
 		{
 			// create a new field with the same parameters
-			Node *field = new Node(NID_FIELD, "");
-			field->addChild( *new Node(member[0]) );
-			field->addChild( *new Node(member[1]) );
-			field->addChild( *new Node(member[2]) );
+			Node *field = new Node(NID_FIELD);
+			field->add( new Node(member[0]) );
+			field->add( new Node(member[1]) );
+			field->add( new Node(member[2]) );
 			// move the variable from current field to new one
-			Node *variables = new Node(NID_LIST, "");
-			variables->addChild( member[3][0] );
-			member[3].removeChild(0);
-			field->addChild(*variables);
+			Node *variables = new Node(NID_LIST);
+			variables->add( &member[3][0] );
+			member[3].remove(0);
+			field->add(variables);
 			// add the new field into type body (always after the current one)
-			body.addChild(*field, m + i);
+			body.add(field, m + i);
 			++i;
 		}
 
@@ -168,9 +168,8 @@ void Parser::expandFields(
 
 		// expand fields with one variable
 		Node &variable = member[3][0];
-		member.setChild(3, variable[0]);
-		member.addChild(variable[1]);
-		variable.removeChild();
+		delete member.replace(3, variable[0]);
+		member.add(&variable[1]);
 		delete &variable;
 	}
 }
@@ -221,14 +220,14 @@ void Parser::expandVariables(
 				Node &promoted = stmt[1][0];
 				promoted.type = NID_LOCAL;
 				// promote the declarator to a local variable
-				node.addChild(promoted, i);
+				node.add(&promoted, i);
 				std::cout << "promoted " << promoted[0].text << " at " << i << std::endl;
 				++i;
-				promoted.addChild( *new Node(stmt[0]), 0 );
-				stmt[1].removeChild(0);
+				promoted.add( new Node(stmt[0]), 0 );
+				stmt[1].remove(0);
 			}
 			// remove the original NID_LOCAL
-			node.removeChild(i--);
+			node.remove(i--);
 
 			// Notice: at this point the current field have one
 			//         variable left, so we let the next code block
@@ -237,10 +236,10 @@ void Parser::expandVariables(
 			// expand fields with one variable
 			/*Node &discard = stmt[1];
 			stmt.setChild(1, discard[0][0]);
-			stmt.addChild(discard[0][1]);
-			discard[0].removeChild();
+			stmt.add(discard[0][1]);
+			discard[0].remove();
 			delete &discard[0];
-			discard.removeChild();
+			discard.remove();
 			delete &discard;*/
 		}
 	}

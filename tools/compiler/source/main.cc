@@ -92,7 +92,7 @@ int main( int argc, char **argv )
 
 	// make all loaded modules visible at compilation time
 	compiler.import(loader);
-	loader.print(std::cout);
+	loader.print();
     if (useLexer)
     {
         compiler.printTokens();
@@ -106,7 +106,7 @@ int main( int argc, char **argv )
         {
             Node *root = compiler.getTree(i);
             if (root == NULL) break;
-            root->print(std::cout, Node::name);
+            root->print(std::cout);
         }
 
         std::ofstream out(outputFileName.c_str());

@@ -23,14 +23,14 @@ SymbolTable::~SymbolTable()
 
 
 static bool less_reverse_string_pointer(
-    const string* lhs,
-    const string* rhs)
+    const string& lhs,
+    const string& rhs)
 {
-    int len1 = (int) lhs->length();
-    int len2 = (int) rhs->length();
+    int len1 = (int) lhs.length();
+    int len2 = (int) rhs.length();
 
     for (int i = len1 - 1, j = len2 - 1; i > 0 && j > 0; --i, --j)
-        if ( lhs->at(i) >= rhs->at(j) ) return false;
+        if ( lhs.at(i) >= rhs.at(j) ) return false;
 
     return len1 < len2;
 }
@@ -40,17 +40,17 @@ const string *SymbolTable::resolveType(
     const string &name ) const
 {
 std::cout << "resolveType: looking for '" << name << "'\n";
-    set<string*>::iterator low, rcur, end;
+    set<string>::iterator low, rcur, end;
     low = typeNames.begin();
     end = typeNames.end();
     while (true)
     {
-        rcur = lower_bound(low, end, &name, less_reverse_string_pointer);
+        rcur = lower_bound(low, end, name, less_reverse_string_pointer);
         // check if we have a valid match
         if (rcur == end) break;
-        if ((*rcur)->compare((*rcur)->length() - name.length(), name.length(), name) != 0) break;
-std::cout << "resolveType: found '" << *(*rcur) << "'\n";
-        return *rcur;
+        if ((*rcur).compare((*rcur).length() - name.length(), name.length(), name) != 0) break;
+std::cout << "resolveType: found '" << (*rcur) << "'\n";
+        return &(*rcur);
     }
 
     /*set<string*>::const_iterator it = typeNames.begin();
@@ -75,7 +75,7 @@ std::cout << "resolveType: found '" << *(*rcur) << "'\n";
 void SymbolTable::addType(
     const string &name )
 {
-    typeNames.insert( new string(name) );
+    typeNames.insert(name);
 }
 
 
@@ -103,22 +103,22 @@ void SymbolTable::addType(
 
     // check if the type name is already fully qualified
     if (unit[2][2].text.find('.') != string::npos)
-        typeNames.insert( new string(unit[2][2].text) );
+        typeNames.insert(unit[2][2].text);
     else
     {
-        string *name = new string(unit[0].text);
-        (*name) += '.';
-        (*name) += unit[2][2].text;
+        string name = unit[0].text;
+        name += '.';
+        name += unit[2][2].text;
         typeNames.insert(name);
     }
 }
 
 
 static bool less_string_pointer(
-    const string* lhs,
-    const string* rhs)
+    const string& lhs,
+    const string& rhs)
 {
-    return (*lhs < *rhs);
+    return (lhs < rhs);
 }
 
 
@@ -129,11 +129,11 @@ static bool less_string_pointer(
 void SymbolTable::resolveImports(
     const SymbolTable &obj )
 {
-    set<string*>::iterator lcur = typeNames.begin();
-    set<string*>::iterator lend = typeNames.end();
+    set<string>::iterator lcur = typeNames.begin();
+    set<string>::iterator lend = typeNames.end();
     for (; lcur != lend; ++lcur)
     {
-        string current = *(*lcur);
+        string current = (*lcur);
         size_t currentLen = current.length();
 
         // check if it's an unresolved symbol
@@ -144,20 +144,20 @@ void SymbolTable::resolveImports(
 std::cout << "resolveImports: looking for types from '" << current << "'" << std::endl;
 
         // look for the current prefix in the external table
-        set<string*>::iterator low, rcur, end;
+        set<string>::iterator low, rcur, end;
         low = obj.typeNames.begin();
         end = obj.typeNames.end();
         while (true)
         {
-            rcur = lower_bound(low, end, &current, less_string_pointer);
+            rcur = lower_bound(low, end, current, less_string_pointer);
             // check if we found a valid match
             if (rcur == end) break;
-            if ((*rcur)->compare(0, current.length(), current) != 0) break;
+            if ((*rcur).compare(0, current.length(), current) != 0) break;
             typeNames.insert((*rcur));
             // adjust the range for the next search
             low = rcur;
             ++low;
-std::cout << "resolveImports:  found '" << *(*rcur) << "'\n";
+std::cout << "resolveImports:  found '" << (*rcur) << "'\n";
         }
     }
 

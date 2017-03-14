@@ -760,19 +760,19 @@ static yyconst flex_int16_t yy_chk[576] =
 
 static yyconst flex_int16_t yy_rule_linenum[119] =
     {   0,
-      104,  108,  112,  121,  125,  129,  133,  137,  142,  149,
-      158,  164,  241,  249,  250,  252,  253,  254,  255,  257,
-      258,  259,  260,  262,  263,  265,  266,  267,  268,  269,
-      270,  271,  272,  273,  274,  275,  276,  277,  278,  279,
-      280,  281,  282,  283,  284,  285,  286,  287,  288,  289,
-      290,  291,  292,  293,  294,  295,  297,  298,  299,  300,
-      301,  302,  303,  304,  305,  306,  307,  308,  310,  311,
-      312,  313,  314,  315,  316,  317,  318,  319,  320,  321,
-      322,  323,  324,  325,  326,  327,  328,  329,  330,  331,
-      332,  334,  335,  336,  337,  338,  339,  340,  341,  342,
+      106,  110,  114,  123,  127,  131,  135,  139,  144,  151,
+      160,  166,  243,  251,  252,  254,  255,  256,  257,  259,
+      260,  261,  262,  264,  265,  267,  268,  269,  270,  271,
+      272,  273,  274,  275,  276,  277,  278,  279,  280,  281,
+      282,  283,  284,  285,  286,  287,  288,  289,  290,  291,
+      292,  293,  294,  295,  296,  297,  299,  300,  301,  302,
+      303,  304,  305,  306,  307,  308,  309,  310,  312,  313,
+      314,  315,  316,  317,  318,  319,  320,  321,  322,  323,
+      324,  325,  326,  327,  328,  329,  330,  331,  332,  333,
+      334,  336,  337,  338,  339,  340,  341,  342,  343,  344,
 
-      343,  345,  346,  347,  349,  350,  351,  352,  353,  354,
-      355,  356,  357,  359,  360,  362,  392,  396
+      345,  347,  348,  349,  351,  352,  353,  354,  355,  356,
+      357,  358,  359,  361,  362,  364,  394,  398
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -815,6 +815,7 @@ static const char *beagle_getTokenText( int tok, const char *text )
 	do {                                                                         \
 		yylval->token = new Token((id), beagle_getTokenText( (id), yytext ) );   \
 		   CONTEXT()->isEmptyLine = ((id) == TOK_EOL) | ((id) == TOK_DEDENT);    \
+		CONTEXT()->tokens.push_back(yylval->token);                              \
 		return id;                                                               \
 	} while (0)
 
@@ -822,6 +823,7 @@ static const char *beagle_getTokenText( int tok, const char *text )
 	do {                                                                         \
 		yylval->token = new Token( (id), (text) );   \
 		   CONTEXT()->isEmptyLine = ((id) == TOK_EOL) | ((id) == TOK_DEDENT);    \
+		CONTEXT()->tokens.push_back(yylval->token);                              \
 		return id;                                                               \
 	} while (0)
 
@@ -833,7 +835,7 @@ static const char *beagle_getTokenText( int tok, const char *text )
 */
 
 
-#line 837 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
+#line 839 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
 
 #define INITIAL 0
 #define IN_COMMENT 1
@@ -1182,11 +1184,11 @@ YY_DECL
 
 	{
 /* %% [7.0] user's declarations go here */
-#line 101 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 103 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 
 
 
-#line 1190 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
+#line 1192 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1264,14 +1266,14 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 104 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 106 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	BEGIN(IN_COMMENT);
 }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 108 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 110 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	BEGIN(IN_COMMENT);
 }
@@ -1279,7 +1281,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 112 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 114 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 
 	if (!CONTEXT()->isEmptyLine)
@@ -1291,21 +1293,21 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 121 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 123 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	BEGIN(INITIAL);
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 125 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 127 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	/* eat comment in chunks */
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 129 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 131 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	/* eat the lone star */
 }
@@ -1313,7 +1315,7 @@ YY_RULE_SETUP
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 133 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 135 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	yylineno++;
 }
@@ -1321,7 +1323,7 @@ YY_RULE_SETUP
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 137 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 139 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	// discards everything
 	yylineno++;
@@ -1330,7 +1332,7 @@ YY_RULE_SETUP
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 142 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 144 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	// discard the comments, but keeps the
 	// end of line in the stream
@@ -1339,7 +1341,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 149 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 151 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	//std::cerr << "====== " << currentIndentSize << " -> " << currentIndentSize - stepSize << " (step is " << stepSize << ")" << std::endl;
 	CONTEXT()->currentIndentSize -= CONTEXT()->stepSize;
@@ -1352,7 +1354,7 @@ YY_RULE_SETUP
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 158 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 160 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	yylineno++;
 	if (!CONTEXT()->isEmptyLine)
@@ -1361,7 +1363,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 164 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 166 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	if (CONTEXT()->isEmptyLine)
 	{
@@ -1425,7 +1427,7 @@ YY_RULE_SETUP
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(IN_COMMENT):
 case YY_STATE_EOF(STATE_STRING):
-#line 224 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 226 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	// close all remaining scopes
 	if (CONTEXT()->currentIndentSize > 0)
@@ -1446,7 +1448,7 @@ case YY_STATE_EOF(STATE_STRING):
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 241 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 243 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	/*
 	* Ignore the EOL and remaining white spaces after
@@ -1457,518 +1459,518 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 249 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 251 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { /* just ignore remaining white spaces */ }
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 250 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 252 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { yylineno++; EMIT(TOK_EOL); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 252 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 254 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_INT8); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 253 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 255 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_INT16); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 254 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 256 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_INT32); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 255 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 257 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_INT64); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 257 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 259 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_UINT8); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 258 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 260 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_UINT16); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 259 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 261 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_UINT32); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 260 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 262 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_UINT64); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 262 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 264 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_FLOAT); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 263 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 265 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_DOUBLE); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 265 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 267 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_ABSTRACT); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 266 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 268 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_BOOLEAN); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 267 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 269 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_BREAK); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 268 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 270 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_CASE); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 269 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 271 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_CATCH); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 270 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 272 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_CLASS); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 271 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 273 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_CONST); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 272 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 274 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_DEFAULT); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 273 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 275 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_DO); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 274 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 276 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_ELSE); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 275 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 277 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_EXTENDS); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 276 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 278 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_FINAL); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 277 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 279 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_FINALLY); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 278 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 280 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_FOR); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 279 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 281 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_IF); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 280 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 282 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_IMPLEMENTS); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 281 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 283 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_IMPORT); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 282 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 284 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_INSTANCEOF); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 283 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 285 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_INTERFACE); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 284 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 286 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_NATIVE); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 285 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 287 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_NEW); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 286 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 288 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_PACKAGE); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 287 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 289 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_PRIVATE); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 288 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 290 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_PROTECTED); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 289 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 291 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_PUBLIC); }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 290 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 292 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_RETURN); }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 291 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 293 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_READLOCK); }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 292 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 294 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_WRITELOCK); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 293 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 295 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_IN); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 294 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 296 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_RANGE); }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 295 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 297 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_PASS); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 297 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 299 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_STATIC); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 298 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 300 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_SUPER); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 299 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 301 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_SWITCH); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 300 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 302 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_THIS); }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 301 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 303 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_THROW); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 302 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 304 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_THROWS); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 303 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 305 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_VOID); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 304 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 306 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_VOLATILE); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 305 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 307 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_WHILE); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 306 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 308 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_CONTINUE); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 307 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 309 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_TRY); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 308 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 310 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_VARARG); }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 310 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 312 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_GT); }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 311 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 313 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_LT); }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 312 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 314 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_GE); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 313 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 315 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_LE); }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 314 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 316 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_EQ); }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 315 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 317 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_NE); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 316 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 318 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_LP); }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 317 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 319 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_RP); }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 318 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 320 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_LB); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 319 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 321 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_RB); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 320 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 322 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_LC); }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 321 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 323 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_RC); }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 322 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 324 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_ANDAND); }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 323 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 325 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_OROR); }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 324 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 326 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_INC); }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 325 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 327 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_DEC); }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 326 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 328 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_PLUS); }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 327 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 329 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_MINUS); }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 328 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 330 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_MUL); }
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 329 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 331 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_DIV); }
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 330 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 332 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_AND); }
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 331 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 333 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_OR); }
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 332 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 334 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_CARET); }
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 334 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 336 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_MOD); }
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 335 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 337 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_SHL); }
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 336 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 338 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_SHR); }
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 337 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 339 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_PLASN); }
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 338 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 340 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_MIASN); }
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 339 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 341 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_MUASN); }
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 340 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 342 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_DIASN); }
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 341 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 343 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_ANDASN); }
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 342 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 344 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_ORASN); }
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 343 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 345 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_CARETASN); }
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 345 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 347 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_SLASN); }
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 346 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 348 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_SRASN); }
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 347 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 349 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_MODASN); }
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 349 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 351 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_SM); }
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 350 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 352 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_CM); }
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 351 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 353 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_DOT); }
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 352 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 354 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_ASN); }
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 353 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 355 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_BANG); }
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 354 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 356 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_TILDE); }
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 355 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 357 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_QUEST); }
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 356 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 358 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_COLON); }
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 357 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 359 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_AT); }
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 359 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 361 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_INTLITERAL); }
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 360 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 362 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 { EMIT(TOK_FLOATLITERAL); }
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 362 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 364 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	bool escape = false;
 	char type = yytext[0];
@@ -2001,24 +2003,24 @@ YY_RULE_SETUP
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 392 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 394 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	EMIT(TOK_NAME);
 }
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 396 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 398 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	EMIT(TOK_BAD_TOKEN);
 }
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 400 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 402 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 ECHO;
 	YY_BREAK
-#line 2022 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
+#line 2024 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -3348,4 +3350,4 @@ void beagle_free (void * ptr , yyscan_t yyscanner)
 
 /* %ok-for-header */
 
-#line 400 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 402 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"

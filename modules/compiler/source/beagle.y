@@ -37,7 +37,7 @@ typedef struct
 
 	std::vector<beagle::loader::Node*> stack;
 
-	const char *fileName;
+	std::string fileName;
 
 	const char *rule;
 
@@ -66,10 +66,13 @@ int beagle_get_column  (yyscan_t yyscanner);
 using namespace beagle::compiler;
 
 
+#pragma GCC diagnostic ignored "-Wunused-function"
+
+
 static void beagle_error(parser_context_t *context, const char *msg)
 {
-	printf ("%s:%d:%d: error: %s - %s\n",
-		context->fileName,
+	printf ("%s:%d:%d: error: (%s) %s\n",
+		context->fileName.c_str(),
 		beagle_get_lineno(context->lexer),
 		beagle_get_column(context->lexer),
 		context->rule,
@@ -103,7 +106,7 @@ static beagle::compiler::Node* beagle_combine( std::vector<beagle::compiler::Nod
 	for (int i = (int) stack.size() - n; i < (int) stack.size(); ++i)
 	{
 		//std::cout << temp->getValue() << ": adding child " << p->getValue() << std::endl;;
-		temp->addChild( *stack[i] );
+		temp->add(stack[i]);
 	}
 	for (int i = 0; i < n; ++i)
 		stack.pop_back();
@@ -117,7 +120,7 @@ static void beagle_printStack( std::vector<beagle::compiler::Node*> &stack, beag
 {
 	std::cout << "Stack:" << std::endl;
 	for (int i = 0; i < (int) stack.size(); ++i)
-		stack[i]->print(std::cout, beagle::compiler::Node::name, 1, false);
+		stack[i]->print(std::cout, 1, false);
 }
 
 
@@ -331,7 +334,7 @@ static void beagle_push(
  * each nonterminal is declared.  nonterminals correspond to internal nodes
  */
 %type < token > Literal Type PrimitiveType NumericType IntegralType
-%type < token > FloatingPointType ReferenceType ClassOrInterfaceType
+%type < token > FloatingPointType ReferenceType
 %type < token > ArrayType Name SimpleName
 %type < token > CompilationUnit ImportDeclarations
 %type < token > PackageDeclaration ImportDeclaration
@@ -1211,7 +1214,7 @@ CastExpression:
 			second = first;
 		}
 		else
-			second->addChild(*first);
+			second->add(first);
 		NPUSH(second);
 		NPUSH(third);
 
@@ -1227,7 +1230,7 @@ CastExpression:
 		second = POP();
 		first = POP();
 
-		second->addChild(*first);
+		second->add(first);
 		NPUSH(second);
 		NPUSH(third);
 
@@ -1338,8 +1341,8 @@ Assignment:
 		oper = POP();
 		left = POP();
 
-		oper->addChild(*left);
-		oper->addChild(*right);
+		oper->add(left);
+		oper->add(right);
 		NPUSH(oper);
 	}
 	;

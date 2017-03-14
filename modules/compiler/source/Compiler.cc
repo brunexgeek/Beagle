@@ -132,10 +132,9 @@ void Compiler::expandTypeName(
 }
 
 
-bool Compiler::printTokens()
+void Compiler::printTokens()
 {
 	Parser parser;
-	bool hasError = false;
 
 	map<string, CompilationUnit>::iterator it = units.begin();
 	for (; it != units.end(); ++it)
@@ -269,29 +268,29 @@ Node *Compiler::makeTree(
 	const Type &type )
 {
 	// create the compilation unit
-	Node *root = new Node(NID_UNIT, NULL);
-	root->addChild(NID_QNAME, type.info->packageName);
-	root->addChild(NID_NULL, NULL);
-	Node &clazz = root->addChild(NID_CLASS, NULL);
+	Node *root = new Node(NID_UNIT);
+	root->add(NID_QNAME, type.info->packageName);
+	root->add(NID_NULL);
+	Node &clazz = root->add(NID_CLASS);
 	// create the type
-	clazz.addChild(NID_NULL, NULL);
-	clazz.addChild(NID_NULL, NULL);
-	clazz.addChild(NID_QNAME, type.info->qualifiedName);
-	clazz.addChild(NID_NULL, NULL);
-	clazz.addChild(NID_NULL, NULL);
-	Node &body = clazz.addChild(NID_BODY, NULL);
+	clazz.add(NID_NULL);
+	clazz.add(NID_NULL);
+	clazz.add(NID_QNAME, type.info->qualifiedName);
+	clazz.add(NID_NULL);
+	clazz.add(NID_NULL);
+	Node &body = clazz.add(NID_BODY);
 
 	// create the fields
 	map<string, const struct __field_metainfo*>::const_iterator fieldCur = type.fields.begin();
 	map<string, const struct __field_metainfo*>::const_iterator fieldEnd = type.fields.end();
 	for (; fieldCur != fieldEnd; ++fieldCur)
 	{
-		Node &field = body.addChild(NID_FIELD, NULL);
-		field.addChild(NID_NULL, NULL);  // annotations
-		field.addChild(NID_NULL, NULL);  // modifiers
-		field.addChild(NID_NULL, NULL);  // type
-		field.addChild(NID_NAME, (*fieldCur).second->name);  // name
-		field.addChild(NID_NULL, NULL);  // initializer
+		Node &field = body.add(NID_FIELD);
+		field.add(NID_NULL);  // annotations
+		field.add(NID_NULL);  // modifiers
+		field.add(NID_NULL);  // type
+		field.add(NID_NAME, (*fieldCur).second->name);  // name
+		field.add(NID_NULL);  // initializer
 	}
 
 	// create the methods
@@ -299,17 +298,17 @@ Node *Compiler::makeTree(
 	map<string, const struct __method_metainfo*>::const_iterator methodEnd = type.methods.end();
 	for (; methodCur != methodEnd; ++methodCur)
 	{
-		Node &method = body.addChild(NID_METHOD, NULL);
-		method.addChild(NID_NULL, NULL);  // annotations
-		method.addChild(NID_NULL, NULL);  // modifiers
-		method.addChild(NID_NULL, NULL);  // type
-		method.addChild(NID_NAME, (*methodCur).second->name);  // name
-		method.addChild(NID_NULL, NULL);  // parameters
-		method.addChild(NID_NULL, NULL);  // ?
-		method.addChild(NID_NULL, NULL);  // block
+		Node &method = body.add(NID_METHOD);
+		method.add(NID_NULL);  // annotations
+		method.add(NID_NULL);  // modifiers
+		method.add(NID_NULL);  // type
+		method.add(NID_NAME, (*methodCur).second->name);  // name
+		method.add(NID_NULL);  // parameters
+		method.add(NID_NULL);  // ?
+		method.add(NID_NULL);  // block
 	}
 
-	root->print(std::cout, Node::name);
+	root->print(std::cout);
 
 	return root;
 }

@@ -91,7 +91,7 @@ std::string NameGenerator::getMethodNativeName(
 	     (type.type != NID_CLASS && type.type != NID_INTERFACE) )
 	     return "";
 
-    if (method[1].hasChild(NID_STATIC))
+    if (method[1].findByType(NID_STATIC) != NULL)
         ss << "static__";
     else
         ss << "dynamic__";

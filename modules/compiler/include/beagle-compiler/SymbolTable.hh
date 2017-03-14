@@ -36,7 +36,7 @@ class SymbolTable
             const Node &unit );
 
 	private:
-		std::set<std::string*> typeNames;
+		std::set<std::string> typeNames;
 };
 
 

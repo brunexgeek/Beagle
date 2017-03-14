@@ -215,7 +215,7 @@ void CodeGenerator::printClassStructures(
     for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
     {
         Node &member = type[5][i];
-        if (member.type == NID_FIELD && !member[1].hasChild(NID_STATIC))
+        if (member.type == NID_FIELD && member[1].findByType(NID_STATIC) == NULL)
         {
             const string memberType = context.getNativeType(member[2]);
             string &memberName = nativeName;
@@ -233,7 +233,7 @@ void CodeGenerator::printClassStructures(
     for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
     {
         Node &member = type[5][i];
-        if (member.type == NID_FIELD && member[1].hasChild(NID_STATIC))
+        if (member.type == NID_FIELD && member[1].findByType(NID_STATIC) != NULL)
         {
             const string memberType = context.getNativeType(member[2]);
             const string &memberName = member[3].text;
@@ -427,7 +427,7 @@ void CodeGenerator::visitMethod(
     Node &type,
     Node &method )
 {
-    bool isAbstract = method[1].hasChild(NID_ABSTRACT);
+    bool isAbstract = method[1].findByType(NID_ABSTRACT) != NULL;
 
     if (isAbstract) out << "// ABSTRACT: ";
 
@@ -437,7 +437,7 @@ void CodeGenerator::visitMethod(
     // write method header
     out << returnType << ' ' << methodName << "(\n";
     printer.incIndent();
-    if (!method[1].hasChild(NID_STATIC))
+    if (method[1].findByType(NID_STATIC) != NULL)
     {
         printer.indent();
         out << "struct " << NameGenerator::OBJECT_REFERENCE << " *__this_ptr";
@@ -464,7 +464,7 @@ void CodeGenerator::visitMethodBody(
 
     printer.incIndent();
     // generate the variable to hold the pointer for the 'this' object
-    if (!method[1].hasChild(NID_STATIC))
+    if (method[1].findByType(NID_STATIC) == NULL)
     {
         Node &type = (*root)[2];
         string typeName = context.getNativeTypeName(type, false);

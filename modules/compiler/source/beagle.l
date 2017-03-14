@@ -32,6 +32,7 @@ static const char *beagle_getTokenText( int tok, const char *text )
 	do {                                                                         \
 		yylval->token = new Token((id), beagle_getTokenText( (id), yytext ) );   \
 		   CONTEXT()->isEmptyLine = ((id) == TOK_EOL) | ((id) == TOK_DEDENT);    \
+		CONTEXT()->tokens.push_back(yylval->token);                              \
 		return id;                                                               \
 	} while (0)
 
@@ -39,6 +40,7 @@ static const char *beagle_getTokenText( int tok, const char *text )
 	do {                                                                         \
 		yylval->token = new Token( (id), (text) );   \
 		   CONTEXT()->isEmptyLine = ((id) == TOK_EOL) | ((id) == TOK_DEDENT);    \
+		CONTEXT()->tokens.push_back(yylval->token);                              \
 		return id;                                                               \
 	} while (0)
 

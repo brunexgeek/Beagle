@@ -46,7 +46,8 @@ class CompilationUnit
 
         virtual ~CompilationUnit()
         {
-            // nothing to do
+            delete root;
+            delete imports;
         }
 };
 
@@ -63,7 +64,7 @@ class Compiler
 
         bool compile();
 
-        bool printTokens();
+        void printTokens();
 
         Node *getTree(
             const string &fileName );
