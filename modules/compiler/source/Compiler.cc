@@ -75,17 +75,17 @@ const CompilerListener &Compiler::getListener() const
 bool Compiler::compile()
 {
 	// perform syntax analisis
-	if (!syntaxAnalisis()) return false;
+	if (!syntaticAnalysis()) return false;
 	// perform type resolution
 	if (!resolveTypes()) return false;
 	// perform semantic analisis
-	if (!semanticAnalisis()) return false;
+	if (!semanticAnalysis()) return false;
 
 	return true;//generateCode();
 }
 
 
-bool Compiler::semanticAnalisis()
+bool Compiler::semanticAnalysis()
 {
 	bool success = true;
 
@@ -146,7 +146,7 @@ void Compiler::printTokens()
 }
 
 
-bool Compiler::syntaxAnalisis()
+bool Compiler::syntaticAnalysis()
 {
 	Parser parser;
 	bool hasError = false;
@@ -229,7 +229,7 @@ bool Compiler::resolveTypes(
 	bool success = true;
 
 	// iterate the children recursively resolving types
-	for (int i = 0, n = root.getChildCount(); i < n; ++i)
+	for (int i = 0, n = root.count(); i < n; ++i)
 	{
 		Node &item = root[i];
 
@@ -249,7 +249,7 @@ bool Compiler::resolveTypes(
 				}
 				break;
 			default:
-				if (item.getChildCount() > 0)
+				if (!item.isEmpty())
 					success |= resolveTypes(fileName, item, imports);
 		}
 	}

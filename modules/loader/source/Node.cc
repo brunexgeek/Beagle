@@ -96,12 +96,12 @@ const char *NODE_NAME[] =
 	"CONTINUE",
 	"TRANSIENT",
 	"TRY",
-	"NULLLITERAL",
-	"BOOLLITERAL",
-	"INTLITERAL",
-	"CHARLITERAL",
-	"FLOATLITERAL",
-	"STRINGLITERAL",
+	"NLITERAL",
+	"BLITERAL",
+	"ILITERAL",
+	"CLITERAL",
+	"FLITERAL",
+	"SLITERAL",
 	"UINT8",
 	"UINT16",
 	"UINT32",
@@ -130,16 +130,16 @@ const char *NODE_NAME[] =
 	"NE",
 	"LE",
 	"GE",
-	"ANDAND",
-	"OROR",
+	"AND",
+	"OR",
 	"INC",
 	"DEC",
 	"PLUS",
 	"MINUS",
 	"MUL",
 	"DIV",
-	"AND",
-	"OR",
+	"BAND",
+	"BOR",
 	"CARET",
 	"MOD",
 	"SHL",
@@ -235,20 +235,34 @@ void Node::print(
 	else
 		out << "["<< getNodeName(type) << "]\e[0m";
 
-	size_t total = std::min(32, (int) text.length());
-	if (total > 0)
+	if (type == NID_NULL)
 	{
-		out << "  text" << EQUALS << "'";
-		for (size_t i = 0; i < total; ++i)
-			out << text[i];
-		if (total < text.length())
-			out << "...";
-		out << "'";
+		if (!text.empty())
+			out << "  <" << text << '>';
+		out << std::endl;
 	}
+	else
+	{
+		size_t total = std::min(32, (int) text.length());
+		if (total > 0)
+		{
+			if (type == NID_NULL || text[0] == '<')
+				out << "  <" << text << '>';
+			else
+			{
+				out << "  text" << EQUALS << "'";
+				for (size_t i = 0; i < total; ++i)
+					out << text[i];
+				if (total < text.length())
+					out << "...";
+				out << "'";
+			}
+		}
 
-	if (counter != 0)
-		out << "  counter=" << EQUALS << counter;
-	out << "\e[0m" << std::endl;
+		if (counter != 0)
+			out << "  counter=" << EQUALS << counter;
+		out << "\e[0m" << std::endl;
+	}
 
 	if (!recursive) return;
 
@@ -337,10 +351,15 @@ Node *Node::replace(
 }
 
 
-
-int Node::getChildCount() const
+int Node::count() const
 {
 	return (int) children.size();
+}
+
+
+bool Node::isEmpty() const
+{
+	return children.empty();
 }
 
 

@@ -448,8 +448,8 @@ static void yy_fatal_error (yyconst char msg[] ,yyscan_t yyscanner );
 	yyg->yy_c_buf_p = yy_cp;
 
 /* %% [4.0] data tables for the DFA and the user's section 1 definitions go here */
-#define YY_NUM_RULES 119
-#define YY_END_OF_BUFFER 120
+#define YY_NUM_RULES 120
+#define YY_END_OF_BUFFER 121
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -457,44 +457,44 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[328] =
+static yyconst flex_int16_t yy_accept[330] =
     {   0,
-        0,    0,    0,    0,    0,    0,  120,   10,   12,  118,
-       14,   15,  109,  116,   92,   89,   75,   76,   87,   85,
-      106,   86,  107,   88,  114,  114,  112,  105,   70,  108,
-       69,  111,  113,  117,   77,  118,   78,   91,  117,  117,
-      117,  117,  117,  117,  117,  117,  117,  117,  117,  117,
-      117,  117,  117,  117,   79,   90,   80,  110,    5,    7,
-        6,  119,   12,   11,    0,    0,    0,   74,  104,   99,
-       97,   83,   95,   84,   96,  115,    2,    0,   98,  115,
-      114,    0,  115,    0,    0,  114,   93,   72,   73,   71,
-       94,  117,    0,   13,  101,  117,  117,  117,  117,  117,
+        0,    0,    0,    0,    0,    0,  121,   10,   12,  119,
+       14,   15,  110,  117,   93,   90,   76,   77,   88,   86,
+      107,   87,  108,   89,  115,  115,  113,  106,   71,  109,
+       70,  112,  114,  118,   78,  119,   79,   92,  118,  118,
+      118,  118,  118,  118,  118,  118,  118,  118,  118,  118,
+      118,  118,  118,  118,   80,   91,   81,  111,    5,    7,
+        6,  120,   12,   11,    0,    0,    0,   75,  105,  100,
+       98,   84,   96,   85,   97,  116,    2,    0,   99,  116,
+      115,    0,  116,    0,    0,  115,   94,   73,   74,   72,
+       95,  118,    0,   13,  102,  118,  118,  118,  118,  118,
 
-      117,  117,  117,   34,  117,  117,  117,  117,  117,   40,
-      117,   54,   43,  117,  117,   82,  117,  117,  117,  117,
-      117,  117,  117,  117,  117,  117,  117,  117,  117,  117,
-      117,  100,    5,    4,    1,    0,  115,    0,    0,    9,
-      115,    0,    0,  115,  114,  102,  103,   13,   13,  117,
-       81,  117,  117,  117,  117,  117,  117,  117,  117,  117,
-      117,  117,  117,   39,  117,  117,  117,   46,  117,  117,
-      117,  117,  117,  117,  117,  117,  117,  117,  117,  117,
-      117,   67,  117,  117,  117,  117,  117,  117,    4,    3,
-        0,    8,    0,  115,    0,  115,  115,  117,   27,  117,
+      118,  118,  118,   34,  118,  118,  118,  118,  118,   41,
+      118,   55,   44,  118,  118,   83,  118,  118,  118,  118,
+      118,  118,  118,  118,  118,  118,  118,  118,  118,  118,
+      118,  101,    5,    4,    1,    0,  116,    0,    0,    9,
+      116,    0,    0,  116,  115,  103,  104,   13,   13,  118,
+       82,  118,  118,  118,  118,  118,  118,  118,  118,  118,
+      118,  118,  118,  118,   40,  118,  118,  118,   47,  118,
+      118,  118,  118,  118,  118,  118,  118,  118,  118,  118,
+      118,  118,   68,  118,  118,  118,  118,  118,  118,    4,
+        3,    0,    8,    0,  116,    0,  116,  116,  118,   27,
 
-       29,  117,  117,  117,  117,  117,  117,   35,  117,  117,
-      117,  117,  117,  117,  117,  117,   16,  117,  117,  117,
-       56,  117,  117,  117,  117,  117,  117,  117,  117,  117,
-       60,  117,  117,  117,   63,  117,  117,  117,  117,   28,
-       30,   31,   32,  117,  117,  117,  117,   37,   24,  117,
-      117,   17,   18,   19,  117,  117,  117,  117,  117,  117,
-       55,  117,  117,  117,   58,  117,   61,  117,  117,  117,
-       20,  117,  117,   65,  117,  117,  117,  117,   25,  117,
-      117,  117,   42,  117,   45,  117,  117,  117,   50,  117,
-       51,   57,   59,   62,   21,   22,   23,   68,  117,  117,
+      118,   29,  118,  118,  118,  118,  118,  118,   36,   35,
+      118,  118,  118,  118,  118,  118,  118,  118,   16,  118,
+      118,  118,   57,  118,  118,  118,  118,  118,  118,  118,
+      118,  118,   61,  118,  118,  118,   64,  118,  118,  118,
+      118,   28,   30,   31,   32,  118,  118,  118,  118,   38,
+       24,  118,  118,   17,   18,   19,  118,  118,  118,  118,
+      118,  118,   56,  118,  118,  118,   59,  118,   62,  118,
+      118,  118,   20,  118,  118,   66,  118,  118,  118,  118,
+       25,  118,  118,  118,   43,  118,   46,  118,  118,  118,
+       51,  118,   52,   58,   60,   63,   21,   22,   23,   69,
 
-      117,  117,   33,   36,   38,  117,  117,   47,   48,  117,
-      117,  117,  117,   26,   66,  117,  117,  117,   52,   64,
-      117,  117,   44,   49,   53,   41,    0
+      118,  118,  118,  118,   33,   37,   39,  118,  118,   48,
+       49,  118,  118,  118,  118,   26,   67,  118,  118,  118,
+       53,   65,  118,  118,   45,   50,   54,   42,    0
     } ;
 
 static yyconst YY_CHAR yy_ec[256] =
@@ -540,91 +540,91 @@ static yyconst YY_CHAR yy_meta[71] =
         8,    8,    8,    8,    8,    8,    1,    1,    1,    1
     } ;
 
-static yyconst flex_uint16_t yy_base[342] =
+static yyconst flex_uint16_t yy_base[344] =
     {   0,
-        0,    0,   66,   67,  499,  498,  502,  505,   69,  505,
-       71,  505,  470,  505,  469,  468,  505,  505,  467,   62,
-      505,   61,   75,   72,   87,  100,  505,  505,   51,  466,
-       52,  505,  505,    0,  505,  111,  505,  465,   73,   29,
-       76,   71,   67,   86,   90,   83,  436,   97,  103,   93,
-       83,  442,   34,  102,  505,  462,  505,  505,    0,  505,
-      474,  505,  158,  505,  131,  154,  147,  505,  505,  505,
-      505,  505,  505,  505,  505,  130,  505,  486,  505,  132,
-      125,  156,  505,  161,    0,  162,  459,  505,  505,  505,
-      458,    0,  166,  179,  505,  428,  440,  429,  437,  124,
+        0,    0,   66,   67,  501,  500,  504,  507,   69,  507,
+       71,  507,  472,  507,  471,  470,  507,  507,  469,   62,
+      507,   61,   75,   72,   87,  100,  507,  507,   51,  468,
+       52,  507,  507,    0,  507,  111,  507,  467,   73,   29,
+       76,   71,   67,   86,   90,   83,  438,   97,  103,   93,
+       83,  444,   34,  102,  507,  464,  507,  507,    0,  507,
+      476,  507,  158,  507,  131,  154,  147,  507,  507,  507,
+      507,  507,  507,  507,  507,  130,  507,  488,  507,  132,
+      125,  156,  507,  161,    0,  162,  461,  507,  507,  507,
+      460,    0,  166,  179,  507,  430,  442,  431,  439,  124,
 
-      440,  427,  433,  419,  420,  418,  422,  420,  417,    0,
-      417,  413,    0,  412,  408,    0,  128,  130,  426,  414,
-       61,  425,  410,  415,  137,  400,  409,  405,  143,  411,
-      410,  505,    0,  196,  505,  456,  505,  189,  455,  505,
-      170,  195,  200,  209,    0,  505,  505,  455,  454,  396,
-        0,  402,  411,  406,  407,  392,  152,  407,  405,  401,
-      400,  403,  402,    0,  137,  217,  393,    0,  391,  383,
-      379,  380,  386,  389,  391,  375,  375,  387,  373,  373,
-      375,    0,  370,  386,  382,  384,  373,  365,  210,  505,
-      420,  505,  227,  236,  254,  263,  505,  365,    0,  370,
+      442,  429,  435,  421,  122,  421,  425,  423,  420,    0,
+      420,  416,    0,  415,  411,    0,  140,  137,  429,  417,
+       61,  428,  413,  418,  136,  403,  412,  408,  149,  414,
+      413,  507,    0,  192,  507,  459,  507,  191,  458,  507,
+      172,  197,  202,  211,    0,  507,  507,  458,  457,  399,
+        0,  405,  414,  409,  410,  395,  154,  410,  408,  403,
+      403,  402,  405,  404,    0,  162,  219,  395,    0,  393,
+      385,  381,  382,  388,  391,  393,  377,  377,  389,  375,
+      375,  377,    0,  372,  388,  384,  386,  375,  367,  213,
+      507,  422,  507,  229,  238,  256,  265,  507,  367,    0,
 
-        0,  371,  361,  359,  367,  356,  363,    0,  360,  361,
-      353,  365,  353,  386,  389,  386,    0,  349,  344,  362,
-        0,  361,  356,  351,  354,  347,  341,  347,  339,  351,
-        0,  332,  244,  336,    0,  333,  345,  344,  347,    0,
-        0,    0,    0,  334,  335,  340,  340,  332,    0,  330,
-      323,    0,    0,    0,  334,  334,  331,  319,  333,  332,
-        0,  320,  320,  329,    0,  323,  313,  347,  350,  347,
-        0,  318,  313,    0,  297,  302,  282,  272,    0,  265,
-      252,  250,    0,  253,    0,  248,  247,  233,    0,  247,
-        0,    0,    0,    0,    0,    0,    0,    0,  238,  234,
+      372,    0,  373,  363,  361,  369,  358,  365,    0,    0,
+      362,  363,  355,  367,  355,  388,  391,  388,    0,  351,
+      346,  364,    0,  363,  358,  353,  356,  349,  343,  349,
+      341,  353,    0,  334,  246,  338,    0,  335,  347,  346,
+      349,    0,    0,    0,    0,  336,  337,  342,  342,  334,
+        0,  332,  325,    0,    0,    0,  336,  336,  333,  321,
+      335,  334,    0,  322,  322,  331,    0,  325,  315,  349,
+      352,  349,    0,  320,  315,    0,  299,  304,  284,  274,
+        0,  267,  254,  252,    0,  255,    0,  250,  249,  235,
+        0,  249,    0,    0,    0,    0,    0,    0,    0,    0,
 
-      210,  220,    0,    0,    0,  211,  198,    0,    0,  193,
-      187,  190,  171,    0,    0,  155,  160,  155,    0,    0,
-      133,   65,    0,    0,    0,    0,  505,  299,  307,  312,
-      315,  323,  327,  334,  338,  342,  347,  348,  355,  361,
-      364
+      240,  236,  212,  222,    0,    0,    0,  213,  200,    0,
+        0,  195,  189,  192,  166,    0,    0,  145,  154,  144,
+        0,    0,  134,   65,    0,    0,    0,    0,  507,  301,
+      309,  314,  317,  325,  329,  336,  340,  344,  349,  350,
+      357,  363,  366
     } ;
 
-static yyconst flex_int16_t yy_def[342] =
+static yyconst flex_int16_t yy_def[344] =
     {   0,
-      327,    1,  328,  328,  329,  329,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  330,  327,  327,  327,  327,
-      327,  327,  327,  331,  327,  327,  327,  327,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  327,  327,  327,  327,  332,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  333,  327,  334,  327,  335,
-       25,  336,  327,  337,  338,  330,  327,  327,  327,  327,
-      327,  331,  327,  327,  327,  331,  331,  331,  331,  331,
+      329,    1,  330,  330,  331,  331,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  332,  329,  329,  329,  329,
+      329,  329,  329,  333,  329,  329,  329,  329,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  329,  329,  329,  329,  334,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  335,  329,  336,  329,  337,
+       25,  338,  329,  339,  340,  332,  329,  329,  329,  329,
+      329,  333,  329,  329,  329,  333,  333,  333,  333,  333,
 
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  327,  332,  327,  327,  339,  327,  340,  334,  327,
-      335,  341,  327,  327,  338,  327,  327,  327,  327,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  327,  327,
-      339,  327,  327,  327,  327,  327,  327,  331,  331,  331,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  329,  334,  329,  329,  341,  329,  342,  336,  329,
+      337,  343,  329,  329,  340,  329,  329,  329,  329,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  329,
+      329,  341,  329,  329,  329,  329,  329,  329,  333,  333,
 
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
 
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,  331,  331,  331,  331,
-      331,  331,  331,  331,  331,  331,    0,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,  333,  333,
+      333,  333,  333,  333,  333,  333,  333,  333,    0,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329
     } ;
 
-static yyconst flex_uint16_t yy_nxt[576] =
+static yyconst flex_uint16_t yy_nxt[578] =
     {   0,
         8,    9,   10,   11,   12,   13,   14,   15,   16,   14,
        17,   18,   19,   20,   21,   22,   23,   24,   25,   26,
@@ -637,61 +637,61 @@ static yyconst flex_uint16_t yy_nxt[576] =
        87,   88,   90,   91,   77,   98,   65,   99,   67,   78,
       129,   75,   73,   76,   76,   76,   76,   76,   76,   76,
 
-       76,   76,   79,   80,  175,   81,   81,   81,   81,   81,
+       76,   76,   79,   80,  176,   81,   81,   81,   81,   81,
        81,   81,   82,   82,   93,   94,   80,   96,  103,  100,
-      105,  176,   83,   84,  326,   85,  114,  104,   97,  101,
+      105,  177,   83,   84,  328,   85,  114,  104,   97,  101,
       115,  106,  102,  125,   84,   83,   84,  107,  110,  108,
       117,  126,  109,  135,  111,  112,  120,   84,  136,  113,
       121,   85,  130,  122,  123,  118,  124,   66,  119,   77,
-      131,   63,   64,  327,   78,  137,  138,   83,  142,   93,
-       94,   67,   80,  169,  143,   65,  143,  138,   80,  142,
-      148,  171,  149,  154,  155,  325,  172,  170,  180,  327,
-      212,   83,   84,  213,  185,  181,  186,   83,   84,  189,
+      131,   63,   64,  329,   78,  137,  138,   83,  142,   93,
+       94,   67,   80,  160,  143,   65,  143,  138,   80,  142,
+      148,  161,  149,  154,  155,  170,  327,  181,  172,  329,
+      326,   83,   84,  173,  182,  190,  191,   83,   84,  171,
 
-      190,  324,  193,   84,  193,   83,  142,  323,  195,   84,
-      195,  204,  205,  189,  190,  322,  321,  142,  144,  144,
+      186,  325,  187,   84,  194,  324,  194,   83,  142,   84,
+      196,  323,  196,  205,  206,  214,  190,  191,  215,  142,
       144,  144,  144,  144,  144,  144,  144,  144,  144,  144,
-      144,  144,  144,  144,  144,  144,  214,  320,  215,  319,
-      318,  216,  217,  317,  197,  194,  194,  194,  194,  194,
-      194,  194,  194,  194,  194,  194,  194,  194,  194,  194,
-      194,  194,  194,  268,  218,  269,  316,  315,  270,  271,
-      314,  137,  196,  196,  196,  196,  196,  196,  196,  196,
-      196,  196,  196,  196,  196,  196,  196,  196,  196,  196,
-      313,  312,  311,  310,  309,  308,  307,  306,   83,   59,
+      144,  144,  144,  144,  144,  144,  144,  144,  216,  322,
+      217,  321,  320,  218,  219,  319,  198,  195,  195,  195,
+      195,  195,  195,  195,  195,  195,  195,  195,  195,  195,
+      195,  195,  195,  195,  195,  270,  220,  271,  318,  317,
+      272,  273,  316,  137,  197,  197,  197,  197,  197,  197,
+      197,  197,  197,  197,  197,  197,  197,  197,  197,  197,
+      197,  197,  315,  314,  313,  312,  311,  310,  309,  308,
 
-       59,   59,   59,   59,   59,   59,   59,   10,   10,   10,
-       10,   10,   10,   10,   10,   86,   86,  305,   86,   92,
-       92,   92,   92,  133,  304,  133,  133,  133,  133,  133,
-      133,   76,  303,   76,  139,  139,  139,  139,  139,  139,
-      139,  139,  141,  302,  141,   82,   82,  301,   82,  144,
-      300,  144,  145,  145,  145,  191,  191,  191,  191,  191,
-      191,  191,  191,  194,  299,  194,  196,  298,  196,  297,
-      296,  295,  294,  293,  292,  291,  290,  289,  288,  287,
-      286,  285,  284,  283,  282,  281,  280,  279,  278,  277,
-      276,  275,  274,  273,  272,  267,  266,  265,  264,  263,
+       83,   59,   59,   59,   59,   59,   59,   59,   59,   10,
+       10,   10,   10,   10,   10,   10,   10,   86,   86,  307,
+       86,   92,   92,   92,   92,  133,  306,  133,  133,  133,
+      133,  133,  133,   76,  305,   76,  139,  139,  139,  139,
+      139,  139,  139,  139,  141,  304,  141,   82,   82,  303,
+       82,  144,  302,  144,  145,  145,  145,  192,  192,  192,
+      192,  192,  192,  192,  192,  195,  301,  195,  197,  300,
+      197,  299,  298,  297,  296,  295,  294,  293,  292,  291,
+      290,  289,  288,  287,  286,  285,  284,  283,  282,  281,
+      280,  279,  278,  277,  276,  275,  274,  269,  268,  267,
 
-      262,  261,  260,  259,  258,  257,  256,  255,  254,  253,
-      252,  251,  250,  249,  248,  247,  246,  245,  244,  243,
-      242,  241,  240,  239,  192,  238,  237,  236,  235,  234,
-      233,  232,  231,  230,  229,  228,  227,  226,  225,  224,
-      223,  222,  221,  220,  219,  211,  210,  209,  208,  207,
-      206,  203,  202,  201,  200,  199,  198,  149,  149,  140,
-      192,  188,  187,  184,  183,  182,  179,  178,  177,  174,
-      173,  168,  167,  166,  165,  164,  163,  162,  161,  160,
-      159,  158,  157,  156,  153,  152,  151,  150,  147,  146,
-      140,  134,  132,  127,  116,   95,   89,   71,   70,   69,
+      266,  265,  264,  263,  262,  261,  260,  259,  258,  257,
+      256,  255,  254,  253,  252,  251,  250,  249,  248,  247,
+      246,  245,  244,  243,  242,  241,  193,  240,  239,  238,
+      237,  236,  235,  234,  233,  232,  231,  230,  229,  228,
+      227,  226,  225,  224,  223,  222,  221,  213,  212,  211,
+      210,  209,  208,  207,  204,  203,  202,  201,  200,  199,
+      149,  149,  140,  193,  189,  188,  185,  184,  183,  180,
+      179,  178,  175,  174,  169,  168,  167,  166,  165,  164,
+      163,  162,  159,  158,  157,  156,  153,  152,  151,  150,
+      147,  146,  140,  134,  132,  127,  116,   95,   89,   71,
 
-       68,  327,   62,   62,    7,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327
+       70,   69,   68,  329,   62,   62,    7,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329
     } ;
 
-static yyconst flex_int16_t yy_chk[576] =
+static yyconst flex_int16_t yy_chk[578] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -706,73 +706,73 @@ static yyconst flex_int16_t yy_chk[576] =
 
        23,   23,   24,   25,  121,   25,   25,   25,   25,   25,
        25,   25,   25,   25,   36,   36,   26,   39,   42,   41,
-       43,  121,   25,   25,  322,   25,   46,   42,   39,   41,
+       43,  121,   25,   25,  324,   25,   46,   42,   39,   41,
        46,   43,   41,   51,   25,   26,   26,   44,   45,   44,
        48,   51,   44,   65,   45,   45,   49,   26,   65,   45,
        49,   25,   54,   50,   50,   48,   50,   66,   48,   67,
        54,   63,   63,   81,   67,   76,   76,   80,   80,   93,
-       93,   66,   82,  117,   84,   63,   84,   76,   86,   80,
-       94,  118,   94,  100,  100,  321,  118,  117,  125,   81,
-      165,   82,   82,  165,  129,  125,  129,   86,   86,  134,
+       93,   66,   82,  105,   84,   63,   84,   76,   86,   80,
+       94,  105,   94,  100,  100,  117,  323,  125,  118,   81,
+      320,   82,   82,  118,  125,  134,  134,   86,   86,  117,
 
-      134,  318,  138,   82,  138,  141,  141,  317,  142,   86,
-      142,  157,  157,  189,  189,  316,  313,  141,  143,  143,
-      143,  143,  143,  143,  143,  143,  143,  144,  144,  144,
-      144,  144,  144,  144,  144,  144,  166,  312,  166,  311,
-      310,  166,  166,  307,  144,  193,  193,  193,  193,  193,
-      193,  193,  193,  193,  194,  194,  194,  194,  194,  194,
-      194,  194,  194,  233,  166,  233,  306,  302,  233,  233,
-      301,  194,  195,  195,  195,  195,  195,  195,  195,  195,
-      195,  196,  196,  196,  196,  196,  196,  196,  196,  196,
-      300,  299,  290,  288,  287,  286,  284,  282,  196,  328,
+      129,  319,  129,   82,  138,  318,  138,  141,  141,   86,
+      142,  315,  142,  157,  157,  166,  190,  190,  166,  141,
+      143,  143,  143,  143,  143,  143,  143,  143,  143,  144,
+      144,  144,  144,  144,  144,  144,  144,  144,  167,  314,
+      167,  313,  312,  167,  167,  309,  144,  194,  194,  194,
+      194,  194,  194,  194,  194,  194,  195,  195,  195,  195,
+      195,  195,  195,  195,  195,  235,  167,  235,  308,  304,
+      235,  235,  303,  195,  196,  196,  196,  196,  196,  196,
+      196,  196,  196,  197,  197,  197,  197,  197,  197,  197,
+      197,  197,  302,  301,  292,  290,  289,  288,  286,  284,
 
-      328,  328,  328,  328,  328,  328,  328,  329,  329,  329,
-      329,  329,  329,  329,  329,  330,  330,  281,  330,  331,
-      331,  331,  331,  332,  280,  332,  332,  332,  332,  332,
-      332,  333,  278,  333,  334,  334,  334,  334,  334,  334,
-      334,  334,  335,  277,  335,  336,  336,  276,  336,  337,
-      275,  337,  338,  338,  338,  339,  339,  339,  339,  339,
-      339,  339,  339,  340,  273,  340,  341,  272,  341,  270,
-      269,  268,  267,  266,  264,  263,  262,  260,  259,  258,
-      257,  256,  255,  251,  250,  248,  247,  246,  245,  244,
-      239,  238,  237,  236,  234,  232,  230,  229,  228,  227,
+      197,  330,  330,  330,  330,  330,  330,  330,  330,  331,
+      331,  331,  331,  331,  331,  331,  331,  332,  332,  283,
+      332,  333,  333,  333,  333,  334,  282,  334,  334,  334,
+      334,  334,  334,  335,  280,  335,  336,  336,  336,  336,
+      336,  336,  336,  336,  337,  279,  337,  338,  338,  278,
+      338,  339,  277,  339,  340,  340,  340,  341,  341,  341,
+      341,  341,  341,  341,  341,  342,  275,  342,  343,  274,
+      343,  272,  271,  270,  269,  268,  266,  265,  264,  262,
+      261,  260,  259,  258,  257,  253,  252,  250,  249,  248,
+      247,  246,  241,  240,  239,  238,  236,  234,  232,  231,
 
-      226,  225,  224,  223,  222,  220,  219,  218,  216,  215,
-      214,  213,  212,  211,  210,  209,  207,  206,  205,  204,
-      203,  202,  200,  198,  191,  188,  187,  186,  185,  184,
-      183,  181,  180,  179,  178,  177,  176,  175,  174,  173,
-      172,  171,  170,  169,  167,  163,  162,  161,  160,  159,
-      158,  156,  155,  154,  153,  152,  150,  149,  148,  139,
-      136,  131,  130,  128,  127,  126,  124,  123,  122,  120,
-      119,  115,  114,  112,  111,  109,  108,  107,  106,  105,
-      104,  103,  102,  101,   99,   98,   97,   96,   91,   87,
-       78,   61,   56,   52,   47,   38,   30,   19,   16,   15,
+      230,  229,  228,  227,  226,  225,  224,  222,  221,  220,
+      218,  217,  216,  215,  214,  213,  212,  211,  208,  207,
+      206,  205,  204,  203,  201,  199,  192,  189,  188,  187,
+      186,  185,  184,  182,  181,  180,  179,  178,  177,  176,
+      175,  174,  173,  172,  171,  170,  168,  164,  163,  162,
+      161,  160,  159,  158,  156,  155,  154,  153,  152,  150,
+      149,  148,  139,  136,  131,  130,  128,  127,  126,  124,
+      123,  122,  120,  119,  115,  114,  112,  111,  109,  108,
+      107,  106,  104,  103,  102,  101,   99,   98,   97,   96,
+       91,   87,   78,   61,   56,   52,   47,   38,   30,   19,
 
-       13,    7,    6,    5,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327,  327,  327,  327,  327,  327,
-      327,  327,  327,  327,  327
+       16,   15,   13,    7,    6,    5,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329,  329,  329,  329,
+      329,  329,  329,  329,  329,  329,  329
     } ;
 
-static yyconst flex_int16_t yy_rule_linenum[119] =
+static yyconst flex_int16_t yy_rule_linenum[120] =
     {   0,
       106,  110,  114,  123,  127,  131,  135,  139,  144,  151,
       160,  166,  243,  251,  252,  254,  255,  256,  257,  259,
       260,  261,  262,  264,  265,  267,  268,  269,  270,  271,
       272,  273,  274,  275,  276,  277,  278,  279,  280,  281,
       282,  283,  284,  285,  286,  287,  288,  289,  290,  291,
-      292,  293,  294,  295,  296,  297,  299,  300,  301,  302,
-      303,  304,  305,  306,  307,  308,  309,  310,  312,  313,
+      292,  293,  294,  295,  296,  297,  298,  300,  301,  302,
+      303,  304,  305,  306,  307,  308,  309,  310,  311,  313,
       314,  315,  316,  317,  318,  319,  320,  321,  322,  323,
       324,  325,  326,  327,  328,  329,  330,  331,  332,  333,
-      334,  336,  337,  338,  339,  340,  341,  342,  343,  344,
+      334,  335,  337,  338,  339,  340,  341,  342,  343,  344,
 
-      345,  347,  348,  349,  351,  352,  353,  354,  355,  356,
-      357,  358,  359,  361,  362,  364,  394,  398
+      345,  346,  348,  349,  350,  352,  353,  354,  355,  356,
+      357,  358,  359,  360,  362,  363,  365,  395,  399
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -1217,13 +1217,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 328 )
+				if ( yy_current_state >= 330 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_current_state != 327 );
+		while ( yy_current_state != 329 );
 		yy_cp = yyg->yy_last_accepting_cpos;
 		yy_current_state = yyg->yy_last_accepting_state;
 
@@ -1242,13 +1242,13 @@ do_action:	/* This label is used only to access EOF actions. */
 			{
 			if ( yy_act == 0 )
 				fprintf( stderr, "--scanner backing up\n" );
-			else if ( yy_act < 119 )
+			else if ( yy_act < 120 )
 				fprintf( stderr, "--accepting rule at line %ld (\"%s\")\n",
 				         (long)yy_rule_linenum[yy_act], yytext );
-			else if ( yy_act == 119 )
+			else if ( yy_act == 120 )
 				fprintf( stderr, "--accepting default rule (\"%s\")\n",
 				         yytext );
-			else if ( yy_act == 120 )
+			else if ( yy_act == 121 )
 				fprintf( stderr, "--(end of buffer or a NUL)\n" );
 			else
 				fprintf( stderr, "--EOF (start condition %d)\n", YY_START );
@@ -1571,406 +1571,411 @@ YY_RULE_SETUP
 case 36:
 YY_RULE_SETUP
 #line 277 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_EXTENDS); }
+{ EMIT(TOK_ELIF); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 278 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_FINAL); }
+{ EMIT(TOK_EXTENDS); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 279 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_FINALLY); }
+{ EMIT(TOK_FINAL); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 280 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_FOR); }
+{ EMIT(TOK_FINALLY); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 281 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_IF); }
+{ EMIT(TOK_FOR); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 282 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_IMPLEMENTS); }
+{ EMIT(TOK_IF); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 283 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_IMPORT); }
+{ EMIT(TOK_IMPLEMENTS); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 284 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_INSTANCEOF); }
+{ EMIT(TOK_IMPORT); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 285 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_INTERFACE); }
+{ EMIT(TOK_INSTANCEOF); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 286 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_NATIVE); }
+{ EMIT(TOK_INTERFACE); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 287 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_NEW); }
+{ EMIT(TOK_NATIVE); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 288 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_PACKAGE); }
+{ EMIT(TOK_NEW); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 289 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_PRIVATE); }
+{ EMIT(TOK_PACKAGE); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
 #line 290 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_PROTECTED); }
+{ EMIT(TOK_PRIVATE); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
 #line 291 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_PUBLIC); }
+{ EMIT(TOK_PROTECTED); }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
 #line 292 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_RETURN); }
+{ EMIT(TOK_PUBLIC); }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
 #line 293 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_READLOCK); }
+{ EMIT(TOK_RETURN); }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
 #line 294 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_WRITELOCK); }
+{ EMIT(TOK_READLOCK); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
 #line 295 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_IN); }
+{ EMIT(TOK_WRITELOCK); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
 #line 296 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_RANGE); }
+{ EMIT(TOK_IN); }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
 #line 297 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_PASS); }
+{ EMIT(TOK_RANGE); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 299 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_STATIC); }
+#line 298 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{ EMIT(TOK_PASS); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
 #line 300 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_SUPER); }
+{ EMIT(TOK_STATIC); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
 #line 301 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_SWITCH); }
+{ EMIT(TOK_SUPER); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
 #line 302 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_THIS); }
+{ EMIT(TOK_SWITCH); }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
 #line 303 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_THROW); }
+{ EMIT(TOK_THIS); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
 #line 304 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_THROWS); }
+{ EMIT(TOK_THROW); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
 #line 305 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_VOID); }
+{ EMIT(TOK_THROWS); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
 #line 306 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_VOLATILE); }
+{ EMIT(TOK_VOID); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
 #line 307 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_WHILE); }
+{ EMIT(TOK_VOLATILE); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
 #line 308 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_CONTINUE); }
+{ EMIT(TOK_WHILE); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
 #line 309 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_TRY); }
+{ EMIT(TOK_CONTINUE); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
 #line 310 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_VARARG); }
+{ EMIT(TOK_TRY); }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 312 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_GT); }
+#line 311 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{ EMIT(TOK_VARARG); }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
 #line 313 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_LT); }
+{ EMIT(TOK_GT); }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
 #line 314 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_GE); }
+{ EMIT(TOK_LT); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
 #line 315 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_LE); }
+{ EMIT(TOK_GE); }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
 #line 316 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_EQ); }
+{ EMIT(TOK_LE); }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
 #line 317 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_NE); }
+{ EMIT(TOK_EQ); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
 #line 318 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_LP); }
+{ EMIT(TOK_NE); }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
 #line 319 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_RP); }
+{ EMIT(TOK_LP); }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
 #line 320 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_LB); }
+{ EMIT(TOK_RP); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
 #line 321 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_RB); }
+{ EMIT(TOK_LB); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
 #line 322 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_LC); }
+{ EMIT(TOK_RB); }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
 #line 323 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_RC); }
+{ EMIT(TOK_LC); }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
 #line 324 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_ANDAND); }
+{ EMIT(TOK_RC); }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
 #line 325 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_OROR); }
+{ EMIT(TOK_AND); }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
 #line 326 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_INC); }
+{ EMIT(TOK_OR); }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
 #line 327 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_DEC); }
+{ EMIT(TOK_INC); }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
 #line 328 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_PLUS); }
+{ EMIT(TOK_DEC); }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
 #line 329 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_MINUS); }
+{ EMIT(TOK_PLUS); }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
 #line 330 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_MUL); }
+{ EMIT(TOK_MINUS); }
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
 #line 331 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_DIV); }
+{ EMIT(TOK_MUL); }
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
 #line 332 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_AND); }
+{ EMIT(TOK_DIV); }
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
 #line 333 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_OR); }
+{ EMIT(TOK_BAND); }
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
 #line 334 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_CARET); }
+{ EMIT(TOK_BOR); }
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 336 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_MOD); }
+#line 335 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{ EMIT(TOK_CARET); }
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
 #line 337 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_SHL); }
+{ EMIT(TOK_MOD); }
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
 #line 338 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_SHR); }
+{ EMIT(TOK_SHL); }
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
 #line 339 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_PLASN); }
+{ EMIT(TOK_SHR); }
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
 #line 340 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_MIASN); }
+{ EMIT(TOK_PLASN); }
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
 #line 341 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_MUASN); }
+{ EMIT(TOK_MIASN); }
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
 #line 342 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_DIASN); }
+{ EMIT(TOK_MUASN); }
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
 #line 343 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_ANDASN); }
+{ EMIT(TOK_DIASN); }
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
 #line 344 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_ORASN); }
+{ EMIT(TOK_ANDASN); }
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
 #line 345 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_CARETASN); }
+{ EMIT(TOK_ORASN); }
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 347 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_SLASN); }
+#line 346 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{ EMIT(TOK_CARETASN); }
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
 #line 348 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_SRASN); }
+{ EMIT(TOK_SLASN); }
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
 #line 349 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_MODASN); }
+{ EMIT(TOK_SRASN); }
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 351 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_SM); }
+#line 350 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{ EMIT(TOK_MODASN); }
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
 #line 352 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_CM); }
+{ EMIT(TOK_SM); }
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
 #line 353 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_DOT); }
+{ EMIT(TOK_CM); }
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
 #line 354 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_ASN); }
+{ EMIT(TOK_DOT); }
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
 #line 355 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_BANG); }
+{ EMIT(TOK_ASN); }
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
 #line 356 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_TILDE); }
+{ EMIT(TOK_BANG); }
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
 #line 357 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_QUEST); }
+{ EMIT(TOK_TILDE); }
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
 #line 358 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_COLON); }
+{ EMIT(TOK_QUEST); }
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
 #line 359 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_AT); }
+{ EMIT(TOK_COLON); }
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 361 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_INTLITERAL); }
+#line 360 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{ EMIT(TOK_AT); }
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
 #line 362 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{ EMIT(TOK_FLOATLITERAL); }
+{ EMIT(TOK_ILITERAL); }
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 364 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 363 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{ EMIT(TOK_FLITERAL); }
+	YY_BREAK
+case 117:
+YY_RULE_SETUP
+#line 365 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
 	bool escape = false;
 	char type = yytext[0];
@@ -1998,29 +2003,29 @@ YY_RULE_SETUP
 			escape = false;
 	}
 
-	EMIT_TEXT(TOK_STRINGLITERAL, text.c_str());
-}
-	YY_BREAK
-case 117:
-YY_RULE_SETUP
-#line 394 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
-{
-	EMIT(TOK_NAME);
+	EMIT_TEXT(TOK_SLITERAL, text.c_str());
 }
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 398 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 395 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 {
-	EMIT(TOK_BAD_TOKEN);
+	EMIT(TOK_NAME);
 }
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 402 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 399 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+{
+	EMIT(TOK_BAD_TOKEN);
+}
+	YY_BREAK
+case 120:
+YY_RULE_SETUP
+#line 403 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 ECHO;
 	YY_BREAK
-#line 2024 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
+#line 2029 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.cc"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2339,7 +2344,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 328 )
+			if ( yy_current_state >= 330 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -2373,11 +2378,11 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 328 )
+		if ( yy_current_state >= 330 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 327);
+	yy_is_jam = (yy_current_state == 329);
 
 	(void)yyg;
 	return yy_is_jam ? 0 : yy_current_state;
@@ -3350,4 +3355,4 @@ void beagle_free (void * ptr , yyscan_t yyscanner)
 
 /* %ok-for-header */
 
-#line 402 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 403 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"

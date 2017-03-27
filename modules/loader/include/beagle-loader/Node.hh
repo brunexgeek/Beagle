@@ -95,12 +95,12 @@ enum NodeID
 	NID_CONTINUE,
 	NID_TRANSIENT,
 	NID_TRY,
-	NID_NULLLITERAL,
-	NID_BOOLLITERAL,
-	NID_INTLITERAL,
-	NID_CHARLITERAL,
-	NID_FLOATLITERAL,
-	NID_STRINGLITERAL,
+	NID_NLITERAL,
+	NID_BLITERAL,
+	NID_ILITERAL,
+	NID_CLITERAL,
+	NID_FLITERAL,
+	NID_SLITERAL,
 	NID_UINT8,
 	NID_UINT16,
 	NID_UINT32,
@@ -129,16 +129,16 @@ enum NodeID
 	NID_NE,
 	NID_LE,
 	NID_GE,
-	NID_ANDAND,
-	NID_OROR,
+	NID_AND,
+	NID_OR,
 	NID_INC,
 	NID_DEC,
 	NID_PLUS,
 	NID_MINUS,
 	NID_MUL,
 	NID_DIV,
-	NID_AND,
-	NID_OR,
+	NID_BAND,
+	NID_BOR,
 	NID_CARET,
 	NID_MOD,
 	NID_SHL,
@@ -161,7 +161,7 @@ enum NodeID
 	NID_DEDENT,
 	NID_IN,
 	NID_RANGE,
-	NID_PASS
+	NID_PASS,
 };
 
 
@@ -203,7 +203,9 @@ class Node
 			int type,
 			const char *text = NULL );
 
-		int getChildCount() const;
+		int count() const;
+
+		bool isEmpty() const;
 
 		Node &operator[](
 			int index );

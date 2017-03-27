@@ -90,7 +90,7 @@ void CodePrinter::writeName(
     while (true)
     {
         getStream() << name.text;
-        if (name.getChildCount() != 0)
+        if (name.count() != 0)
         {
             getStream() << '_';
             name = name[0];

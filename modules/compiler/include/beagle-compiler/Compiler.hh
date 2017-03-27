@@ -92,9 +92,9 @@ class Compiler
             Node &root,
             SymbolTable &imports );
 
-        bool syntaxAnalisis();
+        bool syntaticAnalysis();
 
-        bool semanticAnalisis();
+        bool semanticAnalysis();
 
         bool generateCode();
 

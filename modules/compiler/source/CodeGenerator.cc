@@ -139,7 +139,7 @@ uint32_t CodeGenerator::getNativeModifiers(
 
     if (modifiers.type != NID_MODIFIERS) return 0;
 
-    for (int i = 0, n = modifiers.getChildCount(); i < n; ++i)
+    for (int i = 0, n = modifiers.count(); i < n; ++i)
     {
         int shift = 0;
 
@@ -212,7 +212,7 @@ void CodeGenerator::printClassStructures(
     printer.comment("dynamic fields of " + qualifiedName);
 	structure.open(dynamicFields);
     structure.addPrimitive(0, "void*", "vtable_" + nativeName);
-    for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
+    for (int i = 0, n = type[5].count(); i < n; ++i)
     {
         Node &member = type[5][i];
         if (member.type == NID_FIELD && member[1].findByType(NID_STATIC) == NULL)
@@ -230,7 +230,7 @@ void CodeGenerator::printClassStructures(
 	// create the structure to hold the static fields
 	printer.comment("static fields of " + qualifiedName);
     structure.open( staticFields );
-    for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
+    for (int i = 0, n = type[5].count(); i < n; ++i)
     {
         Node &member = type[5][i];
         if (member.type == NID_FIELD && member[1].findByType(NID_STATIC) != NULL)
@@ -248,7 +248,7 @@ void CodeGenerator::printClassStructures(
     variable.open(CodePrinter::CONST | CodePrinter::STRUCT | CodePrinter::ARRAY,
         NameGenerator::MEMBER_METAINFO,
         fieldList);
-    for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
+    for (int i = 0, n = type[5].count(); i < n; ++i)
     {
         Node &member = type[5][i];
         if (member.type == NID_FIELD)
@@ -273,7 +273,7 @@ void CodeGenerator::printClassStructures(
 	variable.open(CodePrinter::CONST | CodePrinter::STRUCT | CodePrinter::ARRAY,
         NameGenerator::MEMBER_METAINFO,
         methodList);
-    for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
+    for (int i = 0, n = type[5].count(); i < n; ++i)
     {
         Node &member = type[5][i];
         if (member.type == NID_METHOD)
@@ -298,7 +298,7 @@ void CodeGenerator::printClassStructures(
 	variable.open(CodePrinter::CONST | CodePrinter::ARRAY,
         "void*",
         vtableName);
-    for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
+    for (int i = 0, n = type[5].count(); i < n; ++i)
     {
         Node &member = type[5][i];
         if (member.type == NID_METHOD)
@@ -413,7 +413,7 @@ void CodeGenerator::visitType(
         return;
 
     // iterate the methods
-    for (int i = 0, n = type[5].getChildCount(); i < n; ++i)
+    for (int i = 0, n = type[5].count(); i < n; ++i)
     {
         Node &member = type[5][i];
         if (member.type != NID_METHOD) continue;
@@ -441,7 +441,7 @@ void CodeGenerator::visitMethod(
     {
         printer.indent();
         out << "struct " << NameGenerator::OBJECT_REFERENCE << " *__this_ptr";
-        if (method[4].getChildCount() != 0)
+        if (method[4].count() != 0)
             out << ", \n";
     }
     visitParameterList(method, method[4]);
@@ -473,7 +473,7 @@ void CodeGenerator::visitMethodBody(
     }
 
     // generate each method statement
-    for (int i = 0, n = body.getChildCount(); i < n; ++i)
+    for (int i = 0, n = body.count(); i < n; ++i)
     {
         Node &stmt = body[i];
         printer.indent();
@@ -495,7 +495,7 @@ void CodeGenerator::visitParameterList(
     Node &parent,
     Node &params )
 {
-    for (int i = 0, n = params.getChildCount(); i < n; ++i)
+    for (int i = 0, n = params.count(); i < n; ++i)
     {
         printer.indent();
         visitParameter(params, params[i]);
@@ -576,7 +576,7 @@ string CodeGenerator::getPrototype(
     stringstream ss;
 
     ss << getPrototypeType(method[2]) << '(';
-    for (int i = 0, n = method[4].getChildCount(); i < n; ++i)
+    for (int i = 0, n = method[4].count(); i < n; ++i)
     {
         Node &parameter = method[4][i];
         if (parameter.type == NID_TYPE_CLASS)

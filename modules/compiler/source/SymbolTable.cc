@@ -85,7 +85,7 @@ void SymbolTable::extractImports(
     if (unit.type != NID_UNIT || unit[1].type != NID_IMPORTS)
         return;
 
-    for (int i = 0, n = unit[1].getChildCount(); i < n; ++i)
+    for (int i = 0, n = unit[1].count(); i < n; ++i)
     {
         if (unit[1][i].type == NID_IMPORT_ALL)
             addType(unit[1][i][0].text + ".*");

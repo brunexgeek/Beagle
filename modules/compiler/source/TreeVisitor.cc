@@ -19,7 +19,7 @@ void TreeVisitor::visit(
 void TreeVisitor::visitCompulationUnit(
 	Node &node )
 {
-	assert(node.getChildCount() == 3);
+	assert(node.count() == 3);
 
 	visitPackage(node[0]);
 	visitImportList(node[1]);
@@ -36,7 +36,7 @@ void TreeVisitor::visitPackage(
 void TreeVisitor::visitImportList(
 	Node &imports )
 {
-	for (int i = 0, n = imports.getChildCount(); i < n; ++i)
+	for (int i = 0, n = imports.count(); i < n; ++i)
 		visitImport(imports[i]);
 }
 
@@ -57,7 +57,7 @@ void TreeVisitor::visitType(
 	Node &body = type[5];
 	assert(body.type == NID_BODY);
 
-	for (int i = 0, n = body.getChildCount(); i < n; ++i)
+	for (int i = 0, n = body.count(); i < n; ++i)
 	{
 		Node &member = body[i];
 
@@ -116,7 +116,7 @@ void TreeVisitor::visitParameterList(
 	assert(params.type == NID_PARAMETERS ||
 		params.type == NID_NULL);
 
-	for (int i = 0, n = params.getChildCount(); i < n; ++i)
+	for (int i = 0, n = params.count(); i < n; ++i)
 	{
 		Node &param = params[i];
 		visitParameter(method, param);
@@ -140,7 +140,7 @@ void TreeVisitor::visitMethodBody(
 		method.type == NID_CONSTRUCTOR) &&
 		body.type == NID_BLOCK);
 
-	for (int i = 0, n = body.getChildCount(); i < n; ++i)
+	for (int i = 0, n = body.count(); i < n; ++i)
 	{
 		Node &stmt = body[i];
 
@@ -163,7 +163,7 @@ void TreeVisitor::visitAnnotationList(
 		annots.type == NID_NULL);
 
 	// iterate the annotations
-	for (int i = 0, n = annots.getChildCount(); i < n; ++i)
+	for (int i = 0, n = annots.count(); i < n; ++i)
 		visitAnnotation(parent, annots[i]);
 }
 

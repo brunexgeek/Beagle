@@ -162,15 +162,21 @@ static void beagle_push(
 	beagle_push( parserContext, (type), (token), \
 		beagle_get_lineno(parserContext->lexer), beagle_get_column(parserContext->lexer) )
 
-#define SPUSH(type, string) \
+#define PUSH_STRING(type, string) \
 	do {                                                \
 		beagle_push( parserContext, (type), NULL,       \
 			beagle_get_lineno(parserContext->lexer),    \
 			beagle_get_column(parserContext->lexer) );  \
-		TOP()->text = (string);                         \
+		if ((string) != NULL)                           \
+			TOP()->text = (const char*)(string);        \
 	} while (0)
 
-#define NPUSH(node)          beagle_push( parserContext, (node) )
+#define PUSH_NODE(node) \
+	beagle_push( parserContext, (node) )
+
+#define PUSH_NULL(string) \
+	PUSH_STRING(NID_NULL, string)
+
 #define POP()                beagle_pop(parserContext->stack)
 #define TOP()                (parserContext->stack[ parserContext->stack.size() - 1 ])
 #define COMBINE(tok,n)       beagle_combine(parserContext->stack, (tok), (n))
@@ -226,6 +232,7 @@ static void beagle_push(
 %token < token > TOK_DO
 %token < token > TOK_DOUBLE
 %token < token > TOK_ELSE
+%token < token > TOK_ELIF
 %token < token > TOK_EXTENDS
 %token < token > TOK_FINAL
 %token < token > TOK_FINALLY
@@ -261,12 +268,12 @@ static void beagle_push(
 %token < token > TOK_QNAME
 %token < token > TOK_CONTINUE
 %token < token > TOK_TRY
-%token < token > TOK_NULLLITERAL
-%token < token > TOK_BOOLLITERAL
-%token < token > TOK_INTLITERAL
-%token < token > TOK_CHARLITERAL
-%token < token > TOK_FLOATLITERAL
-%token < token > TOK_STRINGLITERAL
+%token < token > TOK_NLITERAL
+%token < token > TOK_BLITERAL
+%token < token > TOK_ILITERAL
+%token < token > TOK_CLITERAL
+%token < token > TOK_FLITERAL
+%token < token > TOK_SLITERAL
 %token < token > TOK_UINT8
 %token < token > TOK_UINT16
 %token < token > TOK_UINT32
@@ -295,16 +302,16 @@ static void beagle_push(
 %token < token > TOK_NE
 %token < token > TOK_LE
 %token < token > TOK_GE
-%token < token > TOK_ANDAND
-%token < token > TOK_OROR
+%token < token > TOK_AND
+%token < token > TOK_OR
 %token < token > TOK_INC
 %token < token > TOK_DEC
 %token < token > TOK_PLUS
 %token < token > TOK_MINUS
 %token < token > TOK_MUL
 %token < token > TOK_DIV
-%token < token > TOK_AND
-%token < token > TOK_OR
+%token < token > TOK_BAND
+%token < token > TOK_BOR
 %token < token > TOK_CARET
 %token < token > TOK_MOD
 %token < token > TOK_SHL
@@ -352,17 +359,17 @@ static void beagle_push(
 %type < token > ExtendsInterfaces InterfaceBody InterfaceMemberDeclarations
 %type < token > InterfaceMemberDeclaration ConstantDeclaration
 %type < token > AbstractMethodDeclaration ArrayInitializer
-%type < token > VariableInitializers Block BlockStatements BlockStatement
+%type < token > VariableInitializers Block BlockStatements
 %type < token > LocalVariableDeclarationStatement LocalVariableDeclaration
 %type < token > Statement EmptyStatement
 %type < token > StatementWithoutTrailingSubstatement
-%type < token > ExpressionStatement StatementExpression IfThenStatement
-%type < token > IfThenElseStatement IfThenInlineStatement
+%type < token > ExpressionStatement ModifyingExpression IfThenStatement
+%type < token > IfThenElseStatement IfThenInlineStatement ElifStatement ElifStatements
 %type < token > SwitchStatement SwitchBlock SwitchBlockStatementGroups
 %type < token > SwitchBlockStatementGroup SwitchLabels SwitchLabel
 %type < token > WhileStatement DoStatement
 %type < token > ForStatement ForInit ForUpdate
-%type < token > StatementExpressionList BreakStatement ContinueStatement
+%type < token > ModifyingExpressionList BreakStatement ContinueStatement
 %type < token > ReturnStatement ThrowStatement LockStatement
 %type < token > TryStatement Catches CatchClause Finally Primary
 %type < token > PrimaryNoNewArray ClassInstanceCreationExpression
@@ -411,7 +418,7 @@ PackageDeclaration:
 ImportDeclarationsOpt:
 	ImportDeclarations
 	{   TOP()->text = "ImportDeclarations";   }
-	| {   SPUSH(NID_NULL, "ImportDeclarations");   }
+	| {   PUSH_NULL("ImportDeclarations");   }
 	;
 
 ImportDeclarations:
@@ -443,7 +450,7 @@ TypeDeclaration:
 
 AnnotationDeclarationsOpt:
 	AnnotationDeclarations
-	| {   SPUSH(NID_NULL, "AnnotationDeclarations");   }
+	| {   PUSH_NULL("AnnotationDeclarations");   }
 	;
 
 AnnotationDeclarations:
@@ -458,7 +465,7 @@ AnnotationDeclaration:
 	{   COMBINE(NID_ANNOTATION, 2);   }
 	| TOK_AT SimpleName TOK_EOL
 	{
-		SPUSH(NID_NULL, "ArgumentList");
+		PUSH_NULL("ArgumentList");
 		COMBINE(NID_ANNOTATION, 2);
 	}
 	;
@@ -502,19 +509,19 @@ ClassDeclaration:
 
 ModifiersOpt:
 	Modifiers
-	| {   SPUSH(NID_NULL, "Modifiers");   }
+	| {   PUSH_NULL("Modifiers");   }
 	;
 
 SuperOpt:
 	TOK_EXTENDS /* ClassOrInterfaceType */ Name
 	{   TOP()->text = "Super";   }
-	| {   SPUSH(NID_NULL, "Super");   }
+	| {   PUSH_NULL("Super");   }
 	;
 
 InterfacesOpt:
 	Interfaces
 	{   TOP()->text = "Interfaces";   }
-	| {   SPUSH(NID_NULL, "Interfaces");   }
+	| {   PUSH_NULL("Interfaces");   }
 	;
 
 Interfaces:
@@ -530,7 +537,7 @@ InterfaceTypeList:
 
 ClassBodyOpt:
 	BeginBlock ClassBodyDeclarations EndBlock
-	| {   SPUSH(NID_BODY, "ClassBody");   }
+	| {   PUSH_STRING(NID_BODY, "ClassBody");   }
 	;
 
 ClassBodyDeclarations:
@@ -566,7 +573,7 @@ VariableDeclarators:
 VariableDeclarator:
 	SimpleName
 	{
-		SPUSH(NID_NULL, "VariableInitializer");
+		PUSH_NULL("VariableInitializer");
 		COMBINE(NID_DECLARATOR, 2);
 	}
 	| SimpleName TOK_ASN VariableInitializer
@@ -597,7 +604,7 @@ MethodHeader:
 
 ThrowsOpt:
 	Throws
-	| {   PUSH(NID_NULL, NULL /* "Throws" */ );   }
+	| {   PUSH_NULL("Throws");   }
 	;
 
 Throws:
@@ -606,7 +613,7 @@ Throws:
 
 FormalParameterListOpt:
 	FormalParameterList
-	| {   PUSH(NID_NULL, NULL /* "FormalParameterList" */ );   }
+	| {   PUSH_NULL("FormalParameterList");   }
 
 FormalParameterList:
 	FormalParameter
@@ -634,7 +641,7 @@ ClassTypeList:
 
 MethodBodyOpt:
 	Block
-	| {   SPUSH(NID_BLOCK, "MethodBody");   }
+	| {   PUSH_STRING(NID_BLOCK, "MethodBody");   }
 	;
 
 StaticInitializer:
@@ -649,7 +656,7 @@ ConstructorDeclaration:
 
 ArgumentListOpt:
 	ArgumentList
-	| {   PUSH(NID_NULL, NULL /* "ArgumentList" */ );   }
+	| {   PUSH_NULL("ArgumentList");   }
 	;
 
 ConstructorBody:
@@ -669,7 +676,7 @@ ExplicitConstructorInvocation:
 
 ExtendsInterfacesOpt:
 	ExtendsInterfaces
-	| {   PUSH(NID_NULL, NULL /* "ExtendsInterfaces" */ );   }
+	| {   PUSH_NULL("ExtendsInterfaces");   }
 	;
 
 InterfaceDeclaration:
@@ -679,9 +686,9 @@ InterfaceDeclaration:
 		//         to make NID_INTERFACE similar to NID_CLASS
 		beagle::compiler::Node *intfBody = POP();
 		beagle::compiler::Node *extends = POP();
-		PUSH(NID_NULL, NULL);
-		NPUSH(extends);
-		NPUSH(intfBody);
+		PUSH_NULL(NULL);
+		PUSH_NODE(extends);
+		PUSH_NODE(intfBody);
 		COMBINE(NID_INTERFACE, 6);
 	}
 	;
@@ -699,7 +706,7 @@ InterfaceBody:
 
 InterfaceMemberDeclarationsOpt:
 	InterfaceMemberDeclarations
-	| {   PUSH(NID_NULL, NULL /* "InterfaceMemberDeclarations" */ );   }
+	| {   PUSH_NULL("InterfaceMemberDeclarations");   }
 	;
 
 InterfaceMemberDeclarations:
@@ -721,7 +728,7 @@ ConstantDeclaration:
 AbstractMethodDeclaration:
 	MethodHeader TOK_EOL
 	{
-		SPUSH(NID_NULL, "MethodBody" );
+		PUSH_NULL("MethodBody" );
 		COMBINE(0, 1);
 	}
 	;
@@ -732,7 +739,7 @@ ArrayInitializer:
 
 VariableInitializersOpt:
 	VariableInitializers
-	| {   SPUSH(NID_NULL, "VariableInitializers"); }
+	| {   PUSH_NULL("VariableInitializers"); }
 	;
 
 VariableInitializers:
@@ -747,14 +754,10 @@ Block:
 	;
 
 BlockStatements:
-	BlockStatement
-	{   COMBINE(NID_BLOCK, 1);   }
-	| BlockStatements BlockStatement
-	{   COMBINE(0, 1);   }
-	;
-
-BlockStatement:
 	Statement
+	{   COMBINE(NID_BLOCK, 1);   }
+	| BlockStatements Statement
+	{   COMBINE(0, 1);   }
 	;
 
 LocalVariableDeclarationStatement:
@@ -796,10 +799,10 @@ EmptyStatement:
 	;
 
 ExpressionStatement:
-	StatementExpression TOK_EOL
+	ModifyingExpression TOK_EOL
 	;
 
-StatementExpression:
+ModifyingExpression:
 	Assignment
 	| PreIncrementExpression
 	| PreDecrementExpression
@@ -812,24 +815,60 @@ StatementExpression:
 IfThenStatement:
 	TOK_IF TOK_LP Expression TOK_RP TOK_EOL Block
 	{
-		SPUSH(NID_NULL, "Block");
+		PUSH_NULL("Block");
 		COMBINE(NID_IF, 3);
 	}
 	;
 
 IfThenInlineStatement:
-	TOK_IF TOK_LP Expression TOK_RP StatementExpression TOK_EOL
+	TOK_IF TOK_LP Expression TOK_RP ModifyingExpression TOK_EOL
 	{
 		COMBINE(NID_BLOCK, 1);
-		SPUSH(NID_NULL, "Block");
+		PUSH_NULL("Block");
 		COMBINE(NID_IF, 3);
 	}
 	;
 
 IfThenElseStatement:
-	TOK_IF TOK_LP Expression TOK_RP TOK_EOL Block TOK_ELSE TOK_EOL Block
+	TOK_IF TOK_LP Expression TOK_RP TOK_EOL Block ElseStatement
+	{   COMBINE(NID_IF, 3);   }
+	| TOK_IF TOK_LP Expression TOK_RP TOK_EOL Block ElifStatements
 	{   COMBINE(NID_IF, 3);   }
 	;
+
+ElifStatements:
+	ElifStatement
+	| ElifStatements ElifStatement
+	{
+		beagle::compiler::Node *first, *second;
+
+		first = POP();
+		second = TOP();
+		(*second)[0][2] = *first;
+	}
+	| ElifStatements ElseStatement
+	{
+		beagle::compiler::Node *first, *second;
+
+		first = POP();
+		second = TOP();
+		(*second)[0][2] = *first;
+	}
+	;
+
+ElifStatement:
+	TOK_ELIF TOK_LP Expression TOK_RP TOK_EOL Block
+	{
+		PUSH_NULL("Block");
+		COMBINE(NID_IF, 3);
+		COMBINE(NID_BLOCK, 1);
+	}
+	;
+
+ElseStatement:
+	TOK_ELSE TOK_EOL Block
+	;
+
 
 SwitchStatement:
 	TOK_SWITCH TOK_LP Expression TOK_RP TOK_EOL SwitchBlock
@@ -838,7 +877,7 @@ SwitchStatement:
 
 SwitchBlockStatementGroupsOpt:
 	SwitchBlockStatementGroups
-	| {   SPUSH(NID_NULL, "SwitchBlockStatementGroups" );   }
+	| {   PUSH_NULL("SwitchBlockStatementGroups" );   }
 	;
 
 SwitchBlock:
@@ -887,17 +926,17 @@ DoStatement:
 
 ForInitOpt:
 	ForInit
-	| {   PUSH(NID_NULL, NULL /* "ForInit" */ );   }
+	| {   PUSH_NULL("ForInit");   }
 	;
 
 ExpressionOpt:
 	Expression
-	| {   PUSH(NID_NULL, NULL /* "Expression" */ );   }
+	| {   PUSH_NULL("Expression");   }
 	;
 
 ForUpdateOpt:
 	ForUpdate
-	| {   PUSH(NID_NULL, NULL /* "ForUpdate" */ );   }
+	| {   PUSH_NULL("ForUpdate");   }
 	;
 
 ForStatement:
@@ -918,43 +957,43 @@ Range:
 	;
 
 ForInit:
-	StatementExpressionList
+	ModifyingExpressionList
 	| LocalVariableDeclaration
 	;
 
 ForUpdate:
-	StatementExpressionList
+	ModifyingExpressionList
 	;
 
-StatementExpressionList:
-	StatementExpression
+ModifyingExpressionList:
+	ModifyingExpression
 	{   COMBINE(NID_LIST, 1);   }
-	| StatementExpressionList TOK_CM StatementExpression
+	| ModifyingExpressionList TOK_CM ModifyingExpression
 	{   COMBINE(0, 1);   }
 	;
 
 BreakStatement:
-	TOK_BREAK TOK_INTLITERAL TOK_EOL
+	TOK_BREAK TOK_ILITERAL TOK_EOL
 	{
 		PUSH(NID_BREAK, $2);
 		COMBINE(NID_BREAK, 1);
 	}
 	| TOK_BREAK TOK_EOL
 	{
-		PUSH(NID_INTLITERAL, NULL);
+		PUSH(NID_ILITERAL, NULL);
 		COMBINE(NID_BREAK, 1);
 	}
 	;
 
 ContinueStatement:
-	TOK_CONTINUE TOK_INTLITERAL TOK_EOL
+	TOK_CONTINUE TOK_ILITERAL TOK_EOL
 	{
 		PUSH(NID_BREAK, $2);
 		COMBINE(NID_CONTINUE, 1);
 	}
 	| TOK_CONTINUE TOK_EOL
 	{
-		PUSH(NID_INTLITERAL, NULL);
+		PUSH(NID_ILITERAL, NULL);
 		COMBINE(NID_CONTINUE, 1);
 	}
 	;
@@ -979,13 +1018,13 @@ LockStatement:
 
 CatchesOpt:
 	Catches
-	| {   PUSH(NID_NULL, NULL /* "Catches" */ );   }
+	| {   PUSH_NULL("Catches");   }
 	;
 
 TryStatement:
 	TOK_TRY TOK_EOL Block Catches
 	{
-		PUSH(NID_NULL, NULL /* "finally" */ );
+		PUSH_NULL("finally");
 		COMBINE(NID_TRY, 3);
 	}
 	| TOK_TRY TOK_EOL Block CatchesOpt Finally
@@ -1117,9 +1156,9 @@ MethodInvocation:
 
 		third = POP();
 		second = POP();
-		PUSH(NID_NULL, NULL /* "Primary" */ );
-		NPUSH(second);
-		NPUSH(third);
+		PUSH_NULL("Primary");
+		PUSH_NODE(second);
+		PUSH_NODE(third);
 
 		COMBINE(NID_CALL, 3);
 	}
@@ -1133,8 +1172,8 @@ MethodInvocation:
 		third = POP();
 		second = POP();
 		PUSH(NID_SUPER, NULL);
-		NPUSH(second);
-		NPUSH(third);
+		PUSH_NODE(second);
+		PUSH_NODE(third);
 
 		COMBINE(NID_CALL, 3);
 	/*
@@ -1215,8 +1254,8 @@ CastExpression:
 		}
 		else
 			second->add(first);
-		NPUSH(second);
-		NPUSH(third);
+		PUSH_NODE(second);
+		PUSH_NODE(third);
 
 		COMBINE(NID_CAST, 2);
 	}
@@ -1231,8 +1270,8 @@ CastExpression:
 		first = POP();
 
 		second->add(first);
-		NPUSH(second);
-		NPUSH(third);
+		PUSH_NODE(second);
+		PUSH_NODE(third);
 
 		COMBINE(NID_CAST, 2);
 	}
@@ -1288,8 +1327,8 @@ EqualityExpression:
 
 AndExpression:
 	EqualityExpression
-	| AndExpression TOK_AND EqualityExpression
-	{   COMBINE(NID_AND, 2);   }
+	| AndExpression TOK_BAND EqualityExpression
+	{   COMBINE(NID_BAND, 2);   }
 	;
 
 ExclusiveOrExpression:
@@ -1300,20 +1339,20 @@ ExclusiveOrExpression:
 
 InclusiveOrExpression:
 	ExclusiveOrExpression
-	| InclusiveOrExpression TOK_OR ExclusiveOrExpression
-	{   COMBINE(NID_OR, 2);   }
+	| InclusiveOrExpression TOK_BOR ExclusiveOrExpression
+	{   COMBINE(NID_BOR, 2);   }
 	;
 
 ConditionalAndExpression:
 	InclusiveOrExpression
-	| ConditionalAndExpression TOK_ANDAND InclusiveOrExpression
-	{   COMBINE(NID_ANDAND, 2);   }
+	| ConditionalAndExpression TOK_AND InclusiveOrExpression
+	{   COMBINE(NID_AND, 2);   }
 	;
 
 ConditionalOrExpression:
 	ConditionalAndExpression
-	| ConditionalOrExpression TOK_OROR ConditionalAndExpression
-	{   COMBINE(NID_OROR, 2);   }
+	| ConditionalOrExpression TOK_OR ConditionalAndExpression
+	{   COMBINE(NID_OR, 2);   }
 	;
 
 ConditionalExpression:
@@ -1343,7 +1382,7 @@ Assignment:
 
 		oper->add(left);
 		oper->add(right);
-		NPUSH(oper);
+		PUSH_NODE(oper);
 	}
 	;
 
@@ -1395,18 +1434,18 @@ EndBlock:
 	;
 
 Literal:
-	TOK_INTLITERAL
-	{   PUSH(NID_INTLITERAL, $1);   }
-	| TOK_FLOATLITERAL
-	{   PUSH(NID_FLOATLITERAL, $1);   }
-	| TOK_BOOLLITERAL
-	{   PUSH(NID_BOOLLITERAL, $1);   }
-	| TOK_STRINGLITERAL
-	{   PUSH(NID_STRINGLITERAL, $1);   }
-	| TOK_CHARLITERAL
-	{   PUSH(NID_CHARLITERAL, $1);   }
-	| TOK_NULLLITERAL
-	{   PUSH(NID_NULLLITERAL, $1);   }
+	TOK_ILITERAL
+	{   PUSH(NID_ILITERAL, $1);   }
+	| TOK_FLITERAL
+	{   PUSH(NID_FLITERAL, $1);   }
+	| TOK_BLITERAL
+	{   PUSH(NID_BLITERAL, $1);   }
+	| TOK_SLITERAL
+	{   PUSH(NID_SLITERAL, $1);   }
+	| TOK_CLITERAL
+	{   PUSH(NID_CLITERAL, $1);   }
+	| TOK_NLITERAL
+	{   PUSH(NID_NLITERAL, $1);   }
 	;
 
 Type:
@@ -1492,7 +1531,7 @@ Name:
 		}
 		else
 		{
-			NPUSH(current);
+			PUSH_NODE(current);
 			COMBINE(NID_QNAME, 2);
 		}*/
 		beagle::compiler::Node *current = POP();

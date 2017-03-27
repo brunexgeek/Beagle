@@ -136,7 +136,7 @@ void Parser::expandFields(
 	Node &body = root[2][5];
 	if (body.type == NID_NULL) return;
 
-	for (int m = 0; m < body.getChildCount(); ++m)
+	for (int m = 0; m < body.count(); ++m)
 	{
 		Node &member = body[m];
 		int i = 1;
@@ -145,7 +145,7 @@ void Parser::expandFields(
 			member[3].type != NID_LIST) continue;
 
 		// expand fields with more than one variable
-		for (; member[3].getChildCount() > 1;)
+		for (; member[3].count() > 1;)
 		{
 			// create a new field with the same parameters
 			Node *field = new Node(NID_FIELD);
@@ -186,7 +186,7 @@ void Parser::expandVariables(
 		Node &body = node[2][5];
 		if (body.type == NID_NULL) return;
 
-		for (int i = 0, n = body.getChildCount(); i < n; ++i)
+		for (int i = 0, n = body.count(); i < n; ++i)
 		{
 			Node &member = body[i];
 
@@ -201,7 +201,7 @@ void Parser::expandVariables(
 	{
 		// Notice: we need to compare the counter 'i' with the function 'getChildCount'
 		//         because we change the node children inside the loop
-		for (int i = 0; i < node.getChildCount(); ++i)
+		for (int i = 0; i < node.count(); ++i)
 		{
 			Node &stmt = node[i];
 
@@ -211,11 +211,11 @@ void Parser::expandVariables(
 			if (stmt.type == NID_BLOCK) expandVariables(stmt);
 
 			// ignore statements other than unhandled variables
-			if (stmt.type != NID_LOCAL || stmt.getChildCount() < 2 ||
+			if (stmt.type != NID_LOCAL || stmt.count() < 2 ||
 				stmt[1].type != NID_LIST) continue;
 
 			// expand variables with more than one declarator
-			for (; stmt[1].getChildCount() > 0;)
+			for (; stmt[1].count() > 0;)
 			{
 				Node &promoted = stmt[1][0];
 				promoted.type = NID_LOCAL;

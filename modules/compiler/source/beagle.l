@@ -274,6 +274,7 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 <INITIAL>"default"                       { EMIT(TOK_DEFAULT); }
 <INITIAL>"do"                            { EMIT(TOK_DO); }
 <INITIAL>"else"                          { EMIT(TOK_ELSE); }
+<INITIAL>"elif"                          { EMIT(TOK_ELIF); }
 <INITIAL>"extends"                       { EMIT(TOK_EXTENDS); }
 <INITIAL>"final"                         { EMIT(TOK_FINAL); }
 <INITIAL>"finally"                       { EMIT(TOK_FINALLY); }
@@ -321,16 +322,16 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 <INITIAL>"]"                             { EMIT(TOK_RB); }
 <INITIAL>"{"                             { EMIT(TOK_LC); }
 <INITIAL>"}"                             { EMIT(TOK_RC); }
-<INITIAL>"and"                           { EMIT(TOK_ANDAND); }
-<INITIAL>"or"                            { EMIT(TOK_OROR); }
+<INITIAL>"and"                           { EMIT(TOK_AND); }
+<INITIAL>"or"                            { EMIT(TOK_OR); }
 <INITIAL>"++"                            { EMIT(TOK_INC); }
 <INITIAL>"--"                            { EMIT(TOK_DEC); }
 <INITIAL>"+"                             { EMIT(TOK_PLUS); }
 <INITIAL>"-"                             { EMIT(TOK_MINUS); }
 <INITIAL>"*"                             { EMIT(TOK_MUL); }
 <INITIAL>"/"                             { EMIT(TOK_DIV); }
-<INITIAL>"&"                             { EMIT(TOK_AND); }
-<INITIAL>"|"                             { EMIT(TOK_OR); }
+<INITIAL>"&"                             { EMIT(TOK_BAND); }
+<INITIAL>"|"                             { EMIT(TOK_BOR); }
 <INITIAL>"^"                             { EMIT(TOK_CARET); }
 
 <INITIAL>"%"                             { EMIT(TOK_MOD); }
@@ -358,8 +359,8 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 <INITIAL>":"                             { EMIT(TOK_COLON); }
 <INITIAL>"@"                             { EMIT(TOK_AT); }
 
-<INITIAL>{INTEGER_LITERAL}               { EMIT(TOK_INTLITERAL); }
-<INITIAL>{DECIMAL_FP_LITERAL}            { EMIT(TOK_FLOATLITERAL); }
+<INITIAL>{INTEGER_LITERAL}               { EMIT(TOK_ILITERAL); }
+<INITIAL>{DECIMAL_FP_LITERAL}            { EMIT(TOK_FLITERAL); }
 
 <INITIAL>"'"|"\"" {
 	bool escape = false;
@@ -388,7 +389,7 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 			escape = false;
 	}
 
-	EMIT_TEXT(TOK_STRINGLITERAL, text.c_str());
+	EMIT_TEXT(TOK_SLITERAL, text.c_str());
 }
 
 <INITIAL>{IDENTIFIER} {
