@@ -471,7 +471,7 @@ extern int beagle_lex \
 #undef YY_DECL
 #endif
 
-#line 403 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
+#line 401 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l"
 
 #line 477 "/media/dados/projetos/beagle/modules/compiler/source/beagle.l.hh"
 #undef beagle_IN_HEADER

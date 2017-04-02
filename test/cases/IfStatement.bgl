@@ -1,0 +1,14 @@
+package test
+
+import beagle.String
+
+public class IfStatement:
+
+	public static int32 main( String[] args ):
+		if args == null:
+			return 1
+		elif args.length() > 0 and args[0] != "start":
+			return 2
+		else:
+			return 3
+

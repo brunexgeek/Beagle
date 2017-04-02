@@ -1,0 +1,17 @@
+package test
+
+import beagle.String
+
+public class BasicClass:
+
+	@GetterMethod
+	@SetterMethod
+	private int32 integralField, value
+
+	protected String stringField
+
+	static private bool booleanField = true
+
+	public BasicClass():
+		booleanField = integralField > 0
+

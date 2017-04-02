@@ -139,12 +139,12 @@ void Parser::expandFields(
 	for (int m = 0; m < body.count(); ++m)
 	{
 		Node &member = body[m];
-		int i = 1;
+		int i = 0;
 
 		if (member.type != NID_FIELD ||
 			member[3].type != NID_LIST) continue;
 
-		// expand fields with more than one variable
+		// expand fields with more than one declarator
 		for (; member[3].count() > 1;)
 		{
 			// create a new field with the same parameters
@@ -152,25 +152,23 @@ void Parser::expandFields(
 			field->add( new Node(member[0]) );
 			field->add( new Node(member[1]) );
 			field->add( new Node(member[2]) );
-			// move the variable from current field to new one
-			Node *variables = new Node(NID_LIST);
-			variables->add( &member[3][0] );
-			member[3].remove(0);
-			field->add(variables);
-			// add the new field into type body (always after the current one)
+			// move the declarator content from current field to new one
+			field->add( new Node(member[3][0][0]) );
+			field->add( new Node(member[3][0][1]) );
+			// destroy the declarator
+			delete member[3].remove(0);
+			// add the new field into type body (always before the current one)
 			body.add(field, m + i);
 			++i;
 		}
 
-		// Notice: at this point the current field have one
-		//         variable left, so we let the next code block
-		//         handle it.
+		// Notice: at this point the current field have one declarator left
 
-		// expand fields with one variable
-		Node &variable = member[3][0];
-		delete member.replace(3, variable[0]);
-		member.add(&variable[1]);
-		delete &variable;
+		// expand fields with one declarator
+		Node *initializer = member[3][0].remove(1);
+		Node *identifier  = member[3][0].remove(0);
+		delete member.replace(3, *identifier);
+		member.add(initializer);
 	}
 }
 
@@ -190,10 +188,7 @@ void Parser::expandVariables(
 		{
 			Node &member = body[i];
 
-			if (member.type == NID_METHOD)
-				expandVariables(member[6]);
-			else
-			if (member.type == NID_METHOD)
+			if (member.type == NID_METHOD || member.type == NID_CONSTRUCTOR)
 				expandVariables(member[5]);
 		}
 	}

@@ -276,7 +276,6 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 <INITIAL>"else"                          { EMIT(TOK_ELSE); }
 <INITIAL>"elif"                          { EMIT(TOK_ELIF); }
 <INITIAL>"extends"                       { EMIT(TOK_EXTENDS); }
-<INITIAL>"final"                         { EMIT(TOK_FINAL); }
 <INITIAL>"finally"                       { EMIT(TOK_FINALLY); }
 <INITIAL>"for"                           { EMIT(TOK_FOR); }
 <INITIAL>"if"                            { EMIT(TOK_IF); }
@@ -286,6 +285,7 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 <INITIAL>"interface"                     { EMIT(TOK_INTERFACE); }
 <INITIAL>"native"                        { EMIT(TOK_NATIVE); }
 <INITIAL>"new"                           { EMIT(TOK_NEW); }
+<INITIAL>"nullable"                      { EMIT(TOK_NULLABLE); }
 <INITIAL>"package"                       { EMIT(TOK_PACKAGE); }
 <INITIAL>"private"                       { EMIT(TOK_PRIVATE); }
 <INITIAL>"protected"                     { EMIT(TOK_PROTECTED); }
@@ -296,13 +296,11 @@ IDENTIFIER              [A-Za-z_][A-Za-z_0-9]*
 <INITIAL>"in"                            { EMIT(TOK_IN); }
 <INITIAL>"range"                         { EMIT(TOK_RANGE); }
 <INITIAL>"pass"                          { EMIT(TOK_PASS); }
-
 <INITIAL>"static"                        { EMIT(TOK_STATIC); }
 <INITIAL>"super"                         { EMIT(TOK_SUPER); }
 <INITIAL>"switch"                        { EMIT(TOK_SWITCH); }
 <INITIAL>"this"                          { EMIT(TOK_THIS); }
 <INITIAL>"throw"                         { EMIT(TOK_THROW); }
-<INITIAL>"throws"                        { EMIT(TOK_THROWS); }
 <INITIAL>"void"                          { EMIT(TOK_VOID); }
 <INITIAL>"volatile"                      { EMIT(TOK_VOLATILE); }
 <INITIAL>"while"                         { EMIT(TOK_WHILE); }

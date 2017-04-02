@@ -175,7 +175,7 @@ Node::Node(
 }
 
 
-/*Node::Node(
+Node::Node(
 	const Node &obj )
 {
 	text = obj.text;
@@ -183,8 +183,8 @@ Node::Node(
 	counter = obj.counter;
 
 	for (size_t i = 0; i < obj.children.size(); ++i)
-		addChild( new Node(*obj.children[i]) );
-}*/
+		add( new Node(*obj.children[i]) );
+}
 
 /*
 Node::Node(
@@ -344,8 +344,8 @@ Node *Node::replace(
 	{
 		old = children[index];
 		children[index] = &value;
+		value.parent = this;
 	}
-	value.parent = this;
 
 	return old;
 }

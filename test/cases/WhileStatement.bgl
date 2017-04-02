@@ -1,0 +1,11 @@
+package test
+
+import beagle.String
+
+public class WhileStatement:
+
+	public static int32 main( String[] args ):
+		int32 index
+		while (index < args.length and args[index] != 'ok'):
+			args[index] = ''
+			++index

@@ -179,8 +179,8 @@ class Node
 			int type,
 			const char *text = NULL );
 
-		/*Node(
-			const Node &obj );*/
+		Node(
+			const Node &obj );
 
 		virtual ~Node();
 

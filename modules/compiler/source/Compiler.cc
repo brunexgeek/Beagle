@@ -77,9 +77,9 @@ bool Compiler::compile()
 	// perform syntax analisis
 	if (!syntaticAnalysis()) return false;
 	// perform type resolution
-	if (!resolveTypes()) return false;
+//	if (!resolveTypes()) return false;
 	// perform semantic analisis
-	if (!semanticAnalysis()) return false;
+//	if (!semanticAnalysis()) return false;
 
 	return true;//generateCode();
 }

@@ -1,0 +1,10 @@
+package test
+
+import beagle.String
+
+public class IfStatement:
+
+	public static int32 main( String[] args ):
+		for int32 i in range(0, args.length):
+			args[i] += '!'
+

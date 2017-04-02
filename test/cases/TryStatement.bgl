@@ -1,0 +1,16 @@
+package test
+
+public class TryStatement:
+
+	public static void main( String[] args ):
+		if (args.length == 0):
+			throw new InvalidArgumentEx()
+
+		try:
+			ArgumentParser parser = new ArgumentParser(args)
+			parser.evaluate()
+			parser.print()
+		catch InvalidSyntaxEx ex:
+			ex.print()
+		catch:
+			Output.print('Unknown error')

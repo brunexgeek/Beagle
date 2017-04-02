@@ -1,0 +1,17 @@
+package test
+
+import beagle.String
+
+public class Contructors:
+
+	@GetterMethod
+	@SetterMethod
+	private int32 integralField
+
+	public BasicClass():
+		this(1337)
+
+	public BasicClass( int value ):
+		super()
+		integralField = value
+
